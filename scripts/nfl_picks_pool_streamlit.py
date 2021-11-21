@@ -52,7 +52,7 @@ def load_and_prep_data():
 # @st.cache
 def stats_by_year(df):
     ## Yearly Stats
-    dfy = df.groupby(['Year', 'Player']).sum().copy()
+    dfy = df.groupby(['Year', 'Player'], as_index=False).sum().copy()
     idx = dfy.columns.get_loc('Reg_Games')
     dfy.insert(idx+1, 'Reg_Games_Left', (16*4) - dfy['Reg_Games'])
     mask = (dfy['Year'] >= 2021) ## start of 17-game seasons
@@ -65,6 +65,7 @@ def stats_by_year(df):
     dfy.loc[dfy['Reg_Games'] < 16*4, 'Full_Ssn_Pace'] = dfy.loc[dfy['Reg_Games'] < 16*4, 'Reg_Win%'] * (16 * 4)
     dfy.loc[mask & (dfy['Reg_Games'] < 17*4), 'Full_Ssn_Pace'] = dfy.loc[mask & (dfy['Reg_Games'] < 17*4), 'Reg_Win%'] * (17 * 4)
 
+    dfy.set_index(['Year', 'Player'], inplace=True)
     dfy['Playoff_Teams'] = df.groupby(['Year', 'Player'])['Playoff_Seed'].count()
 
     pct_cols = [c for c in dfy.columns if '%' in c]
@@ -99,7 +100,7 @@ def stats_by_career(df):
 
 
 # @st.cache
-def prep_year_data_for_email(dfy: pd.DataFrame):
+def prep_year_data_for_website(dfy: pd.DataFrame) -> pd.DataFrame:
     '''advanced formatting possible via df.style (requires jinja2).
     https://code.i-harness.com/en/q/df3234
     '''
@@ -128,12 +129,13 @@ def prep_year_data_for_email(dfy: pd.DataFrame):
     win_col = win_cols[np.isin(win_cols, frame.columns)]
     frame.insert(0, 'Rank', frame[win_col].rank(ascending=False).astype('int'))
     frame.columns = [c.replace('_', ' ') for c in frame.columns]
-    frame[['Win%', '16 Game Pace']] = frame[['Win%', '16 Game Pace']].round(1)
+    cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Win%']
+    frame[cols] = frame[cols].round(1)
     return frame
 
 
 # @st.cache
-def prep_round_data_for_email(dfr: pd.DataFrame):
+def prep_round_data_for_website(dfr: pd.DataFrame):
     '''advanced formatting possible via df.style (requires jinja2).
     https://code.i-harness.com/en/q/df3234
     '''
@@ -158,7 +160,7 @@ def prep_round_data_for_email(dfr: pd.DataFrame):
     
     
 # @st.cache
-def prep_career_data_for_email(dfc: pd.DataFrame):
+def prep_career_data_for_website(dfc: pd.DataFrame):
     '''advanced formatting possible via df.style (requires jinja2).
     https://code.i-harness.com/en/q/df3234
     '''
@@ -359,6 +361,22 @@ def get_personal_records_text():
     return """Last, here are the personal records for each player.  Blue highlight is for this season and shows who might have a chance at setting a new personal record for total wins."""
 
 
+def message_body_wrapper(hist_frames):
+    wk_txt = get_curr_weekly_standings_text()
+    # nug_txt = get_historical_nugget_text()
+    nug_txt = ''
+    # hist_intro_txt = get_hist_intro_text()
+    hist_intro_txt = ''
+    # reghist_txt = get_reg_ssn_hist_text()
+    reghist_txt = ''
+    # pohist_txt = get_playoff_hist_text()
+    pohist_txt = ''
+    # tothist_txt = get_tot_hist_text()
+    tothist_txt = ''
+    champs_txt = get_champs_hist_text()
+    career_txt = get_career_text()
+    pr_txt = get_personal_records_text()
+    return {'wk_txt': wk_txt, 'nug_txt': nug_txt, 'hist_intro_txt': hist_intro_txt, 'reghist_txt': reghist_txt, 'pohist_txt': pohist_txt, 'tothist_txt': tothist_txt, 'champs_txt': champs_txt, 'career_txt': career_txt, 'pr_txt': pr_txt}
 
 
 
@@ -388,7 +406,7 @@ if __name__ == '__main__':
     
     
     
-    ROOT_PATH = Path('~/Dropbox/Data_Science/projects/local_projects/2021-11-10_nfl_picks_pool_streamlit(github)')
+    ROOT_PATH = Path('~/Dropbox/Data_Science/projects/github_projects/2021-11-10_nfl_picks_pool_streamlit')
 
 
     clr_dct = {
@@ -421,9 +439,9 @@ if __name__ == '__main__':
     dfy = stats_by_year(df)
     dfr = stats_by_round(df)
     dfc = stats_by_career(df)
-    dfy_ = prep_year_data_for_email(dfy)
-    dfr_ = prep_round_data_for_email(dfr)
-    dfc_ = prep_career_data_for_email(dfc)
+    dfy_ = prep_year_data_for_website(dfy)
+    dfr_ = prep_round_data_for_website(dfr)
+    dfc_ = prep_career_data_for_website(dfc)
     dfpt = prep_player_teams_this_year(df, curr_year)
     hist_frames = prep_year_history(dfy, curr_year)
     player_hist = prep_player_history(dfy, curr_year)
@@ -496,7 +514,8 @@ if __name__ == '__main__':
     def colorize_player_names_new(cell, clr_dct):
         # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "")};'
         # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#FAFAFF")};'
-        return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EDEDEE")};'
+        return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EAEAEE")};'
+        # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EDEDEE")};'
     
     
     def style_frame(frame, clr_dct, frmt_dct={}, bold_cols=[], clr_yr=None):
@@ -534,14 +553,14 @@ if __name__ == '__main__':
     st.dataframe(dfpt) ## sortable, honors center alignment and bold
     # st.table(dfpt)  ## better formatting for undesired index
 
-    # dfy_[['Win%', '16 Game Pace']] = dfy_[['Win%', '16 Game Pace']].round(1)
+    # dfy_[['Win%', 'Full_Ssn_Pace']] = dfy_[['Win%', 'Full_Ssn_Pace']].round(1)
     # st.write(dfy_)
     # dfy_.index.set_names('rank')
     # dfy_.set_index('Rank', inplace=True)
-    st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', '16 Game Pace': '{:.1f}'}))
-    # st.table(style_frame(dfy_.reset_index(drop=True), clr_dct, frmt_dct={'Win%': '{:.1f}', '16 Game Pace': '{:.1f}'}))
-    # # st.table(dfy_.style.format({'Win%': '{:.1f}', '16 Game Pace': '{:.1f}'}))
-    # frame = dfy_.style.format({'Win%': '{:.1f}', '16 Game Pace': '{:.1f}'})
+    st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
+    # st.table(style_frame(dfy_.reset_index(drop=True), clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
+    # # st.table(dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
+    # frame = dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'})
     # st.table(style_frame(frame, clr_dct))
 
     
