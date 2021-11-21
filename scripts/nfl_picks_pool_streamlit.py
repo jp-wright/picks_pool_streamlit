@@ -11,12 +11,10 @@ from typing import List, Tuple, Dict, Sequence, Optional
 
 # @st.cache
 def load_and_prep_data():
-    ROOT_PATH = Path(os.getcwd())
     ## Read from but never write to this file. Ref only.
-    # st.write(os.getcwd())
-    # print(os.getcwd())
-    dfref = pd.read_excel(os.path.join('..', 'data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
-    # dfref = pd.read_excel(ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
+    ROOT_PATH = Path(os.getcwd())
+    st.write(os.getcwd())
+    dfref = pd.read_excel(ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
     # dfref.columns = [c.title().replace(' ', '_') for c in dfref.columns]
     dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
     df = dfref.copy()
@@ -407,7 +405,7 @@ if __name__ == '__main__':
     
     
     
-    ROOT_PATH = Path('~/Dropbox/Data_Science/projects/github_projects/2021-11-10_nfl_picks_pool_streamlit')
+    ROOT_PATH = Path(os.getcwd())
 
 
     clr_dct = {
