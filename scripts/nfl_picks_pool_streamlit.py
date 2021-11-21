@@ -600,7 +600,7 @@ if __name__ == '__main__':
     
     
     left_column, right_column = st.columns(2)
-    left_column.button('Press me!')
+    # left_column.button('Press me!')
     
     
     with left_column:
