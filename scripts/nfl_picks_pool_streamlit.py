@@ -11,7 +11,7 @@ from typing import List, Tuple, Dict, Sequence, Optional
 
 # @st.cache
 def load_and_prep_data():
-    ROOT_PATH = Path('~/Dropbox/Data_Science/projects/github_projects/2021-11-10_nfl_picks_pool_streamlit/')
+    ROOT_PATH = Path(os.getcwd())
     ## Read from but never write to this file. Ref only.
     st.write(os.getcwd())
     print(os.getcwd())
