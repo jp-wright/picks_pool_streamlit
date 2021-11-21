@@ -13,8 +13,8 @@ from typing import List, Tuple, Dict, Sequence, Optional
 def load_and_prep_data():
     ROOT_PATH = Path(os.getcwd())
     ## Read from but never write to this file. Ref only.
-    st.write(os.getcwd())
-    print(os.getcwd())
+    # st.write(os.getcwd())
+    # print(os.getcwd())
     dfref = pd.read_excel(ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
     # dfref.columns = [c.title().replace(' ', '_') for c in dfref.columns]
     dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
@@ -22,6 +22,7 @@ def load_and_prep_data():
     df.loc[df['Player'] == 'LEFTOVER', 'Player'] = 'Leftover'
     df = df[['Year', 'Round', 'Pick', 'Player', 'Team']]
 
+    st.write(dfref.head())
 
     ## get regular ssn, post ssn, and total win/loss info
     dfreg = pd.read_csv('data/input/nfl_regular_ssn_standings_pool_years.csv').drop('Team', 1)
