@@ -599,21 +599,54 @@ if __name__ == '__main__':
     st.write(body_dct['pr_txt'])
     
     
-    st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    left_column, right_column = st.columns(2)
+    left_column.button('Press me!')
     
-    st.dataframe(style_frame(player_hist[1], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
-    st.dataframe(style_frame(player_hist[2], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    with left_column:
+        st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
-    st.dataframe(style_frame(player_hist[3], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+        st.dataframe(style_frame(player_hist[2], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+        
+        st.dataframe(style_frame(player_hist[4], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+            
+        st.dataframe(style_frame(player_hist[6], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+            
+    with right_column:
+        # chosen = st.radio(
+        #     'Sorting hat',
+        #     ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
+        # st.write(f"You are in {chosen} house!")
+        st.dataframe(style_frame(player_hist[1], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
-    st.dataframe(style_frame(player_hist[4], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+        st.dataframe(style_frame(player_hist[3], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+        
+        st.dataframe(style_frame(player_hist[5], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+            
+        st.dataframe(style_frame(player_hist[7], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+                
     
-    st.dataframe(style_frame(player_hist[5], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
-    st.dataframe(style_frame(player_hist[7], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
-    st.dataframe(style_frame(player_hist[6], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    
+    
+    
+    # 
+    # st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[1], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[2], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[3], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[4], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[5], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[7], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # st.dataframe(style_frame(player_hist[6], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
 
     # 
