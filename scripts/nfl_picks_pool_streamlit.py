@@ -274,8 +274,6 @@ def get_count_teams_over_n_wins(nwins):
 
     years = clr_decades(years)
     decade = clr_decades(decade)
-    years = BeautifulSoup(years, features='lxml')
-    decade = BeautifulSoup(decade, features='lxml')
     return decade, years
 
 
