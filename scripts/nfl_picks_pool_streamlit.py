@@ -7,7 +7,6 @@ import re
 import os
 import sys
 from typing import List, Tuple, Dict, Sequence, Optional
-from bs4 import BeautifulSoup
 
 
 # @st.cache
