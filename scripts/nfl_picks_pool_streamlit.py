@@ -278,7 +278,7 @@ def get_count_teams_over_n_wins(nwins):
 
 
 def get_curr_weekly_standings_text():
-    return f"""Dan and reigning champion Alex are both having their best seasons ever (by a country mile for Dan), while Brandon, JP, and Mike are all having their -worst- seasons ever.
+    return f"""Dan is having his best season ever and Alex is having his second best ever (though still better than anyone else this year, by a win). Jordan, JP, and Jackson are all three having their second-to-worst seasons ever (boo), and Brandon and Mike are having middle-of-the-road seasons for their historical records.
     """
 
 def get_historical_nugget_text():
@@ -559,11 +559,14 @@ if __name__ == '__main__':
     
     
     st.write(f"""
-    Picks Pool dudes,  
-    Here's your weekly update {po_inc} as of week {the_wk}!  
-    Everyone's teams for {the_ssn}:
+    ## Global NFL Picks Pool
+    ##### Texas, Wisconsin, Colorado, Sweden, England, Japan
+    Picks Pool {po_inc} as of week {the_wk} - {the_ssn}!  
+    #
     """)
     
+    
+    st.write("""#### Win Totals this Season""")
     st.dataframe(dfpt, width=1100) ## sortable, honors center alignment and bold
     # st.table(dfpt)  ## better formatting for undesired index
 
@@ -582,6 +585,7 @@ if __name__ == '__main__':
     st.write(body_dct['wk_txt'])
     # 
     # 
+    st.write("""#### Wins by Round""")
     st.write("""How did we do in our draft, by rounds? 
     Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?""")
     # 
@@ -594,9 +598,9 @@ if __name__ == '__main__':
     idx_max = dfd.groupby('Round')['Total_Win'].transform('max') == dfd['Total_Win']
     idx_min = dfd.groupby('Round')['Total_Win'].transform('min') == dfd['Total_Win']
 
-    _, center_col, _2 = st.columns([1,1,1])
-    with center_col:
-        st.write("""What about best and worst picks by round?""")
+    # _, center_col, _2 = st.columns([1,1,1])
+    # with center_col:
+    #     st.write("""##### What about best and worst picks by round?""")
 
 
     left_column, right_column = st.columns([1, 1])
@@ -608,11 +612,11 @@ if __name__ == '__main__':
             st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), clr_dct, frmt_dct={'Total_Win': '{:.0f}'}))
 
     with left_column:
-        st.write("""Here are the best picks!""")
+        st.write("""Here are the best picks by round:""")
         picks_by_round(dfd, 'Best')
     
     with right_column:
-        st.write("""And here are the worst picks!""")
+        st.write("""And here are the worst picks by round:""")
         picks_by_round(dfd, 'Worst')
 
 
@@ -627,17 +631,19 @@ if __name__ == '__main__':
     st.write(body_dct['tothist_txt'])
     
     
+    st.write("""#### Past Champs""")
     st.write(body_dct['champs_txt'])
     
     
     st.dataframe(style_frame(champs, clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
+    
+    st.write("""#""")
+    st.write("""#### Career Performance""")
     st.write("Who in our pool has been the best over their careers (sorted by Wins)?")
     
     
-    
     st.dataframe(style_frame(dfc_, clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
-    
     
     
     # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
@@ -678,7 +684,9 @@ if __name__ == '__main__':
     
     
     
-    
+
+    st.write("""#""")
+    st.write("""#### Personal Records""")    
     st.write(body_dct['pr_txt'])
     
     
@@ -723,6 +731,7 @@ if __name__ == '__main__':
         
         st.altair_chart(points + champ_pts + text, use_container_width=False)
     
+
 
     left_column, right_column = st.columns([2, 1])
     
