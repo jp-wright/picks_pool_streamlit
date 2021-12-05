@@ -1,6 +1,7 @@
 import streamlit as st
 import pandas as pd
 import numpy as np
+import altair as alt
 import time
 from pathlib import Path
 import re
@@ -13,15 +14,12 @@ from typing import List, Tuple, Dict, Sequence, Optional
 def load_and_prep_data():
     ## Read from but never write to this file. Ref only.
     ROOT_PATH = Path(os.getcwd())
-    st.write(os.getcwd())
+    # st.write(os.getcwd())
     dfref = pd.read_excel(ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
-    # dfref.columns = [c.title().replace(' ', '_') for c in dfref.columns]
     dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
     df = dfref.copy()
     df.loc[df['Player'] == 'LEFTOVER', 'Player'] = 'Leftover'
     df = df[['Year', 'Round', 'Pick', 'Player', 'Team']]
-
-    st.write(dfref.head())
 
     ## get regular ssn, post ssn, and total win/loss info
     dfreg = pd.read_csv('data/input/nfl_regular_ssn_standings_pool_years.csv').drop('Team', 1)
@@ -209,7 +207,7 @@ def prep_player_history(dfy: pd.DataFrame, highlight_year: int):
         frame.insert(0, 'Rank', frame['Total_Win%'].rank(ascending=False, method='dense').astype(int))
         frame = frame.sort_values('Rank', ascending=True)
         frames.append(frame)
-    return frames
+    return pd.concat(frames)
 
 
 # @st.cache
@@ -419,17 +417,35 @@ if __name__ == '__main__':
         'LEFTOVER': '#d9d9d9',
         'Leftover': '#d9d9d9'
         }
+        
+        
+        
+        
 
-    def enforce_bool(arg):
-        '''convert 'True' or 'False' command-line arg from crontab into actual Python bool'''
-        if isinstance(arg, bool):
-            return arg
-        if arg.lower() in ('yes', 'true', 'y', '1'):
-            return True
-        elif arg.lower() in ('no', 'false', 'n', '0'):
-            return False
-        else:
-            raise TypeError(f'Boolean value expected. {type(arg)} received.')
+    plot_clr_dct = {
+        'Alex': '#ffd966',
+        'Brandon': '#da988b',
+        'Dan': '#f7b56e',
+        'JP': '#a6cd98',
+        'Jackson': '#a898cd',
+        'Jordan': '#e48181',
+        'LEFTOVER': '#b3b3b3',
+        'Mike': '#85b6e0',
+        'Leftover': '#b3b3b3',
+        }
+    
+        
+
+    # def enforce_bool(arg):
+    #     '''convert 'True' or 'False' command-line arg from crontab into actual Python bool'''
+    #     if isinstance(arg, bool):
+    #         return arg
+    #     if arg.lower() in ('yes', 'true', 'y', '1'):
+    #         return True
+    #     elif arg.lower() in ('no', 'false', 'n', '0'):
+    #         return False
+    #     else:
+    #         raise TypeError(f'Boolean value expected. {type(arg)} received.')
 
 
 
@@ -461,7 +477,6 @@ if __name__ == '__main__':
 #     'Select a range of values',
 #     0.0, 100.0, (25.0, 75.0)
 # )
-
 
     # left_column, right_column = st.columns(2)
     # # You can use a column just like st.sidebar:
@@ -512,8 +527,8 @@ if __name__ == '__main__':
     
     def colorize_player_names_new(cell, clr_dct):
         # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "")};'
-        # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#FAFAFF")};'
-        return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EAEAEE")};'
+        return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#FAFAFF")};'
+        # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EAEAEE")};'
         # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EDEDEE")};'
     
     
@@ -549,14 +564,14 @@ if __name__ == '__main__':
     Everyone's teams for {the_ssn}:
     """)
     
-    st.dataframe(dfpt) ## sortable, honors center alignment and bold
+    st.dataframe(dfpt, width=1100) ## sortable, honors center alignment and bold
     # st.table(dfpt)  ## better formatting for undesired index
 
     # dfy_[['Win%', 'Full_Ssn_Pace']] = dfy_[['Win%', 'Full_Ssn_Pace']].round(1)
     # st.write(dfy_)
     # dfy_.index.set_names('rank')
     # dfy_.set_index('Rank', inplace=True)
-    st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
+    st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}), width=900)
     # st.table(style_frame(dfy_.reset_index(drop=True), clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
     # # st.table(dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
     # frame = dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'})
@@ -572,6 +587,37 @@ if __name__ == '__main__':
     # 
     
     st.dataframe(style_frame(dfr_, clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
+    st.write('  #')
+    
+    
+    dfd = df.query(f"Year=={curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win']].replace('\s\(\d+\)', '', regex=True)
+    idx_max = dfd.groupby('Round')['Total_Win'].transform('max') == dfd['Total_Win']
+    idx_min = dfd.groupby('Round')['Total_Win'].transform('min') == dfd['Total_Win']
+
+    _, center_col, _2 = st.columns([1,1,1])
+    with center_col:
+        st.write("""What about best and worst picks by round?""")
+
+
+    left_column, right_column = st.columns([1, 1])
+    def picks_by_round(frame, best_worst): 
+        for rd_res in [(rd, best_worst) for rd in range(1,5)]:
+            rd, res = rd_res[0], rd_res[1]
+            # st.write(f"""Round {rd}: {res}""")
+            idx = idx_max if res == 'Best' else idx_min
+            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), clr_dct, frmt_dct={'Total_Win': '{:.0f}'}))
+
+    with left_column:
+        st.write("""Here are the best picks!""")
+        picks_by_round(dfd, 'Best')
+    
+    with right_column:
+        st.write("""And here are the worst picks!""")
+        picks_by_round(dfd, 'Worst')
+
+
+
+
     
     
     st.write(body_dct['reghist_txt'])
@@ -594,44 +640,185 @@ if __name__ == '__main__':
     
     
     
+    # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
+    # dfs_
+    player_hist = player_hist.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
+    # player_hist
+    
+    points = alt.Chart(player_hist)\
+                .mark_bar()\
+                .encode(
+                    # alt.X('Player:N'),
+                    alt.X('Player:N', axis=alt.Axis(title='')),
+                    alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
+                    # alt.Y('Total_Win:Q'),
+                    # order='Year',
+                    # color='Player:N',
+                    # color=alt.Color('Player:N', scale=alt.Scale(domain=dfs_['Player'].unique(),       range=list(plot_clr_dct.values()))),
+                    
+                    color=alt.condition(
+                        alt.datum.Champ == True, 
+                        alt.value('firebrick'), 
+                        # alt.value(list(plot_clr_dct.values())),
+                        alt.value(plot_clr_dct['Mike'])
+                        # alt.value('steelblue')
+                        ),
+                    column='Year:O'
+                    )\
+                .properties(
+                    title='Wins by Year',
+                    # width=800,
+                    # height=400
+                    )\
+                .interactive()
+    
+    
+    # st.altair_chart(points+text, use_container_width=False)
+    st.altair_chart(points, use_container_width=False)
+    
+    
     
     
     st.write(body_dct['pr_txt'])
     
     
-    left_column, right_column = st.columns(2)
-    # left_column.button('Press me!')
     
+    
+    def show_player_hist_table(name):
+        st.dataframe(style_frame(player_hist[player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=750)
+    
+    
+    # .mark_line(strokeWidth=4, color='grey', point=alt.OverlayMarkDef(color=clr_dct['Alex'], opacity=1, stroke='black', strokeWidth=1, size=100))\        
+    def plot_wins_by_year(frame):
+        points = alt.Chart(frame)\
+                    .mark_line(strokeWidth=4, color='grey')\
+                    .encode(
+                        alt.X('Year:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
+                        alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
+                        order='Year',
+                        )\
+                    .properties(
+                        title='Wins by Year',
+                        width=400,
+                        height=200
+                        )
+
+        champ_pts = alt.Chart(frame)\
+                    .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
+                    .encode(
+                        alt.X('Year:O'),
+                        alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
+                        color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_clr_dct[frame['Player'].unique().item()]]))
+                        )
+        
+        text = points.mark_text(
+                    align='center',
+                    baseline='top',
+                    dx=0,
+                    dy=10
+                )\
+                .encode(
+                    text='Total_Win'
+                )
+        
+        st.altair_chart(points + champ_pts + text, use_container_width=False)
+    
+
+    left_column, right_column = st.columns([2, 1])
     
     with left_column:
-        st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    
-        st.dataframe(style_frame(player_hist[2], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-        
-        st.dataframe(style_frame(player_hist[4], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-            
-        st.dataframe(style_frame(player_hist[6], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-            
-    with right_column:
-        # chosen = st.radio(
-        #     'Sorting hat',
-        #     ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
-        # st.write(f"You are in {chosen} house!")
-        st.dataframe(style_frame(player_hist[1], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    
-        st.dataframe(style_frame(player_hist[3], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-        
-        st.dataframe(style_frame(player_hist[5], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-            
-        st.dataframe(style_frame(player_hist[7], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-                
-    
-    
-    
-    
-    
-    
+    #     # st.dataframe(style_frame(player_hist[player_hist['Player'] == 'Alex'].drop(['Reg_Win', 'Playoff_Win'], axis=1), clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=750)
+    #     # st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=750)
+        for name in dfy_['Player'].unique():
+            show_player_hist_table(name)
+            st.write("\n\n\n _")
     # 
+    with right_column: 
+        for name in dfy_['Player'].unique():
+            plot_wins_by_year(player_hist[player_hist['Player'] == name])
+    # 
+    # 
+    #                 # .mark_line(strokeWidth=4, color='grey', point=alt.OverlayMarkDef(color=clr_dct['Alex'], opacity=1, stroke='black', strokeWidth=1, size=100))\        
+    #     # points = alt.Chart(alex)\
+    #     #             .mark_line(strokeWidth=4, color='grey')\
+    #     #             .encode(
+    #     #                 alt.X('Year:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
+    #     #                 alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
+    #     #                 order='Year',
+    #     #                 )\
+    #     #             .properties(
+    #     #                 title='Wins by Year',
+    #     #                 width=400,
+    #     #                 height=200
+    #     #                 )
+    #     # 
+    #     # champ_pts = alt.Chart(alex)\
+    #     #             .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
+    #     #             .encode(
+    #     #                 alt.X('Year:O'),
+    #     #                 alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
+    #     #                 color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['red', clr_dct['Alex']]))
+    #     #             )
+    #     # 
+    #     # text = points.mark_text(
+    #     #             align='center',
+    #     #             baseline='top',
+    #     #             dx=0,
+    #     #             dy=10
+    #     #         )\
+    #     #         .encode(
+    #     #             text='Total_Win'
+    #     #         )
+    #     # 
+    #     # chart = points + champ_pts + text
+    # 
+        
+        # st.altair_chart(chart, use_container_width=False)
+        
+        # st.altair_chart(alt.Chart(chart_data)
+        #         .mark_area(
+        #             interpolate='step-after',
+        #         ).encode(
+        #             x=alt.X("minute:Q", scale=alt.Scale(nice=False)),
+        #             y=alt.Y("pickups:Q"),
+        #             tooltip=['minute', 'pickups']
+        #         ).configure_mark(
+        #             opacity=0.2,
+        #             color='red'
+        #         ), use_container_width=True)
+    
+    
+    
+    # left_column, right_column = st.columns(2)
+    # with left_column:
+    #     st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    # 
+    # with right_column:
+    # 
+    # 
+    #     import plotly.graph_objects as go
+    #     fig = go.Figure()
+    #     alex = player_hist[0].sort_values('Year')
+    # 
+    #     fig.add_trace(go.Scatter(
+    #         x=alex['Year'],
+    #         y=alex['Total_Win'],
+    #         mode='markers+lines',
+    #         # marker_size=15 + np.log10(1+dfp[x].fillna(0)) ** 5.7,
+    #         # marker_size=10,
+    #         # color=dfp['Type'],
+    #         # name=sig,
+    #         text=alex['Player']
+    #         )
+    #     )
+    # 
+    #     st.plotly_chart(fig)
+    
+    
+    
+    
+    
+    
     # st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     # 
     # st.dataframe(style_frame(player_hist[1], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
