@@ -646,18 +646,21 @@ if __name__ == '__main__':
     st.dataframe(style_frame(dfc_, clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
     
     
+    st.write("""#""")
     # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
     # dfs_
     player_hist = player_hist.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
     # player_hist
     
-    points = alt.Chart(player_hist)\
+    bars = alt.Chart()\
                 .mark_bar()\
                 .encode(
                     # alt.X('Player:N'),
                     alt.X('Player:N', axis=alt.Axis(title='')),
-                    alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
+                    alt.Y('Total_Win:Q', scale=alt.Scale(domain=[0, 50], zero=True)),
                     # alt.Y('Total_Win:Q'),
+                    # alt.Column('Year:O', axis=alt.Axis(offset= -8.0, orient='bottom')),
+                    # alt.Column('Year:O', title='Wins by Year'),
                     # order='Year',
                     # color='Player:N',
                     # color=alt.Color('Player:N', scale=alt.Scale(domain=dfs_['Player'].unique(),       range=list(plot_clr_dct.values()))),
@@ -666,21 +669,29 @@ if __name__ == '__main__':
                         alt.datum.Champ == True, 
                         alt.value('firebrick'), 
                         # alt.value(list(plot_clr_dct.values())),
-                        alt.value(plot_clr_dct['Mike'])
+                        alt.value(plot_clr_dct['Mike']),
                         # alt.value('steelblue')
                         ),
-                    column='Year:O'
+                    legend=alt.Legend(title='Champ'),
+                    
                     )\
-                .properties(
-                    title='Wins by Year',
-                    # width=800,
-                    # height=400
-                    )\
-                .interactive()
+                # .properties(
+                #     title='Wins by Year',
+                #     # align='center',
+                #     # width=800,
+                #     # height=400
+                #     )#\
+                # .interactive()
+    text = bars.mark_text(align='center', baseline='bottom')\
+                .encode(text='Total_Win:Q')
+                
+    chart = alt.layer(bars, text, data=player_hist).facet(column=alt.Column('Year:O', header=alt.Header(title='')), title=alt.TitleParams(text='Wins by Year', anchor='middle'))
+
     
+    st.altair_chart(chart)
     
-    # st.altair_chart(points+text, use_container_width=False)
-    st.altair_chart(points, use_container_width=False)
+    # st.altair_chart(bars+text, use_container_width=False)
+    # st.altair_chart(bars, use_container_width=False)
     
     
     
