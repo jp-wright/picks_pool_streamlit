@@ -1,4 +1,5 @@
 import streamlit as st
+import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 import altair as alt
@@ -567,6 +568,7 @@ if __name__ == '__main__':
     
     
     st.write("""#### Win Totals this Season""")
+    st.write("""###### Team by Round""")
     st.dataframe(dfpt, width=1100) ## sortable, honors center alignment and bold
     # st.table(dfpt)  ## better formatting for undesired index
 
@@ -574,6 +576,7 @@ if __name__ == '__main__':
     # st.write(dfy_)
     # dfy_.index.set_names('rank')
     # dfy_.set_index('Rank', inplace=True)
+    st.write("""###### Player Totals""")
     st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}), width=900)
     # st.table(style_frame(dfy_.reset_index(drop=True), clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
     # # st.table(dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
@@ -607,7 +610,8 @@ if __name__ == '__main__':
     def picks_by_round(frame, best_worst): 
         for rd_res in [(rd, best_worst) for rd in range(1,5)]:
             rd, res = rd_res[0], rd_res[1]
-            # st.write(f"""Round {rd}: {res}""")
+            # components.html(f'<div style="text-align: center"> Round {rd} </div>')
+            st.write(f""" Round {rd}""")
             idx = idx_max if res == 'Best' else idx_min
             st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), clr_dct, frmt_dct={'Total_Win': '{:.0f}'}))
 
@@ -631,7 +635,7 @@ if __name__ == '__main__':
     st.write(body_dct['tothist_txt'])
     
     
-    st.write("""#### Past Champs""")
+    st.write("""#### Champions""")
     st.write(body_dct['champs_txt'])
     
     
@@ -650,31 +654,36 @@ if __name__ == '__main__':
     # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
     # dfs_
     player_hist = player_hist.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
-    # player_hist
+    # player_hist = player_hist.merge(champs.assign(Champ='Yes')[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna('No')
+    # player_hist.loc[(player_hist['Year']==curr_year) & (player_hist['Champ']=='Yes'), 'Champ'] = 'Proj'
+    # player_hist.tail(20)
+    
+    
+    ## tried to use this for color=champ_condition .. can't get to work
+    # champ_condition = {
+    #     'condition': [
+    #         {alt.datum.Champ: 'Yes', 'value': 'firebrick'},
+    #         {alt.datum.Champ: 'Proj', 'value': 'Navy'}],
+    #      'value': 'orange'}
+         
+        
     
     bars = alt.Chart()\
                 .mark_bar()\
                 .encode(
-                    # alt.X('Player:N'),
                     alt.X('Player:N', axis=alt.Axis(title='')),
                     alt.Y('Total_Win:Q', scale=alt.Scale(domain=[0, 50], zero=True)),
-                    # alt.Y('Total_Win:Q'),
-                    # alt.Column('Year:O', axis=alt.Axis(offset= -8.0, orient='bottom')),
-                    # alt.Column('Year:O', title='Wins by Year'),
-                    # order='Year',
-                    # color='Player:N',
                     # color=alt.Color('Player:N', scale=alt.Scale(domain=dfs_['Player'].unique(),       range=list(plot_clr_dct.values()))),
-                    
+                    # color=champ_condition
                     color=alt.condition(
                         alt.datum.Champ == True, 
                         alt.value('firebrick'), 
                         # alt.value(list(plot_clr_dct.values())),
                         alt.value(plot_clr_dct['Mike']),
-                        # alt.value('steelblue')
                         ),
-                    legend=alt.Legend(title='Champ'),
+                    )
                     
-                    )\
+                    
                 # .properties(
                 #     title='Wins by Year',
                 #     # align='center',
@@ -685,13 +694,12 @@ if __name__ == '__main__':
     text = bars.mark_text(align='center', baseline='bottom')\
                 .encode(text='Total_Win:Q')
                 
-    chart = alt.layer(bars, text, data=player_hist).facet(column=alt.Column('Year:O', header=alt.Header(title='')), title=alt.TitleParams(text='Wins by Year', anchor='middle'))
+    ## Can't use "+" layer operator with faceted plots
+    chart = alt.layer(bars, text, data=player_hist).facet(column=alt.Column('Year:O', header=alt.Header(title='')), title=alt.TitleParams(text='Wins by Year', anchor='middle'))#.resolve_scale(color='independent')
 
-    
+
     st.altair_chart(chart)
     
-    # st.altair_chart(bars+text, use_container_width=False)
-    # st.altair_chart(bars, use_container_width=False)
     
     
     
@@ -706,8 +714,7 @@ if __name__ == '__main__':
     def show_player_hist_table(name):
         st.dataframe(style_frame(player_hist[player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=750)
     
-    
-    # .mark_line(strokeWidth=4, color='grey', point=alt.OverlayMarkDef(color=clr_dct['Alex'], opacity=1, stroke='black', strokeWidth=1, size=100))\        
+
     def plot_wins_by_year(frame):
         points = alt.Chart(frame)\
                     .mark_line(strokeWidth=4, color='grey')\
@@ -729,6 +736,14 @@ if __name__ == '__main__':
                         alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
                         color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_clr_dct[frame['Player'].unique().item()]]))
                         )
+
+        proj_champ_pts = alt.Chart(frame)\
+                    .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
+                    .encode(
+                        alt.X('Year:O'),
+                        alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
+                        color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['blue', plot_clr_dct[frame['Player'].unique().item()]]))
+                        )
         
         text = points.mark_text(
                     align='center',
@@ -747,226 +762,10 @@ if __name__ == '__main__':
     left_column, right_column = st.columns([2, 1])
     
     with left_column:
-    #     # st.dataframe(style_frame(player_hist[player_hist['Player'] == 'Alex'].drop(['Reg_Win', 'Playoff_Win'], axis=1), clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=750)
-    #     # st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=750)
         for name in dfy_['Player'].unique():
             show_player_hist_table(name)
             st.write("\n\n\n _")
-    # 
+
     with right_column: 
         for name in dfy_['Player'].unique():
             plot_wins_by_year(player_hist[player_hist['Player'] == name])
-    # 
-    # 
-    #                 # .mark_line(strokeWidth=4, color='grey', point=alt.OverlayMarkDef(color=clr_dct['Alex'], opacity=1, stroke='black', strokeWidth=1, size=100))\        
-    #     # points = alt.Chart(alex)\
-    #     #             .mark_line(strokeWidth=4, color='grey')\
-    #     #             .encode(
-    #     #                 alt.X('Year:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
-    #     #                 alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
-    #     #                 order='Year',
-    #     #                 )\
-    #     #             .properties(
-    #     #                 title='Wins by Year',
-    #     #                 width=400,
-    #     #                 height=200
-    #     #                 )
-    #     # 
-    #     # champ_pts = alt.Chart(alex)\
-    #     #             .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
-    #     #             .encode(
-    #     #                 alt.X('Year:O'),
-    #     #                 alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
-    #     #                 color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['red', clr_dct['Alex']]))
-    #     #             )
-    #     # 
-    #     # text = points.mark_text(
-    #     #             align='center',
-    #     #             baseline='top',
-    #     #             dx=0,
-    #     #             dy=10
-    #     #         )\
-    #     #         .encode(
-    #     #             text='Total_Win'
-    #     #         )
-    #     # 
-    #     # chart = points + champ_pts + text
-    # 
-        
-        # st.altair_chart(chart, use_container_width=False)
-        
-        # st.altair_chart(alt.Chart(chart_data)
-        #         .mark_area(
-        #             interpolate='step-after',
-        #         ).encode(
-        #             x=alt.X("minute:Q", scale=alt.Scale(nice=False)),
-        #             y=alt.Y("pickups:Q"),
-        #             tooltip=['minute', 'pickups']
-        #         ).configure_mark(
-        #             opacity=0.2,
-        #             color='red'
-        #         ), use_container_width=True)
-    
-    
-    
-    # left_column, right_column = st.columns(2)
-    # with left_column:
-    #     st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # with right_column:
-    # 
-    # 
-    #     import plotly.graph_objects as go
-    #     fig = go.Figure()
-    #     alex = player_hist[0].sort_values('Year')
-    # 
-    #     fig.add_trace(go.Scatter(
-    #         x=alex['Year'],
-    #         y=alex['Total_Win'],
-    #         mode='markers+lines',
-    #         # marker_size=15 + np.log10(1+dfp[x].fillna(0)) ** 5.7,
-    #         # marker_size=10,
-    #         # color=dfp['Type'],
-    #         # name=sig,
-    #         text=alex['Player']
-    #         )
-    #     )
-    # 
-    #     st.plotly_chart(fig)
-    
-    
-    
-    
-    
-    
-    # st.dataframe(style_frame(player_hist[0], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[1], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[2], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[3], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[4], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[5], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[7], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    # 
-    # st.dataframe(style_frame(player_hist[6], clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
-    
-
-    # 
-    # 
-    # 
-    # placeholder = st.empty()
-    # 
-    # # Replace the placeholder with some text:
-    # placeholder.text("Hello")
-    # 
-    # # Replace the text with a chart:
-    # placeholder.line_chart({"data": [1, 5, 2, 6]})
-    # 
-    # # Replace the chart with several elements:
-    # with placeholder.container():
-    #     st.write("This is one element")
-    #     st.write("This is another")
-    # 
-    # # Clear all those elements:
-    # placeholder.empty()
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # 
-    # aa = """<html>
-    #         <table>
-    #         <thead>
-    #         <tr style="text-align: center;">
-    #         <th>Round</th>
-    #         <th style="background-color:#fff2cc">Alex</th>
-    #         <th style="background-color:#e6b8af">Brandon</th>
-    #         <th style="background-color:#fce5cd">Dan</th>
-    #         <th style="background-color:#d9ead3">JP</th>
-    #         <th style="background-color:#d9d2e9">Jackson</th>
-    #         <th style="background-color:#f4cccc">Jordan</th>
-    #         <th style="background-color:#cfe2f3">Mike</th>
-    #         <th style="background-color:#d9d9d9">Leftover</th>
-    #         </tr>
-    #         </thead>
-    #         <tbody>
-    #         <tr>
-    #         <td>1</td>
-    #         <td>Browns (5)</td>
-    #         <td>Chiefs (5)</td>
-    #         <td>Buccaneers (6)</td>
-    #         <td style="color:#ff0000">Bills (5)</td>
-    #         <td>Packers (7)</td>
-    #         <td>Rams (7)</td>
-    #         <td>Patriots (5)</td>
-    #         <td>Jaguars (2)</td>
-    #         </tr>
-    #         <tr>
-    #         <td>2</td>
-    #         <td>Ravens (6)</td>
-    #         <td>Colts (4)</td>
-    #         <td>Cowboys (6)</td>
-    #         <td>Chargers (5)</td>
-    #         <td>49ers (3)</td>
-    #         <td>Seahawks (3)</td>
-    #         <td>Titans (7)</td>
-    #         <td>Bengals (5)</td>
-    #         </tr>
-    #         <tr>
-    #         <td>3</td>
-    #         <td>Steelers (5)</td>
-    #         <td>Falcons (4)</td>
-    #         <td>Saints (5)</td>
-    #         <td>Dolphins (2)</td>
-    #         <td>Broncos (5)</td>
-    #         <td>Vikings (3)</td>
-    #         <td>Redskins (2)</td>
-    #         <td>Lions (0)</td>
-    #         </tr>
-    #         <tr>
-    #         <td>4</td>
-    #         <td>Cardinals (8)</td>
-    #         <td>Eagles (3)</td>
-    #         <td>Raiders (5)</td>
-    #         <td>Jets (2)</td>
-    #         <td>Bears (3)</td>
-    #         <td>Panthers (4)</td>
-    #         <td>Giants (3)</td>
-    #         <td>Texans (1)</td>
-    #         </tr>
-    #         </tbody>
-    #         </table>
-    #         </html>"""
-    # 
-    # 
-    # ## Use this to render raw HTML <table>
-    # # import streamlit.components.v1 as components
-    # # components.html(aa)
-    # 
-    # 
-    # # aa = pd.read_html(aa)[0]
-    # # st.write(aa)
-    # # st.table(aa)
-    # # aa = aa.style.
-    # 
-    # # def style_negative(v, props=''):
-    # #     return props if v < 0 else None
-    # # s2 = df2.style.applymap(style_negative, props='color:red;')\
-    # #               .applymap(lambda v: 'opacity: 20%;' if (v < 0.3) and (v > -0.3) else None)
-    # # s2
