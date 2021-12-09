@@ -231,7 +231,7 @@ def prep_champ_history(dfy: pd.DataFrame, highlight_year: int):
     int_cols = [c for c in frame.columns if any(['Win' in c, 'Loss' in c]) and '%' not in c]
     frame[int_cols] = frame[int_cols].astype(int)
     return frame
-    
+
 
 
 def get_count_teams_over_n_wins(nwins):
@@ -398,12 +398,8 @@ if __name__ == '__main__':
             'About': "# This is a header. This is an *extremely* cool app!"
             }
         )
-    
-    
-    
-    
-    
-    
+
+
     ROOT_PATH = Path(os.getcwd())
 
 
@@ -418,10 +414,6 @@ if __name__ == '__main__':
         'LEFTOVER': '#d9d9d9',
         'Leftover': '#d9d9d9'
         }
-        
-        
-        
-        
 
     plot_clr_dct = {
         'Alex': '#ffd966',
@@ -540,7 +532,7 @@ if __name__ == '__main__':
                 .set_properties(**{'font-weight': 'bold'}, subset=bold_cols)
                 # .applymap(lambda cell: colorize_curr_year(cell, clr_yr))\
                 # .applymap(lambda cell: colorize_player_names_new(cell, clr_dct))\
-        
+
     
     dfpt.loc[0] = dfpt.columns
     dfpt.index = dfpt.index + 1
@@ -613,7 +605,7 @@ if __name__ == '__main__':
             # components.html(f'<div style="text-align: center"> Round {rd} </div>')
             st.write(f""" Round {rd}""")
             idx = idx_max if res == 'Best' else idx_min
-            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), clr_dct, frmt_dct={'Total_Win': '{:.0f}'}))
+            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=455)
 
     with left_column:
         st.write("""Here are the best picks by round:""")
@@ -623,6 +615,7 @@ if __name__ == '__main__':
         st.write("""And here are the worst picks by round:""")
         picks_by_round(dfd, 'Worst')
 
+    st.write(""" # """)
 
 
 
