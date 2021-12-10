@@ -422,10 +422,10 @@ if __name__ == '__main__':
         'JP': '#a6cd98',
         'Jackson': '#a898cd',
         'Jordan': '#e48181',
-        'LEFTOVER': '#b3b3b3',
-        'Mike': '#85b6e0',
         'Leftover': '#b3b3b3',
+        'Mike': '#85b6e0',
         }
+        # 'LEFTOVER': '#b3b3b3',
     
         
 
@@ -482,8 +482,48 @@ if __name__ == '__main__':
     #         ("Gryffindor", "Ravenclaw", "Hufflepuff", "Slytherin"))
     #     st.write(f"You are in {chosen} house!")
 
+    # st.write(df.groupby('Round').agg({'Total_Win': 'nunique'}))
+    # st.write("AHIOIJAOIJD")
+    # df.groupby('Pick').agg({'Total_Win': 'nunique'})
+
+                # .mark_point(strokeWidth=4, color='grey')\
+    df['Team'] = df['Team'].str.replace('\s\(\d+\)', '', regex=True)
+    df['Tm_Yr'] = df['Team'] + " " + df['Year'].astype(str)
+                
 
 
+
+
+
+
+    # champ_pts = alt.Chart(df)\
+    #             .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
+    #             .encode(
+    #                 alt.X('Year:O'),
+    #                 alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
+    #                 color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_clr_dct[frame['Player'].unique().item()]]))
+    #                 )
+    
+    # text = points.mark_text(
+    #             align='center',
+    #             baseline='top',
+    #             dx=0,
+    #             dy=10
+    #         )\
+    #         .encode(
+    #             text='Total_Win'
+    #         )
+    
+    # st.altair_chart(points + text, use_container_width=False)
+    # st.altair_chart(points, use_container_width=False)
+
+
+
+
+
+
+
+    
     
     the_date = time.strftime("%A, %d %b %Y", time.localtime())
     the_time = time.strftime("%H:%M CST", time.localtime())
@@ -495,9 +535,7 @@ if __name__ == '__main__':
     # msg_dct = create_email_connection_info(df, send_to_pool)
     body_dct = message_body_wrapper(hist_frames)
     
-    # if locals().get('blah', None):
-    # st.write(f"""test me: {dfpt}""")
-    # st.write(dfpt)
+
     def colorize_frame(cell, year, clr_dct):
         if cell == year:
             res = colorize_curr_year(cell, year)
@@ -545,12 +583,7 @@ if __name__ == '__main__':
     
     
     dfpt = style_frame(dfpt, clr_dct)
-    # st.write('st.dataframe')
-    # st.dataframe(s)
-    # st.write('st.table')
-    # st.table(s)
-    
-    
+        
     st.write(f"""
     ## Global NFL Picks Pool
     ##### Texas, Wisconsin, Colorado, Sweden, England, Japan
@@ -564,26 +597,69 @@ if __name__ == '__main__':
     st.dataframe(dfpt, width=1100) ## sortable, honors center alignment and bold
     # st.table(dfpt)  ## better formatting for undesired index
 
-    # dfy_[['Win%', 'Full_Ssn_Pace']] = dfy_[['Win%', 'Full_Ssn_Pace']].round(1)
-    # st.write(dfy_)
-    # dfy_.index.set_names('rank')
-    # dfy_.set_index('Rank', inplace=True)
+
     st.write("""###### Player Totals""")
     st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}), width=900)
-    # st.table(style_frame(dfy_.reset_index(drop=True), clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
-    # # st.table(dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}))
-    # frame = dfy_.style.format({'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'})
-    # st.table(style_frame(frame, clr_dct))
 
-    
-    
     st.write(body_dct['wk_txt'])
-    # 
-    # 
+
+
+    st.write(""" # """)
+
+
+    points = alt.Chart(df[df['Year']==curr_year])\
+                .mark_point(strokeWidth=1, filled=True, stroke='black', size=115)\
+                .encode(
+                    alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
+                    alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
+                    # order='Year',
+                    # color='Player:N',
+                    tooltip="Tm_Yr:N"
+                    )\
+                # .properties(
+                #     title='Wins by Year',
+                #     width=400,
+                #     height=200
+                #     )
+
+    #color changing marks
+    player_radio = alt.binding_radio(options=df['Player'].unique())
+
+    player_select = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
+    
+    
+    
+    domain_ = list(plot_clr_dct.keys())
+    range_ = list(plot_clr_dct.values())
+    opacity_ = alt.condition(player_select, alt.value(1.0), alt.value(.4))
+    
+    player_color_condition = alt.condition(player_select,
+                                alt.Color('Player:N', 
+                                    scale=alt.Scale(domain=domain_, range=range_)),
+                                alt.value('lightgray')
+                            )
+
+    highlight_players = points.add_selection(player_select)\
+                            .encode(
+                                color=player_color_condition,
+                                opacity=opacity_
+                                )\
+                            .properties(title=f"{curr_year} Picks by Player")
+    
+    st.altair_chart(highlight_players)
+
+
+
+
+
+
+
+
+
     st.write("""#### Wins by Round""")
     st.write("""How did we do in our draft, by rounds? 
     Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?""")
-    # 
+    
     
     st.dataframe(style_frame(dfr_, clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
     st.write('  #')
@@ -592,11 +668,6 @@ if __name__ == '__main__':
     dfd = df.query(f"Year=={curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win']].replace('\s\(\d+\)', '', regex=True)
     idx_max = dfd.groupby('Round')['Total_Win'].transform('max') == dfd['Total_Win']
     idx_min = dfd.groupby('Round')['Total_Win'].transform('min') == dfd['Total_Win']
-
-    # _, center_col, _2 = st.columns([1,1,1])
-    # with center_col:
-    #     st.write("""##### What about best and worst picks by round?""")
-
 
     left_column, right_column = st.columns([1, 1])
     def picks_by_round(frame, best_worst): 
@@ -676,14 +747,7 @@ if __name__ == '__main__':
                         ),
                     )
                     
-                    
-                # .properties(
-                #     title='Wins by Year',
-                #     # align='center',
-                #     # width=800,
-                #     # height=400
-                #     )#\
-                # .interactive()
+
     text = bars.mark_text(align='center', baseline='bottom')\
                 .encode(text='Total_Win:Q')
                 
@@ -729,14 +793,6 @@ if __name__ == '__main__':
                         alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
                         color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_clr_dct[frame['Player'].unique().item()]]))
                         )
-
-        proj_champ_pts = alt.Chart(frame)\
-                    .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
-                    .encode(
-                        alt.X('Year:O'),
-                        alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
-                        color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['blue', plot_clr_dct[frame['Player'].unique().item()]]))
-                        )
         
         text = points.mark_text(
                     align='center',
@@ -749,7 +805,7 @@ if __name__ == '__main__':
                 )
         
         st.altair_chart(points + champ_pts + text, use_container_width=False)
-    
+
 
 
     left_column, right_column = st.columns([2, 1])
