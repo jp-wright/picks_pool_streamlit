@@ -225,9 +225,18 @@ def prep_player_teams_this_year(df: pd.DataFrame, curr_year: int):
 
 # @st.cache
 def prep_champ_history(dfy: pd.DataFrame, highlight_year: int):
-    frame = dfy.copy()
-    frame = frame.loc[frame.groupby('Year')['Total_Win'].idxmax()][['Year', 'Player', 'Total_Win%', 'Total_Win', 'Total_Loss', 'Reg_Win', 'Playoff_Win']]\
-        .sort_values('Year', ascending=False)
+    frame = dfy.copy().sort_values(['Total_Win', 'Total_Win%'], ascending=False)
+    
+    def get_champ(grp):
+        ## first row will be max of both b/c of sort above
+        return grp[(grp['Total_Win'] == grp.loc[grp.index[0], 'Total_Win']) & (grp['Total_Win%'] == grp.loc[grp.index[0], 'Total_Win%'])]
+        
+        
+    frame = frame.groupby('Year', as_index=False).apply(get_champ)[['Year', 'Player', 'Total_Win%', 'Total_Win', 'Total_Loss', 'Reg_Win', 'Playoff_Win']]\
+        .sort_values(['Year', 'Player'], ascending=[False, True])\
+        .reset_index(level=0, drop=True)
+    # frame = frame.loc[frame.groupby('Year')['Total_Win'].idxmax()][['Year', 'Player', 'Total_Win%', 'Total_Win', 'Total_Loss', 'Reg_Win', 'Playoff_Win']]\
+    #     .sort_values('Year', ascending=False)
     int_cols = [c for c in frame.columns if any(['Win' in c, 'Loss' in c]) and '%' not in c]
     frame[int_cols] = frame[int_cols].astype(int)
     return frame
@@ -279,7 +288,9 @@ def get_count_teams_over_n_wins(nwins):
 
 
 def get_curr_weekly_standings_text():
-    return f"""Dan is having his best season ever and Alex is having his second best ever (though still better than anyone else this year, by a win). Jordan, JP, and Jackson are all three having their second-to-worst seasons ever (boo), and Brandon and Mike are having middle-of-the-road seasons for their historical records.
+    return f"""Dan is having his best season ever and Alex is having his second best ever, and those two performances are tied for best of the season after week 14. Based on win-%, this would technically be the lowest win-% for a champ in the pool's five-year history!  
+    <BR> 
+    Jordan, JP, and Jackson are all three having their second-to-worst seasons ever (boo), and Brandon and Mike are having middle-of-the-road seasons for their historical records.
     """
 
 def get_historical_nugget_text():
@@ -529,6 +540,7 @@ if __name__ == '__main__':
     the_time = time.strftime("%H:%M CST", time.localtime())
     the_ssn = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
     the_wk = df.loc[df['Year'] == the_ssn, 'Reg_Games'].max()
+    if the_wk > 12: the_wk += 1
 
     po_inc = '(playoffs included)' if 'Playoff Win' in str(dfy_) else ''
 
