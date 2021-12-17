@@ -288,9 +288,9 @@ def get_count_teams_over_n_wins(nwins):
 
 
 def get_curr_weekly_standings_text():
-    return f"""Dan is having his best season ever and Alex is having his second best ever, and those two performances are tied for best of the season after week 14. Based on win-%, this would technically be the lowest win-% for a champ in the pool's five-year history!  
-    
-    Jordan, JP, and Jackson are all three having their second-to-worst seasons ever (boo), and Brandon and Mike are having middle-of-the-road seasons for their historical records.
+    return f"""Dan is having his best season ever and Alex is having his second best ever, and those two performances are tied for best of the season after week 14. Based on win-%, this would technically be the lowest win-% for a champ in the pool's five-year history!   
+
+Jordan, JP, and Jackson are all three having their second-to-worst seasons ever (boo), and Brandon and Mike are having middle-of-the-road seasons for their historical records.
     """
 
 def get_historical_nugget_text():
