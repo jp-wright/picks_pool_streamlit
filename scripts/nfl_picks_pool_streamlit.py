@@ -620,7 +620,7 @@ if __name__ == '__main__':
 
 
     points = alt.Chart(df[df['Year']==curr_year])\
-                .mark_point(strokeWidth=1, filled=True, stroke='black', size=135)\
+                .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
                 .encode(
                     alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
                     alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
