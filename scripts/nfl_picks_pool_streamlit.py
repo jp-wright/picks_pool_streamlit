@@ -619,13 +619,12 @@ if __name__ == '__main__':
     st.write(""" # """)
 
 
-    points = alt.Chart(df[df['Year']==curr_year])\
+    source = df[df['Year']==curr_year]
+    points = alt.Chart()\
                 .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
                 .encode(
                     alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
                     alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
-                    # order='Year',
-                    # color='Player:N',
                     tooltip="Tm_Yr:N"
                     )\
                 # .properties(
@@ -634,12 +633,31 @@ if __name__ == '__main__':
                 #     height=200
                 #     )
 
-    #color changing marks
-    player_radio = alt.binding_radio(options=df['Player'].unique())
+    rule1 = alt.Chart().mark_rule(color='black')\
+            .encode(
+                x='rd2:O',
+                size=alt.value(2)
+            )
+    rule2 = alt.Chart().mark_rule(color='black')\
+            .encode(
+                x='rd3:O',
+                size=alt.value(2)
+            )
+    rule3 = alt.Chart().mark_rule(color='black')\
+            .encode(
+                x='rd4:O',
+                size=alt.value(2),
+            )
+    rule4 = alt.Chart().mark_rule(color='black')\
+            .encode(
+                x='leftover:O',
+                size=alt.value(2),
+                # name=''
+            )
 
+    ## color changing marks via radio buttons
+    player_radio = alt.binding_radio(options=df['Player'].unique())
     player_select = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
-    
-    
     
     domain_ = list(plot_clr_dct.keys())
     range_ = list(plot_clr_dct.values())
@@ -658,8 +676,18 @@ if __name__ == '__main__':
                                 )\
                             .properties(title=f"{curr_year} Picks by Player")
     
-    st.altair_chart(highlight_players)
-
+    
+    res = alt.layer(
+        rule1, rule2, rule3, rule4, highlight_players,
+        data=source
+        ).transform_calculate(
+            rd2="7.5",          ## use pick halfway b/w rounds to draw vert line
+            rd3="14.5",
+            rd4="21.5",
+            leftover="28.5"
+        )
+        
+    st.altair_chart(res)
 
 
 
