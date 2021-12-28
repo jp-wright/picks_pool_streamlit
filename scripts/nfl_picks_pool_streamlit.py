@@ -500,6 +500,8 @@ if __name__ == '__main__':
                 # .mark_point(strokeWidth=4, color='grey')\
     df['Team'] = df['Team'].str.replace('\s\(\d+\)', '', regex=True)
     df['Tm_Yr'] = df['Team'] + " " + df['Year'].astype(str)
+    df['Tm_Yr_Win'] = df['Tm_Yr'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
+    df['Tm_Win'] = df['Team'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
                 
 
 
@@ -625,13 +627,23 @@ if __name__ == '__main__':
                 .encode(
                     alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
                     alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
-                    tooltip="Tm_Yr:N"
+                    tooltip="Team:N"
                     )\
                 # .properties(
                 #     title='Wins by Year',
                 #     width=400,
                 #     height=200
                 #     )
+
+    text = points.mark_text(
+                align='center',
+                baseline='top',
+                dx=0,
+                dy=10
+            )\
+            .encode(
+                text='Total_Win'
+            )
 
     rule1 = alt.Chart().mark_rule(color='black')\
             .encode(
@@ -678,7 +690,7 @@ if __name__ == '__main__':
     
     
     res = alt.layer(
-        rule1, rule2, rule3, rule4, highlight_players,
+        rule1, rule2, rule3, rule4, text, highlight_players,
         data=source
         ).transform_calculate(
             rd2="7.5",          ## use pick halfway b/w rounds to draw vert line
@@ -796,6 +808,112 @@ if __name__ == '__main__':
 
 
     st.altair_chart(chart)
+    
+    
+    
+    
+    
+    
+    ## Ridgeline Plot
+    # source = data.seattle_weather.url
+    source = dfy
+    step = 30
+    overlap = 1
+
+    st.write(source.head(100))
+    
+    ridge = alt.Chart(source, height=step).transform_joinaggregate(
+        mean_wins='mean(Total_Win)', groupby=['Player']
+    ).transform_bin(
+        ['bin_max', 'bin_min'], 'Total_Win'
+    ).transform_aggregate(
+        value='count()', groupby=['Player', 'mean_wins', 'bin_min', 'bin_max']
+    ).transform_impute(
+        impute='value', groupby=['Player', 'mean_wins'], key='bin_min', value=0
+    ).mark_area(
+        interpolate='monotone',
+        fillOpacity=0.8,
+        stroke='lightgray',
+        strokeWidth=0.5
+    ).encode(
+        alt.X('bin_min:Q', bin='binned', title='Total Wins'),
+        alt.Y(
+            'value:Q',
+            scale=alt.Scale(range=[step, -step * overlap]),
+            axis=None
+        ),
+        alt.Fill(
+            'mean_wins:Q',
+            legend=None,
+            scale=alt.Scale(domain=[source['Total_Win'].max(), source['Total_Win'].min()], scheme='redyellowblue')
+        )
+    ).facet(
+        row=alt.Row(
+            'Player:N',
+            title=None,
+            header=alt.Header(labelAngle=0, labelAlign='left')
+        )
+    ).properties(
+        title='Win History by Player',
+        bounds='flush'
+    ).configure_facet(
+        spacing=0
+    ).configure_view(
+        stroke=None
+    ).configure_title(
+        anchor='end'
+    )
+    # 
+    # 
+    # ridge = alt.Chart(source, height=step).transform_joinaggregate(
+    #     mean_wins='mean(Total_Win)', groupby=['Year']
+    # ).transform_bin(
+    #     ['bin_max', 'bin_min'], 'Total_Win'
+    # ).transform_aggregate(
+    #     value='count()', groupby=['Year', 'mean_wins', 'bin_min', 'bin_max']
+    # ).transform_impute(
+    #     impute='value', groupby=['Year', 'mean_wins'], key='bin_min', value=0
+    # ).mark_area(
+    #     interpolate='monotone',
+    #     fillOpacity=0.8,
+    #     stroke='lightgray',
+    #     strokeWidth=0.5
+    # ).encode(
+    #     alt.X('bin_min:Q', bin='binned', title='Total Wins'),
+    #     alt.Y(
+    #         'value:Q',
+    #         scale=alt.Scale(range=[step, -step * overlap]),
+    #         axis=None
+    #     ),
+    #     alt.Fill(
+    #         'mean_wins:Q',
+    #         legend=None,
+    #         scale=alt.Scale(domain=[1, 100], scheme='redyellowblue')
+    #     )
+    # ).facet(
+    #     row=alt.Row(
+    #         'Year:T',
+    #         title=None,
+    #         header=alt.Header(labelAngle=0, labelAlign='right', format='%Y')
+    #     )
+    # ).properties(
+    #     title='Win History by Player',
+    #     bounds='flush'
+    # ).configure_facet(
+    #     spacing=0
+    # ).configure_view(
+    #     stroke=None
+    # ).configure_title(
+    #     anchor='end'
+    # )
+    
+    
+    
+    
+    
+    st.altair_chart(ridge)
+    
+    
     
     
     
