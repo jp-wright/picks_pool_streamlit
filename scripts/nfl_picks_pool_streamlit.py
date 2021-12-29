@@ -615,7 +615,8 @@ if __name__ == '__main__':
     st.dataframe(dfpt, width=1100) ## sortable, honors center alignment and bold
     # st.table(dfpt)  ## better formatting for undesired index
 
-
+    
+    st.write(""" # """)
     st.write("""###### Player Totals""")
     st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}), width=900)
 
