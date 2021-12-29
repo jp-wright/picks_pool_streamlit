@@ -294,7 +294,13 @@ Alex has entered a late-season lull, with none of his four teams gaining a win l
 
 Jackson has the winningest team in Green Bay, but also is saddled with the sorry-in-baseball (h/t Dan) Bears.  That said, he's still knotted up with Alejandro for 3rd place, just 3 wins behind Brandon.
 
-Mike, Jordan, and JP are clumped together at the bottom of the pool, with either 28 or 29 wins.  Jordan and JP are having their second-to-worst seasons ever, and Mike is just above that.
+Mike, Jordan, and JP are clumped together at the bottom of the pool, with either 28 or 29 wins.  Jordan and JP are having their second-to-worst seasons ever, and Mike is just above that.  
+
+Jordan would be tied for 3rd place if not for his albatross of a second-round pick (#11) in the Seahawks, who at 5 wins, have the __lowest__ win total of any team in the _first three rounds!_  In fact, Jordan's Seahawks have only one win more than the worst __FOURTH ROUND__ pick!  If he had a round-average team with 9 wins, he'd be tied for 3rd place overall.  Poor guy.
+
+Mike is being hamstrung by his 3rd and 4th round selections: New York Giants and Washington, each of which has the worst win total in their round.
+
+JP has ridden the luck of the Dolphins winning streak to at least avoid full on embarrassment this season.  Otherwise not a single team of his is above average for their round.
     """
 
 def get_historical_nugget_text():
