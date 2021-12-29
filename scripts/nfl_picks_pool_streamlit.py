@@ -288,9 +288,13 @@ def get_count_teams_over_n_wins(nwins):
 
 
 def get_curr_weekly_standings_text():
-    return f"""Dan is having his best season ever and Alex is having his second best ever, and those two performances are tied for best of the season after week 14. Based on win-%, this would technically be the lowest win-% for a champ in the pool's five-year history!   
+    return f"""Dan and Brandon have surged ahead by nearly a full week's worth of wins over the rest of the pool.  As shown by the first table above, the lone difference as of Week 16 is that Dan's Cowboys have two more wins than Brandon's Colts.  Dan has the injury-riddled Saints, meaning there might be room for Brandon to close on him the final two weeks.
+    
+    Alex has entered a late-season lull, with none of his four teams gaining a win last week.  Given the lingering injuries his teams are facing, it might be difficult for him to return to his early season winning rate. He began the year having his best ever and is now in the middle of the pack as far as his historical performance.
+    
+    Jackson has the winningest team in Green Bay, but also is saddled with the sorry-in-baseball (h/t Dan) Bears.  That said, he's still knotted up with Alejandro for 3rd place, just 3 wins behind Brandon.
 
-Jordan, JP, and Jackson are all three having their second-to-worst seasons ever (boo), and Brandon and Mike are having middle-of-the-road seasons for their historical records.
+Mike, Jordan, and JP are clumped together at the bottom of the pool, with either 28 or 29 wins.  Jordan and JP are having their second-to-worst seasons ever, and Mike is just above that.
     """
 
 def get_historical_nugget_text():
@@ -753,6 +757,9 @@ if __name__ == '__main__':
     
     st.write("""#### Champions""")
     st.write(body_dct['champs_txt'])
+    st.write("""Dan's current pace of 41 regular season wins would put him at second best ever.  He currently has 37 regular season wins, which means he's at least equaled every previous champion in that category.  However (!), we have a catch, because this year we have one extra week, which means a chance for four (4) extra wins compared to previous champions.  As such, winning _percentage_ is the more representative metric.  In it, he currently is on pace for the second best regular season win percentage as well.  
+    
+    The playoffs can make or break a Pool champion, and the fewest playoff wins a champion has had was Alex last year, with two.  Dan is going to have a minimum of two playoff teams in Tampa Bay and Dallas.  New Orleans and Las Vegas could both make it, as well.  His likely playoff win total would range from 1 to 6 wins.  How that breaks down could determine whether Brandon, Alex, or Jackson have a shot at catching him -- if he doesn't get the playoff wins, then one of his competitors is.""")
     
     
     st.dataframe(style_frame(champs, clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
@@ -820,7 +827,7 @@ if __name__ == '__main__':
     step = 30
     overlap = 1
 
-    st.write(source.head(100))
+    # st.write(source.head(100))
     
     ridge = alt.Chart(source, height=step).transform_joinaggregate(
         mean_wins='mean(Total_Win)', groupby=['Player']
@@ -863,8 +870,11 @@ if __name__ == '__main__':
     ).configure_title(
         anchor='end'
     )
-    # 
-    # 
+    # st.altair_chart(ridge)
+    
+    
+     
+     
     # ridge = alt.Chart(source, height=step).transform_joinaggregate(
     #     mean_wins='mean(Total_Win)', groupby=['Year']
     # ).transform_bin(
@@ -907,11 +917,7 @@ if __name__ == '__main__':
     #     anchor='end'
     # )
     
-    
-    
-    
-    
-    st.altair_chart(ridge)
+    # st.altair_chart(ridge)
     
     
     
