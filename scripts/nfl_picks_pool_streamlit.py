@@ -181,15 +181,23 @@ def prep_year_history(dfy: pd.DataFrame, highlight_year: int):
         drops = {'Reg': ['Reg_Games_Left', 'Reg_Games'], 'Playoff': ['Playoff_Seed']}
         drop_me = drops.get(kind, []) + ['Full_Ssn_Pace']
         frame = dfy.set_index(['Year', 'Player'])[[c for c in dfy.columns if kind in c]].drop(drop_me, 1, errors='ignore')
-        frame.insert(0, f'{kind}_Win_Rk', frame[f'{kind}_Win'].rank(ascending=False, method='dense').astype(int))
+        
+        ## Must use W
+        if kind in ['Reg', 'Total']:
+            sort_col = f'{kind}_Win%_Rk'
+            frame.insert(0, sort_col, frame[f'{kind}_Win%'].rank(ascending=False, method='dense').astype(int))
+        else:
+            sort_col = f'{kind}_Win_Rk'
+            frame.insert(0, sort_col, frame[f'{kind}_Win'].rank(ascending=False, method='dense').astype(int))
         ints = [c for c in frame.columns if '%' not in c]
         frame[ints] = frame[ints].astype(int)
-        return frame.sort_values(f'{kind}_Win_Rk', ascending=True).head(10)
+        return frame.sort_values(sort_col, ascending=True).head(10)
 
     frames = []
     for kind in ['Reg', 'Playoff', 'Total']:
         hist = create_year_hist_frame(kind).reset_index()
-        hist.columns = [c.replace(f"{kind}_", '') if 'Win_Rk' not in c else c for c in hist.columns]
+        # hist.columns = [c.replace(f"{kind}_", '') if 'Win_Rk' not in c else c for c in hist.columns]
+        hist.columns = [c.replace(f"{kind}_", '') for c in hist.columns]
         col_order = [f"{kind}_Win_Rk"] + [c for c in hist.columns if c != f"{kind}_Win_Rk"]
         frames.append(hist)
     return frames
@@ -242,6 +250,8 @@ def prep_champ_history(dfy: pd.DataFrame, highlight_year: int):
     return frame
 
 
+# def prep_playoff_teams_this_year(df: pd.DataFrame) -> pd.DataFrame:
+# 
 
 def get_count_teams_over_n_wins(nwins):
     aa = pd.read_excel("""~/Dropbox/Data_Science/datasets/sports_data/NFL_databases/Pythag Spreadsheets/JP_Pythag_Big_List.xlsx""")
@@ -265,20 +275,20 @@ def get_count_teams_over_n_wins(nwins):
     years.loc[2020] = 11
 
     clrs = ['#fff2cc', '#f4cccc', '#cfe2f3', '#d9d2e9', '#fce5cd', '#d9ead3', '#e6b8af',   '#d9d9d9', ]
-    clr_dct = {}
+    bg_clr_dct = {}
     frames = []
     for idx, period in enumerate([(1960, 1970), (1970, 1980), (1980, 1990), (1990, 2000), (2000, 2010), (2010, 2020), (2020, 2030)]):
         frames.append(years.reindex(range(period[0], period[1])).reset_index().fillna(0).astype(int).replace(0, '-'))
-        clr_dct.update({y: clrs[idx] for y in range(period[0], period[1])})
+        bg_clr_dct.update({y: clrs[idx] for y in range(period[0], period[1])})
 
     years = pd.concat(frames, 1)
     years = convert_frame_to_html(years)
     decade = convert_frame_to_html(decade.reset_index())
 
     def clr_decades(table):
-        for year in clr_dct.keys():
-            table = table.replace(f'<th>{year}', f'<th style="background-color:{clr_dct[year]}">{year}')
-            table = table.replace(f'<td>{year}', f'<td style="background-color:{clr_dct[year]}">{year}')
+        for year in bg_clr_dct.keys():
+            table = table.replace(f'<th>{year}', f'<th style="background-color:{bg_clr_dct[year]}">{year}')
+            table = table.replace(f'<td>{year}', f'<td style="background-color:{bg_clr_dct[year]}">{year}')
         return table
 
     years = clr_decades(years)
@@ -287,115 +297,117 @@ def get_count_teams_over_n_wins(nwins):
 
 
 
-def get_curr_weekly_standings_text():
-    return f"""Dan and Brandon have surged ahead by nearly a full week's worth of wins over the rest of the pool.  As shown by the first table above, the lone difference as of Week 16 is that Dan's Cowboys have two more wins than Brandon's Colts.  Dan has the injury-riddled Saints, meaning there might be room for Brandon to close on him the final two weeks.
-    
-Alex has entered a late-season lull, with none of his four teams gaining a win last week.  Given the lingering injuries his teams are facing, it might be difficult for him to return to his early season winning rate. He began the year having his best ever and is now in the middle of the pack as far as his historical performance.
-
-Jackson has the winningest team in Green Bay, but also is saddled with the sorry-in-baseball (h/t Dan) Bears.  That said, he's still knotted up with Alejandro for 3rd place, just 3 wins behind Brandon.
-
-Mike, Jordan, and JP are clumped together at the bottom of the pool, with either 28 or 29 wins.  Jordan and JP are having their second-to-worst seasons ever, and Mike is just above that.  
-
-Jordan would be tied for 3rd place if not for his albatross of a second-round pick (#11) in the Seahawks, who at 5 wins, have the __lowest__ win total of any team in the _first three rounds!_  In fact, Jordan's Seahawks have only one win more than the worst __FOURTH ROUND__ pick!  If he had a round-average team with 9 wins, he'd be tied for 3rd place overall.  Poor guy.
-
-Mike is being hamstrung by his 3rd and 4th round selections: New York Giants and Washington, each of which has the worst win total in their round.
-
-JP has ridden the luck of the Dolphins winning streak to at least avoid full on embarrassment this season.  Otherwise not a single team of his is above average for their round.
-    """
-
-def get_historical_nugget_text():
-    decade, years = get_count_teams_over_n_wins(11)
-
-    return f"""
-        <BR><BR>
-        Here's how many there have been in the SB era (pre-1978 pro-rated to 16-game seasons)
-        {years}
-
-        <BR><BR>
-        Yes, that's right -- over 1/3 of the league won ELEVEN or more games this year.  As it turns out, this IS a record in the SB era.  So, if ever someone was going to break our Pool record, this was the likeliest year.
-
-        <BR><BR>
-        By Decade:<BR>
-        {decade}
-
-        <BR>
-        (* 1970s using num of teams that would have had 11+ wins projected to 16-games)
-
-        <BR><BR>
-        As we see, it's definitely been climbing each decade since the 80s.  This alone can open up a lot of interesting questions about the state of the league itself during these periods.  Setting that aside for now, we seem to be in a top-heavy/bottom-heavy split for the league.
-
-        <BR><BR>
-        We would expect next year to return to the running mean, so it would be less likely for any single player to get all 4 teams to hit 11 wins next year than it was for this year.
-        <BR><BR>
-        """
-
-def get_hist_intro_text():
-    return f"""<BR><BR>
-        But what about historical placements? Is anyone this year on an historical win pace?
-        
-        2021 -- will need to update history to also show for Win% b/c 17 games....
-        <BR><BR>
-        """
-
-def get_reg_ssn_hist_text():
-    return f"""<BR><BR>
-        Let's take a look at the top 10 Regular Season finishes.<BR>
-
-        <BR><BR>
-        It's hard to draw too many hard conclusions here given the small amount of data we have for the Pool's history (4 years x 7 players = 28 entries + 4 Leftover entries = 32 total records).
-
-        <BR><BR>
-        Mike replicated his 2018 performance, Jordan repeated his from last year, and Jackson logged his 3rd entry in the top 10.
-        <BR><BR>
-        {hist_frames[0]}
-        <BR><BR>
-        """
-
-def get_playoff_hist_text():
-    return f"""
-       How about the top 10 Playoff runs?
-
-       <BR><BR>
-       {hist_frames[1]}
-       <BR><BR>
-    """
-
-def get_tot_hist_text():
-    return f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? <BR>
-
-        <BR><BR>
-        {hist_frames[2]}
-        <BR><BR>
-        """
-
-def get_champs_hist_text():
-    return """Past champions and their results, as well as projected champion for the current year (highlighted in blue).
-        """
-
-def get_career_text():
-    return """Career standings...
-        """
-
-def get_personal_records_text():
-    return """Last, here are the personal records for each player.  Blue highlight is for this season and shows who might have a chance at setting a new personal record for total wins."""
-
-
-def message_body_wrapper(hist_frames):
-    wk_txt = get_curr_weekly_standings_text()
-    # nug_txt = get_historical_nugget_text()
-    nug_txt = ''
-    # hist_intro_txt = get_hist_intro_text()
-    hist_intro_txt = ''
-    # reghist_txt = get_reg_ssn_hist_text()
-    reghist_txt = ''
-    # pohist_txt = get_playoff_hist_text()
-    pohist_txt = ''
-    # tothist_txt = get_tot_hist_text()
-    tothist_txt = ''
-    champs_txt = get_champs_hist_text()
-    career_txt = get_career_text()
-    pr_txt = get_personal_records_text()
-    return {'wk_txt': wk_txt, 'nug_txt': nug_txt, 'hist_intro_txt': hist_intro_txt, 'reghist_txt': reghist_txt, 'pohist_txt': pohist_txt, 'tothist_txt': tothist_txt, 'champs_txt': champs_txt, 'career_txt': career_txt, 'pr_txt': pr_txt}
+# def get_curr_weekly_standings_text():
+#     return f"""On the heels of a perfect 4-win week (thanks Chargers...), Dan has pulled far, far ahead of the rest of the pool heading into the playoffs.  Dan's current lead is 7 wins, over Brandon. Given how the playoff teams broke out (Dan has 3, the most this year), that means the only way Brandon could catch him is if both of the following things happen:
+# 
+#     1. The Buccaneers, Cowboys, and Raiders cannot win a single playoff game.
+#     2. The Eagles and Chiefs have to meet in the Super Bowl. 
+# 
+#     If these two things happen, Brandon will **tie** Dan.  Otherwise, Dan wins.
+# 
+#     Perhaps the more interesting result to watch for is whether Dan can overtake Alex's pool record, set last year, of 65.2% win percentage.  Recall, Alex had a disappointing result from his playoff teams last year, with his only two wins coming from KC.  
+# 
+#     If all three of Dan's playoff teams win their first game, he will be ahead of Alex's record, with a win percentage of 66.2%, else, he will be behind Alex's mark.  Depending on what happens in round one, apart from all three teams of his losing, he could also have a chance each successive round to best Alex's win percentage -- something for us plebians to watch for, at least.
+# 
+#     Brandon and Mike both finish the regular season dead in the middle of their historical performance, while Jackson, JP, and Jordan all finished with their second-to-worst years.
+# 
+# 
+#     That said, every player has at least one playoff team (including the *LEFTOVERS*!), so we all have the potential to alter our final ranking.
+#     """
+# 
+# def get_historical_nugget_text():
+#     decade, years = get_count_teams_over_n_wins(11)
+# 
+#     return f"""
+#         <BR><BR>
+#         Here's how many there have been in the SB era (pre-1978 pro-rated to 16-game seasons)
+#         {years}
+# 
+#         <BR><BR>
+#         Yes, that's right -- over 1/3 of the league won ELEVEN or more games this year.  As it turns out, this IS a record in the SB era.  So, if ever someone was going to break our Pool record, this was the likeliest year.
+# 
+#         <BR><BR>
+#         By Decade:<BR>
+#         {decade}
+# 
+#         <BR>
+#         (* 1970s using num of teams that would have had 11+ wins projected to 16-games)
+# 
+#         <BR><BR>
+#         As we see, it's definitely been climbing each decade since the 80s.  This alone can open up a lot of interesting questions about the state of the league itself during these periods.  Setting that aside for now, we seem to be in a top-heavy/bottom-heavy split for the league.
+# 
+#         <BR><BR>
+#         We would expect next year to return to the running mean, so it would be less likely for any single player to get all 4 teams to hit 11 wins next year than it was for this year.
+#         <BR><BR>
+#         """
+# 
+# def get_hist_intro_text():
+#     return f"""<BR><BR>
+#         But what about historical placements? Is anyone this year on an historical win pace?
+# 
+#         2021 -- will need to update history to also show for Win% b/c 17 games....
+#         <BR><BR>
+#         """
+# 
+# def get_reg_ssn_hist_text():
+#     return f"""<BR><BR>
+#         Let's take a look at the top 10 Regular Season finishes.<BR>
+# 
+#         <BR><BR>
+#         It's hard to draw too many hard conclusions here given the small amount of data we have for the Pool's history (4 years x 7 players = 28 entries + 4 Leftover entries = 32 total records).
+# 
+#         <BR><BR>
+#         Mike replicated his 2018 performance, Jordan repeated his from last year, and Jackson logged his 3rd entry in the top 10.
+#         <BR><BR>
+#         {hist_frames[0]}
+#         <BR><BR>
+#         """
+# 
+# def get_playoff_hist_text():
+#     return f"""
+#        How about the top 10 Playoff runs?
+# 
+#        <BR><BR>
+#        {hist_frames[1]}
+#        <BR><BR>
+#     """
+# 
+# def get_tot_hist_text():
+#     return f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? <BR>
+# 
+#         <BR><BR>
+#         {hist_frames[2]}
+#         <BR><BR>
+#         """
+# 
+# def get_champs_hist_text():
+#     return """Past champions and their results, as well as projected champion for the current year (highlighted in blue).
+#         """
+# 
+# def get_career_text():
+#     return """Career standings...
+#         """
+# 
+# def get_personal_records_text():
+#     return """Last, here are the personal records for each player.  Blue highlight is for this season and shows who might have a chance at setting a new personal record for total wins."""
+# 
+# 
+# def message_body_wrapper(hist_frames):
+#     wk_txt = get_curr_weekly_standings_text()
+#     # nug_txt = get_historical_nugget_text()
+#     nug_txt = ''
+#     # hist_intro_txt = get_hist_intro_text()
+#     hist_intro_txt = ''
+#     # reghist_txt = get_reg_ssn_hist_text()
+#     reghist_txt = ''
+#     # pohist_txt = get_playoff_hist_text()
+#     pohist_txt = ''
+#     # tothist_txt = get_tot_hist_text()
+#     tothist_txt = ''
+#     champs_txt = get_champs_hist_text()
+#     career_txt = get_career_text()
+#     pr_txt = get_personal_records_text()
+#     return {'wk_txt': wk_txt, 'nug_txt': nug_txt, 'hist_intro_txt': hist_intro_txt, 'reghist_txt': reghist_txt, 'pohist_txt': pohist_txt, 'tothist_txt': tothist_txt, 'champs_txt': champs_txt, 'career_txt': career_txt, 'pr_txt': pr_txt}
 
 
 
@@ -424,7 +436,7 @@ if __name__ == '__main__':
     ROOT_PATH = Path(os.getcwd())
 
 
-    clr_dct = {
+    bg_clr_dct = {
         'Alex': '#fff2cc',
         'Mike': '#cfe2f3',
         'JP': '#d9ead3',
@@ -433,10 +445,10 @@ if __name__ == '__main__':
         'Jackson': '#d9d2e9',
         'Dan': '#fce5cd',
         'LEFTOVER': '#d9d9d9',
-        'Leftover': '#d9d9d9'
+        'Leftover': '#d9d9d9',
         }
 
-    plot_clr_dct = {
+    plot_bg_clr_dct = {
         'Alex': '#ffd966',
         'Brandon': '#da988b',
         'Dan': '#f7b56e',
@@ -448,7 +460,45 @@ if __name__ == '__main__':
         }
         # 'LEFTOVER': '#b3b3b3',
     
+    txt_clr_dct = {
+        'AFC': 'red',
+        'NFC': 'blue',
+        }
         
+    conf_dct = {
+    'Chiefs': 'AFC',
+    'Bills': 'AFC',
+    'Patriots': 'AFC',
+    'Browns': 'AFC',
+    'Ravens': 'AFC',
+    'Titans': 'AFC',
+    'Chargers': 'AFC',
+    'Colts': 'AFC',
+    'Dolphins': 'AFC',
+    'Broncos': 'AFC',
+    'Steelers': 'AFC',
+    'Jets': 'AFC',
+    'Raiders': 'AFC',
+    'Jaguars': 'AFC',
+    'Bengals': 'AFC',
+    'Texans': 'AFC',
+    'Buccaneers': 'NFC',
+    'Rams': 'NFC',
+    'Packers': 'NFC',
+    '49ers': 'NFC',
+    'Seahawks': 'NFC',
+    'Cowboys': 'NFC',
+    'Saints': 'NFC',
+    'Falcons': 'NFC',
+    'Vikings': 'NFC',
+    'Redskins': 'NFC',
+    'Cardinals': 'NFC',
+    'Bears': 'NFC',
+    'Giants': 'NFC',
+    'Panthers': 'NFC',
+    'Eagles': 'NFC',
+    'Lions': 'NFC',
+    }
 
     # def enforce_bool(arg):
     #     '''convert 'True' or 'False' command-line arg from crontab into actual Python bool'''
@@ -476,17 +526,7 @@ if __name__ == '__main__':
     player_hist = prep_player_history(dfy, curr_year)
     champs = prep_champ_history(dfy, curr_year)
 
-    ## Read in sys arg via Crontab so guaranteed to always execute.
-    ## Pass in False to send only to self test email addresses, True to send to Pool
-    ## Use: %run <path>/nfl_picks_pool_email.py True/False in iPython for manual execution
-    ## True = send to pool; False = send to JP accounts only
-    # send_html_email(df, dfy_, dfr_, dfc_, dfpt, hist_frames, player_hist, champs, send_to_pool=enforce_bool(sys.argv[1]))
-
-    # st.dataframe(dfpt, width=10000, height=500)
-    # st.table(dfpt)
-    # st.write(dfpt)
     
-
 #     add_slider = st.sidebar.slider(
 #     'Select a range of values',
 #     0.0, 100.0, (25.0, 75.0)
@@ -524,7 +564,7 @@ if __name__ == '__main__':
     #             .encode(
     #                 alt.X('Year:O'),
     #                 alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
-    #                 color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_clr_dct[frame['Player'].unique().item()]]))
+    #                 color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_bg_clr_dct[frame['Player'].unique().item()]]))
     #                 )
     
     # text = points.mark_text(
@@ -557,14 +597,14 @@ if __name__ == '__main__':
     po_inc = '(playoffs included)' if 'Playoff Win' in str(dfy_) else ''
 
     # msg_dct = create_email_connection_info(df, send_to_pool)
-    body_dct = message_body_wrapper(hist_frames)
+    # body_dct = message_body_wrapper(hist_frames)
     
 
-    def colorize_frame(cell, year, clr_dct):
+    def colorize_frame(cell, year, bg_clr_dct):
         if cell == year:
             res = colorize_curr_year(cell, year)
         else:
-            res = colorize_player_names_new(cell, clr_dct)
+            res = colorize_player_names_new(cell, bg_clr_dct)
             # res = f"background-color: #FAFAFF; color: black"
         return res
         
@@ -580,20 +620,21 @@ if __name__ == '__main__':
         return "background-color: blue; color: white"
     
     
-    def colorize_player_names_new(cell, clr_dct):
-        # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "")};'
-        return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#FAFAFF")};'
-        # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EAEAEE")};'
-        # return f'text-align:center; color:black; background-color:{clr_dct.get(cell, "#EDEDEE")};'
+    def colorize_player_names_new(cell, bg_clr_dct):
+        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "")};'
+        return f'text-align:center; color:{txt_clr_dct.get(cell, "black")}; background-color:{bg_clr_dct.get(cell, "#FAFAFF")};'
+        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "#FAFAFF")};'
+        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "#EAEAEE")};'
+        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "#EDEDEE")};'
     
     
-    def style_frame(frame, clr_dct, frmt_dct={}, bold_cols=[], clr_yr=None):
+    def style_frame(frame, bg_clr_dct, frmt_dct={}, bold_cols=[], clr_yr=None):
         return frame.reset_index(drop=True).style\
-                .applymap(lambda cell: colorize_frame(cell, clr_yr, clr_dct))\
+                .applymap(lambda cell: colorize_frame(cell, clr_yr, bg_clr_dct))\
                 .format(frmt_dct)\
                 .set_properties(**{'font-weight': 'bold'}, subset=bold_cols)
                 # .applymap(lambda cell: colorize_curr_year(cell, clr_yr))\
-                # .applymap(lambda cell: colorize_player_names_new(cell, clr_dct))\
+                # .applymap(lambda cell: colorize_player_names_new(cell, bg_clr_dct))\
 
     
     dfpt.loc[0] = dfpt.columns
@@ -606,7 +647,7 @@ if __name__ == '__main__':
     dfpt.columns = [''.join([' ']*i) for i in range(len(dfpt.columns))]
     
     
-    dfpt = style_frame(dfpt, clr_dct)
+    dfpt = style_frame(dfpt, bg_clr_dct)
         
     st.write(f"""
     ## Global NFL Picks Pool
@@ -624,14 +665,41 @@ if __name__ == '__main__':
     
     st.write(""" # """)
     st.write("""###### Player Totals""")
-    st.dataframe(style_frame(dfy_, clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}), width=900)
+    st.dataframe(style_frame(dfy_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}'}), width=900)
 
-    st.write(body_dct['wk_txt'])
+    # st.write(body_dct['wk_txt'])
+    st.write("""
+On the heels of a perfect 4-win week (thanks Chargers...), Dan has pulled far, far ahead of the rest of the pool heading into the playoffs.  Dan's current lead is 7 wins, over Brandon. Given how the playoff teams broke out (Dan has 3, the most this year), that means the only way Brandon could catch him is if both of the following things happen:
+    
+1. The Buccaneers, Cowboys, and Raiders cannot win a single playoff game.
+2. The Eagles and Chiefs have to meet in the Super Bowl. 
+
+If these two things happen, Brandon will **tie** Dan.  Otherwise, Dan wins.
+
+Perhaps the more interesting result to watch for is whether Dan can overtake Alex's pool record, set last year, of 65.2% win percentage.  Recall, Alex had a disappointing result from his playoff teams last year, with his only two wins coming from KC.  
+
+If all three of Dan's playoff teams win their first game, he will be ahead of Alex's record, with a win percentage of 66.2%, else, he will be behind Alex's mark.  Depending on what happens in round one, apart from all three teams of his losing, he could also have a chance each successive round to best Alex's win percentage -- something for us plebians to watch for, at least.
+
+Brandon and Mike both finish the regular season dead in the middle of their historical performance, while Jackson, JP, and Jordan all finished with their second-to-worst years.
 
 
-    st.write(""" # """)
+That said, every player has at least one playoff team (including the *LEFTOVERS*!), so we all have the potential to alter our final ranking.
+    """)
 
 
+
+
+    st.write("""#### Playoff Teams Tracker""")
+    dfp = df.loc[(df['Year']==curr_year) & (df['Playoff_Seed']>0), ['Round', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('Leftover', 'zLeftover').sort_values(['Player', 'Round']).replace('zLeftover', 'Leftover')
+    dfp['Playoff_Seed'] = dfp['Playoff_Seed'].astype(int)
+    dfp['Conference'] = [conf_dct[tm] for tm in dfp['Team']]
+    st.dataframe(style_frame(dfp, bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=655, height=620)
+
+
+
+
+    st.write("""#### Draft Overview """)
+    
     source = df[df['Year']==curr_year]
     points = alt.Chart()\
                 .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
@@ -682,8 +750,8 @@ if __name__ == '__main__':
     player_radio = alt.binding_radio(options=df['Player'].unique())
     player_select = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
     
-    domain_ = list(plot_clr_dct.keys())
-    range_ = list(plot_clr_dct.values())
+    domain_ = list(plot_bg_clr_dct.keys())
+    range_ = list(plot_bg_clr_dct.values())
     opacity_ = alt.condition(player_select, alt.value(1.0), alt.value(.4))
     
     player_color_condition = alt.condition(player_select,
@@ -713,20 +781,24 @@ if __name__ == '__main__':
     st.altair_chart(res)
 
 
+    st.write("""# """)
+    st.write(""" Looking at this, click on **Dan's button** to highlight only his draft picks.  You can see that, by round, he picked a team that finished   
+    (1) tied for the most wins    
+    (2) tied for the most wins    
+    (3) tied for the most wins    
+    (4) with the second most wins!   
+    Can't beat that....""")
 
 
 
 
 
 
-    st.write("""#### Wins by Round""")
-    st.write("""How did we do in our draft, by rounds? 
-    Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?""")
-    
-    
-    st.dataframe(style_frame(dfr_, clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
+
+
+
+
     st.write('  #')
-    
     
     dfd = df.query(f"Year=={curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win']].replace('\s\(\d+\)', '', regex=True)
     idx_max = dfd.groupby('Round')['Total_Win'].transform('max') == dfd['Total_Win']
@@ -739,7 +811,7 @@ if __name__ == '__main__':
             # components.html(f'<div style="text-align: center"> Round {rd} </div>')
             st.write(f""" Round {rd}""")
             idx = idx_max if res == 'Best' else idx_min
-            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=455)
+            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=455)
 
     with left_column:
         st.write("""Here are the best picks by round:""")
@@ -749,27 +821,74 @@ if __name__ == '__main__':
         st.write("""And here are the worst picks by round:""")
         picks_by_round(dfd, 'Worst')
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     st.write(""" # """)
+    st.write("""#### Wins by Round""")
+    st.write("""How did we do in our draft, by rounds? 
+    Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?""")
+    
+    st.dataframe(style_frame(dfr_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # st.write(body_dct['reghist_txt'])
+    st.write(f"""
+Let's take a look at the top 10 Regular Season finishes.
+    """)
+    st.dataframe(style_frame(hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
+    
+    
+    
+    
+    # st.write(body_dct['pohist_txt'])
+    st.write(f"""
+How about the top 10 Playoff runs?
+""")
 
 
-
+    st.dataframe(style_frame(hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)
     
     
-    st.write(body_dct['reghist_txt'])
     
-    st.write(body_dct['pohist_txt'])
     
-    st.write(body_dct['tothist_txt'])
+    # st.write(body_dct['tothist_txt'])
+    st.write(f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? 
+        """)
+    
+    st.dataframe(style_frame(hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)        
+        
     
     
     st.write("""#### Champions""")
-    st.write(body_dct['champs_txt'])
-    st.write("""Dan's current pace of 41 regular season wins would put him at second best ever.  He currently has 37 regular season wins, which means he's at least equaled every previous champion in that category.  However (!), we have a catch, because this year we have one extra week, which means a chance for four (4) extra wins compared to previous champions.  As such, winning _percentage_ is the more representative metric.  In it, he currently is on pace for the second best regular season win percentage as well.  
+    st.write("""Past champions and their results, as well as projected champion for the current year (highlighted in blue).
+        """)
+    st.write("""I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.  
     
-The playoffs can make or break a Pool champion, and the fewest playoff wins a champion has had was Alex last year, with two.  Dan is going to have a minimum of two playoff teams in Tampa Bay and Dallas.  New Orleans and Las Vegas could both make it, as well.  His likely playoff win total would range from 1 to 6 wins.  How that breaks down could determine whether Brandon, Alex, or Jackson have a shot at catching him -- if he doesn't get the playoff wins, then one of his competitors is.""")
+The playoffs can make or break a Pool champion, and the fewest playoff wins a champion has had was Alex last year, with two.  Dan has three playoff teams, and none have the bye, meaning they all three play in round one.  Due to how the playoff seeding wound up, Dan could have a max of nine (9) playoff wins (the record is 6 by Jordan in his title year) if the Super Bowl is between the Raiders and either Cowboys/Bucs, with them both winning their round one games.  If he did, he'd land at 53 total wins, a record that would be pretty darn hard to beat!""")
     
     
-    st.dataframe(style_frame(champs, clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    st.dataframe(style_frame(champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
     
     
     st.write("""#""")
@@ -777,7 +896,19 @@ The playoffs can make or break a Pool champion, and the fewest playoff wins a ch
     st.write("Who in our pool has been the best over their careers (sorted by Wins)?")
     
     
-    st.dataframe(style_frame(dfc_, clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
+    st.dataframe(style_frame(dfc_, bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
+    
+    
+    st.write("""Jackson, Alex, and Brandon have all amassed 180 wins or more, with Jackson currently above Alex by a single win.  Mike and Jordan are next, while thanks to his current season, Dan has officially passed Pizzard via winning percentage, leaving Pize in last place in the very pool he created. Yay!""")
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     st.write("""#""")
@@ -803,13 +934,13 @@ The playoffs can make or break a Pool champion, and the fewest playoff wins a ch
                 .encode(
                     alt.X('Player:N', axis=alt.Axis(title='')),
                     alt.Y('Total_Win:Q', scale=alt.Scale(domain=[0, 50], zero=True)),
-                    # color=alt.Color('Player:N', scale=alt.Scale(domain=dfs_['Player'].unique(),       range=list(plot_clr_dct.values()))),
+                    # color=alt.Color('Player:N', scale=alt.Scale(domain=dfs_['Player'].unique(),       range=list(plot_bg_clr_dct.values()))),
                     # color=champ_condition
                     color=alt.condition(
                         alt.datum.Champ == True, 
                         alt.value('firebrick'), 
-                        # alt.value(list(plot_clr_dct.values())),
-                        alt.value(plot_clr_dct['Mike']),
+                        # alt.value(list(plot_bg_clr_dct.values())),
+                        alt.value(plot_bg_clr_dct['Mike']),
                         ),
                     )
                     
@@ -934,13 +1065,14 @@ The playoffs can make or break a Pool champion, and the fewest playoff wins a ch
 
     st.write("""#""")
     st.write("""#### Personal Records""")    
-    st.write(body_dct['pr_txt'])
+    # st.write(body_dct['pr_txt'])
+    st.write("""Last, here are the personal records for each player.  Blue highlight is for this season and shows who might have a chance at setting a new personal record for total wins.""")
     
     
     
     
     def show_player_hist_table(name):
-        st.dataframe(style_frame(player_hist[player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=700)
+        st.dataframe(style_frame(player_hist[player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=700)
     
 
     def plot_wins_by_year(frame):
@@ -962,7 +1094,7 @@ The playoffs can make or break a Pool champion, and the fewest playoff wins a ch
                     .encode(
                         alt.X('Year:O'),
                         alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
-                        color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_clr_dct[frame['Player'].unique().item()]]))
+                        color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['firebrick', plot_bg_clr_dct[frame['Player'].unique().item()]]))
                         )
         
         text = points.mark_text(
