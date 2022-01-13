@@ -688,12 +688,16 @@ That said, every player has at least one playoff team (including the *LEFTOVERS*
 
 
 
-
+    ## use 'zLeftover' so Mike isn't after Leftover
     st.write("""#### Playoff Teams Tracker""")
-    dfp = df.loc[(df['Year']==curr_year) & (df['Playoff_Seed']>0), ['Round', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('Leftover', 'zLeftover').sort_values(['Player', 'Round']).replace('zLeftover', 'Leftover')
+    dfp = df.loc[(df['Year']==curr_year) & (df['Playoff_Seed']>0), ['Round', 'Player', 'Team', 'Playoff_Win', 'Playoff_Seed']]\
+        .replace('Leftover', 'zLeftover')\
+        .sort_values(['Player', 'Playoff_Seed'])\
+        .replace('zLeftover', 'Leftover')\
+        .fillna(0)
     dfp['Playoff_Seed'] = dfp['Playoff_Seed'].astype(int)
     dfp['Conference'] = [conf_dct[tm] for tm in dfp['Team']]
-    st.dataframe(style_frame(dfp, bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=655, height=620)
+    st.dataframe(style_frame(dfp, bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}'}), width=635, height=620)
 
 
 
