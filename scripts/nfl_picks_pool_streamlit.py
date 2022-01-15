@@ -511,7 +511,7 @@ if __name__ == '__main__':
     #     else:
     #         raise TypeError(f'Boolean value expected. {type(arg)} received.')
 
-
+    st.write("#TEST")
 
     curr_year = 2021
     df = load_and_prep_data()
