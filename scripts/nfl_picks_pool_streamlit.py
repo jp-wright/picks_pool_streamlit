@@ -46,7 +46,7 @@ def load_and_prep_data():
     for kind in ['Reg', 'Playoff', 'Total']:
         df[f"{kind}_Win%"] = df[f"{kind}_Win"].div(df[f"{kind}_Games"])
 
-    # df.to_csv(ROOT_PATH.joinpath('data', 'output', 'nfl_picks_pool_player_standings_history.csv'), index=False)
+    df.to_csv(ROOT_PATH.joinpath('data', 'output', 'nfl_picks_pool_player_standings_history.csv'), index=False)
     return df
 
 # @st.cache
