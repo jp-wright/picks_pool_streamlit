@@ -23,10 +23,12 @@ def load_and_prep_data():
     df = df[['Year', 'Round', 'Pick', 'Player', 'Team']]
 
     ## get regular ssn, post ssn, and total win/loss info
-    dfreg = pd.read_csv('data/input/nfl_regular_ssn_standings_pool_years.csv').drop('Team', 1)
+    dfreg = pd.read_csv('data/input/nfl_regular_ssn_standings_pool_years.csv')\
+        .drop('Team', 1)
     dfpost = pd.read_csv('data/input/nfl_post_ssn_standings_pool_years.csv')
     dftot = pd.read_csv('data/input/nfl_regular_plus_post_ssn_standings_pool_years.csv')
 
+    dfreg['Playoffs'] = [True if seed > 0 else False for seed in dfreg['Playoff_Seed']]
     
     dfreg.rename(columns={'Team_Name': 'Team', 'Win': 'Reg_Win', 'Loss': 'Reg_Loss', 'Tie': 'Reg_Tie', 'Games_Played': 'Reg_Games'}, inplace=True)
     dfpost.rename(columns={'Team_Name': 'Team', 'Win': 'Playoff_Win', 'Loss': 'Playoff_Loss', 'Games_Played': 'Playoff_Games'}, inplace=True)
@@ -50,7 +52,7 @@ def load_and_prep_data():
     return df
 
 # @st.cache
-def stats_by_year(df):
+def stats_by_year(df: pd.DataFrame, champ_hist: Dict[int, str]) -> pd.DataFrame:
     ## Yearly Stats
     dfy = df.groupby(['Year', 'Player'], as_index=False).sum().copy()
     idx = dfy.columns.get_loc('Reg_Games')
@@ -67,6 +69,8 @@ def stats_by_year(df):
 
     dfy.set_index(['Year', 'Player'], inplace=True)
     dfy['Playoff_Teams'] = df.groupby(['Year', 'Player'])['Playoff_Seed'].count()
+    dfy['Champ'] = dfy.apply(lambda row: row.name[1] == champ_hist.get(row.name[0], None), axis=1)
+    # dfy['Champ'] = dfy.apply(lambda row: row['Player'] == champ_hist.get(row['Year'], None), axis=1)
 
     pct_cols = [c for c in dfy.columns if '%' in c]
     dfy[pct_cols] = (dfy[pct_cols] * 100).round(1)
@@ -500,6 +504,17 @@ if __name__ == '__main__':
     'Lions': 'NFC',
     }
 
+
+    champ_hist = {
+        2017: 'Jackson',
+        2018: 'Brandon',
+        2019: 'Jordan',
+        2020: 'Alex',
+        2021: 'Dan',
+        }
+
+
+
     # def enforce_bool(arg):
     #     '''convert 'True' or 'False' command-line arg from crontab into actual Python bool'''
     #     if isinstance(arg, bool):
@@ -514,7 +529,7 @@ if __name__ == '__main__':
 
     curr_year = 2021
     df = load_and_prep_data()
-    dfy = stats_by_year(df)
+    dfy = stats_by_year(df, champ_hist)
     dfr = stats_by_round(df)
     dfc = stats_by_career(df)
     dfy_ = prep_year_data_for_website(dfy)
@@ -694,6 +709,7 @@ That said, every player has at least one playoff team (including the *LEFTOVERS*
         .sort_values(['Player', 'Playoff_Seed'])\
         .replace('zLeftover', 'Leftover')\
         .fillna(0)
+    # dfp['Potential_Wins'] = [3 if seed==1 else 4 for seed in dfp['Playoff_Seed']]
     dfp['Playoff_Seed'] = dfp['Playoff_Seed'].astype(int)
     dfp['Conference'] = [conf_dct[tm] for tm in dfp['Team']]
     st.dataframe(style_frame(dfp, bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}'}), width=635, height=620)
@@ -701,79 +717,168 @@ That said, every player has at least one playoff team (including the *LEFTOVERS*
 
 
 
+    ## Draft Overview Chart
     st.write("""#### Draft Overview """)
-    
+    # print(df.head())
     source = df[df['Year']==curr_year]
     points = alt.Chart()\
                 .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
                 .encode(
                     alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
                     alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
-                    tooltip="Team:N"
+                    tooltip="Player:N"
                     )\
                 # .properties(
                 #     title='Wins by Year',
-                #     width=400,
+                #     width=800,
                 #     height=200
                 #     )
 
-    text = points.mark_text(
+    text_wins = points.mark_text(
                 align='center',
                 baseline='top',
                 dx=0,
-                dy=10
+                dy=12
             )\
             .encode(
                 text='Total_Win'
             )
+            
+    text_tm = points.mark_text(
+                align='center',
+                baseline='bottom',
+                dx=0,
+                dy=-10
+            )\
+            .encode(
+                text='Team'
+            )
 
     rule1 = alt.Chart().mark_rule(color='black')\
             .encode(
-                x='rd2:O',
-                size=alt.value(2)
+                x=alt.X('rd2:O', title='pick'),
+                size=alt.value(2),
+                # x='rd2:O',
             )
     rule2 = alt.Chart().mark_rule(color='black')\
             .encode(
-                x='rd3:O',
-                size=alt.value(2)
+                # x='rd3:O',
+                x=alt.X('rd3:O', title=''),
+                size=alt.value(2),
+                # title=''
             )
     rule3 = alt.Chart().mark_rule(color='black')\
             .encode(
-                x='rd4:O',
+                # x='rd4:O',
+                x=alt.X('rd4:O', title=''),
                 size=alt.value(2),
             )
     rule4 = alt.Chart().mark_rule(color='black')\
             .encode(
-                x='leftover:O',
+                # x=,
+                x=alt.X('leftover:O', title=''),
                 size=alt.value(2),
                 # name=''
             )
 
     ## color changing marks via radio buttons
-    player_radio = alt.binding_radio(options=df['Player'].unique())
-    player_select = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
-    
+    # input_checkbox = alt.binding_checkbox()
+# checkbox_selection = alt.selection_single(bind=input_checkbox, name="Big Budget Films")
+
+# size_checkbox_condition = alt.condition(checkbox_selection,
+#                                         alt.SizeValue(25),
+#                                         alt.Size('Hundred_Million_Production:Q')
+#                      
+                  # )
+# selection = alt.selection_multi(fields=['name'])
+# color = alt.condition(selection, alt.Color('name:N'), alt.value('lightgray'))
+# make_selector = alt.Chart(make).mark_rect().encode(y='name', color=color).add_selection(selection)
+# fuel_chart = alt.Chart(fuel).mark_line().encode(x='index', y=alt.Y('fuel', scale=alt.Scale(domain=[0, 10])), color='name').transform_filter(selection)
+                                       
+                                       
+    player_selection = alt.selection_multi(fields=['Player'])
+
     domain_ = list(plot_bg_clr_dct.keys())
     range_ = list(plot_bg_clr_dct.values())
-    opacity_ = alt.condition(player_select, alt.value(1.0), alt.value(.4))
+    opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
     
-    player_color_condition = alt.condition(player_select,
+    player_color_condition = alt.condition(player_selection,
                                 alt.Color('Player:N', 
                                     scale=alt.Scale(domain=domain_, range=range_)),
                                 alt.value('lightgray')
                             )
 
-    highlight_players = points.add_selection(player_select)\
+    highlight_players = points.add_selection(player_selection)\
                             .encode(
                                 color=player_color_condition,
                                 opacity=opacity_
                                 )\
                             .properties(title=f"{curr_year} Picks by Player")
     
+    player_selector = alt.Chart(source).mark_rect()\
+            .encode(x='Player', color=player_color_condition)\
+            .add_selection(player_selection)
+    
+    
+    
+    
+    # ## color changing marks via radio buttons - WORKS
+    # player_radio = alt.binding_radio(options=df['Player'].unique())
+    # player_selection = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
+    # 
+    # domain_ = list(plot_bg_clr_dct.keys())
+    # range_ = list(plot_bg_clr_dct.values())
+    # opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
+    # 
+    # player_color_condition = alt.condition(player_selection,
+    #                             alt.Color('Player:N', 
+    #                                 scale=alt.Scale(domain=domain_, range=range_)),
+    #                             alt.value('lightgray')
+    #                         )
+    # 
+    # highlight_players = points.add_selection(player_selection)\
+    #                         .encode(
+    #                             color=player_color_condition,
+    #                             opacity=opacity_
+    #                             )\
+    #                         .properties(title=f"{curr_year} Picks by Player")
+    # 
+    # 
+    
+    
+    
+    # ## PLAYOFFS ? color changing marks via radio buttons
+    # po_radio = alt.binding_radio(options=['Playoffs'])
+    # po_select = alt.selection_single(fields=['Playoffs'], bind=po_radio, name="po!")
+    # 
+    # # domain_ = list(plot_bg_clr_dct.keys())
+    # # range_ = list(plot_bg_clr_dct.values())
+    # opacity_ = alt.condition(po_select, alt.value(1.0), alt.value(.4))
+    # 
+    # po_color_condition = alt.condition(po_select,
+    #                             alt.Color('Playoffs:N', 
+    #                                 scale=alt.Scale(domain=domain_, range=range_)),
+    #                             alt.value('lightgray')
+    #                         )
+    # 
+    # highlight_po = points.add_selection(po_select)\
+    #                         .encode(
+    #                             color=po_color_condition,
+    #                             opacity=opacity_
+    #                             )\
+    #                         .properties(title=f"{curr_year} PO")
+    
+    
+    
+    
+    
+    
+    
+    
     
     res = alt.layer(
-        rule1, rule2, rule3, rule4, text, highlight_players,
-        data=source
+        rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
+        data=source, width=1200
         ).transform_calculate(
             rd2="7.5",          ## use pick halfway b/w rounds to draw vert line
             rd3="14.5",
@@ -781,7 +886,9 @@ That said, every player has at least one playoff team (including the *LEFTOVERS*
             leftover="28.5"
         )
         
-    st.altair_chart(res)
+    st.altair_chart(res) 
+    # st.altair_chart(player_selector)
+    st.write("*Shift-Click dots to add more players; double-click to reset.*")
 
 
     st.write("""# """)
@@ -800,10 +907,12 @@ That said, every player has at least one playoff team (including the *LEFTOVERS*
 
 
 
-
+    ## BEST/WORST PICKS BY ROUND
     st.write('  #')
     
-    dfd = df.query(f"Year=={curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win']].replace('\s\(\d+\)', '', regex=True)
+    dfd = df.query(f"Year=={curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('\s\(\d+\)', '', regex=True)
+    dfd['Playoffs'] = dfd['Playoff_Seed'] > 0
+    dfd = dfd.drop('Playoff_Seed', axis=1)
     idx_max = dfd.groupby('Round')['Total_Win'].transform('max') == dfd['Total_Win']
     idx_min = dfd.groupby('Round')['Total_Win'].transform('min') == dfd['Total_Win']
 
@@ -814,14 +923,14 @@ That said, every player has at least one playoff team (including the *LEFTOVERS*
             # components.html(f'<div style="text-align: center"> Round {rd} </div>')
             st.write(f""" Round {rd}""")
             idx = idx_max if res == 'Best' else idx_min
-            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=455)
+            st.dataframe(style_frame(dfd[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
 
     with left_column:
-        st.write("""Here are the best picks by round:""")
+        st.write("""**Here are the best picks by round:**""")
         picks_by_round(dfd, 'Best')
     
     with right_column:
-        st.write("""And here are the worst picks by round:""")
+        st.write("""**And here are the worst picks by round:**""")
         picks_by_round(dfd, 'Worst')
 
 
@@ -962,7 +1071,7 @@ The playoffs can make or break a Pool champion, and the fewest playoff wins a ch
     
     
     
-    ## Ridgeline Plot
+    ## Ridgeline Plot - not using ATM
     # source = data.seattle_weather.url
     source = dfy
     step = 30
