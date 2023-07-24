@@ -13,8 +13,8 @@ from typing import List, Tuple, Dict, Sequence, Optional
 
 class DataPrepper():
     def __init__(self):
-        self.ROOT_PATH = Path(os.getcwd())
-        self.curr_year = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
+        self.ROOT_PATH = Path(os.getcwd()).parent
+        
 
 
         self.bg_clr_dct = {
@@ -89,8 +89,10 @@ class DataPrepper():
             2021: 'Dan',
             }
 
-        # self.curr_year = curr_year
         self.df = self.load_and_prep_data()
+        self.curr_year = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
+        if self.curr_year not in self.df['Year'].unique(): self.curr_year = self.df['Year'].unique().max()
+
         self.dfy = self.stats_by_year(self.df, self.champ_hist)
         self.dfr = self.stats_by_round(self.df)
         self.dfc = self.stats_by_career(self.df)
@@ -107,7 +109,8 @@ class DataPrepper():
         self.po_inc = '(playoffs included)' if 'Playoff Win' in str(self.dfy_) else ''
         self.the_date = time.strftime("%A, %d %b %Y", time.localtime())
         self.the_time = time.strftime("%H:%M CST", time.localtime())
-        self.the_ssn = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
+        self.the_ssn = self.curr_year
+        # self.the_ssn = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
         self.the_wk = self.df.loc[self.df['Year'] == self.the_ssn, 'Reg_Games'].max()
         if self.the_wk > 12: 
             self.the_wk += 1
@@ -117,6 +120,7 @@ class DataPrepper():
         ## Read from but never write to this file. Ref only.
         # ROOT_PATH = Path(os.getcwd())
         # st.write(os.getcwd())
+        
         dfref = pd.read_excel(self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
         dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
         df = dfref.copy()
@@ -124,10 +128,9 @@ class DataPrepper():
         df = df[['Year', 'Round', 'Pick', 'Player', 'Team']]
 
         ## get regular ssn, post ssn, and total win/loss info
-        dfreg = pd.read_csv('data/input/nfl_regular_ssn_standings_pool_years.csv')\
-            .drop('Team', 1)
-        dfpost = pd.read_csv('data/input/nfl_post_ssn_standings_pool_years.csv')
-        dftot = pd.read_csv('data/input/nfl_regular_plus_post_ssn_standings_pool_years.csv')
+        dfreg = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_regular_ssn_standings_pool_years.csv')).drop('Team', axis=1)
+        dfpost = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_post_ssn_standings_pool_years.csv'))
+        dftot = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_regular_plus_post_ssn_standings_pool_years.csv'))
 
         dfreg['Playoffs'] = [True if seed > 0 else False for seed in dfreg['Playoff_Seed']]
         
@@ -150,6 +153,10 @@ class DataPrepper():
             df[f"{kind}_Win%"] = df[f"{kind}_Win"].div(df[f"{kind}_Games"])
 
         df.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'nfl_picks_pool_player_standings_history.csv'), index=False)
+        
+        ## No pool in 2022 (hello depressionnnnnn). Need to remove for processing.
+        df = df[df['Year'] != 2022]
+        # print(df.head(10))
         
         df['Tm_Yr'] = df['Team'] + " " + df['Year'].astype(str)
         df['Tm_Yr_Win'] = df['Tm_Yr'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
@@ -332,7 +339,10 @@ class DataPrepper():
     # @st.cache
     def prep_player_teams_this_year(self, df: pd.DataFrame, curr_year: int):
         df['Team'] = df['Team'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
+        # if curr_year not in df['Year'].unique(): curr_year = df['Year'].unique().max()
         frame = df[df['Year'] == curr_year].sort_values(['Player', 'Pick'], ascending=[True, True])[['Player', 'Round', 'Team']].copy()
+        global ff
+        ff = frame
         frame.loc[frame['Player']=='Leftover', 'Round'] = [1,2,3,4]
         frame = frame.set_index(['Round', 'Player']).unstack()
         frame.columns = frame.columns.droplevel(0)
@@ -625,7 +635,7 @@ class DataPrepper():
             
         st.altair_chart(res) 
         # st.altair_chart(player_selector)
-        st.write("*Shift-Click dots to add more players; double-click to reset.*")
+        st.write("*TIP: Click any player's dot to see only their picks. Shift-Click dots to add more players; double-click to reset.*")
         
 
     def show_player_hist_table(self, name):
@@ -748,7 +758,7 @@ def streamlit_layout():
 
 if __name__ == '__main__':
     st.set_page_config(
-        page_title="V-town FF",
+        page_title="NFL Picks Pool",
         page_icon="🧊",
         layout="wide",
         initial_sidebar_state="expanded",
@@ -770,13 +780,9 @@ if __name__ == '__main__':
 
 
 
-
-
-
-
     st.write(f"""
     ## Global NFL Picks Pool
-    ##### Colorado, Texas, Wisconsin, England, Japan, and Sweden
+    ##### Colorado, Texas, California, England, Japan, and Sweden
     Picks Pool {DP.po_inc} as of week {DP.the_wk} - {DP.the_ssn}!  
     #
     """)
@@ -792,9 +798,7 @@ if __name__ == '__main__':
     st.dataframe(DP.style_frame(DP.dfy_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', 'Total Win%': '{:.1f}'}), width=900)
 
 
-    st.write("""
-By virtue of his Bucs' win over Brandon's Eagles, Dan has won this year's Picks Pool.  Congratulations to Dan on his first Pool title! Be sure to send us your NFL item request, around $60 or less.
-    """)
+    st.write("""By virtue of his Bucs' win over Brandon's Eagles, Dan has won this year's Picks Pool.  Congratulations to Dan on his first Pool title! Be sure to send us your NFL item request, around $60 or less.""")
 
 
 
@@ -1038,7 +1042,7 @@ How about the top 10 Playoff runs?
     st.write("""#""")
     st.write("""#### Personal Records""")    
     # st.write(body_dct['pr_txt'])
-    st.write("""Last, here are the personal records for each player.  Blue highlight is for this season and shows who might have a chance at setting a new personal record for total wins.""")
+    st.write("""Last, here are the personal records for each player, sorted by most at top.  \nBlue highlight is for this season and shows who might have a chance at setting a new personal record for total wins.""")
     
     
     
