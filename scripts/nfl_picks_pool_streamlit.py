@@ -772,6 +772,10 @@ if __name__ == '__main__':
         )
 
 
+    pp = Path.cwd().parent
+    print(pp)
+    assert 1 == 0, 'blaap'
+
     DP = DataPrepper()
     df = DP.df
     bg_clr_dct = DP.bg_clr_dct
