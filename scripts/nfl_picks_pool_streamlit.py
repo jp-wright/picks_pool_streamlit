@@ -13,7 +13,7 @@ from typing import List, Tuple, Dict, Sequence, Optional
 
 class DataPrepper():
     def __init__(self):
-        self.ROOT_PATH = Path.cwd().parent
+        self.ROOT_PATH = Path.cwd()
         st.write('class path', self.ROOT_PATH)
         
 
