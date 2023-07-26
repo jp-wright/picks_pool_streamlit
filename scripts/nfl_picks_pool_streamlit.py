@@ -772,15 +772,16 @@ if __name__ == '__main__':
         )
 
 
-    import logging
+    # import logging
 
     pp = Path.cwd().parent
-    print(pp)
-    logging.error(pp)
+    st.write(pp)
+    # logging.error(pp)
 
+    liz = os.walk.iterdir(pp.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'))
+    st.write(liz)
     raise Exception(pp)
     
-    assert 1 == 0, 'blaap'
 
     DP = DataPrepper()
     df = DP.df
