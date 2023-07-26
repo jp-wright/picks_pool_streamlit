@@ -14,7 +14,7 @@ from typing import List, Tuple, Dict, Sequence, Optional
 class DataPrepper():
     def __init__(self):
         self.ROOT_PATH = Path.cwd()
-        st.write('class path', self.ROOT_PATH)
+        # st.write('class path', self.ROOT_PATH)
         
 
 
@@ -123,9 +123,9 @@ class DataPrepper():
         # ROOT_PATH = Path(os.getcwd())
         # st.write(os.getcwd())
         
-        p = self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx')
-        st.write(p)
-        st.write('is file?', p.is_file())
+        # p = self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx')
+        # st.write(p)
+        # st.write('is file?', p.is_file())
 
         dfref = pd.read_excel(self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
         dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
@@ -210,7 +210,7 @@ class DataPrepper():
 
     # @st.cache
     def stats_by_career(self, df):
-        dfc = df.groupby(['Player']).sum().drop(['Round', 'Pick', 'Reg_Win%', 'Playoff_Win%', 'Total_Win%'], 1)
+        dfc = df.groupby(['Player']).sum().drop(['Round', 'Pick', 'Reg_Win%', 'Playoff_Win%', 'Total_Win%'], axis=1)
 
         for kind in ['Reg', 'Playoff', 'Total']:
             dfc[f"{kind}_Win%"] = dfc[f"{kind}_Win"].div(dfc[f"{kind}_Games"])
@@ -230,9 +230,9 @@ class DataPrepper():
 
         if frame['Playoff_Games'].sum() == 0:
             sort_col = 'Total_Win%'
-            frame = frame.drop([c for c in frame.columns if all(['Playoff' in c, 'Teams' not in c]) or 'Total' in c], 1)
+            frame = frame.drop([c for c in frame.columns if all(['Playoff' in c, 'Teams' not in c]) or 'Total' in c], axis=1)
             if frame['Reg_Games_Left'].sum() == 0:
-                frame.drop(['Full_Ssn_Pace'], 1, inplace=True)
+                frame.drop(['Full_Ssn_Pace'], axis=1, inplace=True)
             else:
                 frame = frame.round({'Full_Ssn_Pace': 1}).sort_values('Reg_Win%', ascending=False)
 
@@ -262,17 +262,17 @@ class DataPrepper():
         https://code.i-harness.com/en/q/df3234
         '''
         ## Remove LEFTOVER b/c they're in round "99"
-        frame = dfr[(dfr['Year'] == dfr['Year'].max()) & (dfr['Round'].isin([1,2,3,4]))].drop(['Pick'], 1)
+        frame = dfr[(dfr['Year'] == dfr['Year'].max()) & (dfr['Round'].isin([1,2,3,4]))].drop(['Pick'], axis=1)
         frame = frame.sort_values('Total_Win%', ascending=False)
         if frame['Playoff_Games'].sum() == 0:
-            frame = frame.drop([c for c in frame.columns if all(['Playoff' in c, 'Teams' not in c]) or 'Total' in c], 1)
+            frame = frame.drop([c for c in frame.columns if all(['Playoff' in c, 'Teams' not in c]) or 'Total' in c], axis=1)
             frame = frame.sort_values('Reg_Win%', ascending=False)
             frame.columns = [c.replace('Reg_', '') for c in frame.columns]
             frame = frame.loc[:, ['Year', 'Round', 'Win', 'Loss', 'Tie', 'Games', 'Win%', 'Playoff_Teams']]
         else:
             frame.columns = [c.replace('Total_', '') for c in frame.columns]
             frame = frame.loc[:, ['Year', 'Round', 'Playoff_Teams', 'Win', 'Loss', 'Tie', 'Games', 'Win%']]
-            frame.drop(['Full_Ssn_Pace'], 1, errors='ignore', inplace=True)
+            frame.drop(['Full_Ssn_Pace'], axis=1, errors='ignore', inplace=True)
 
         int_cols = [c for c in frame.columns if '16' not in c and 'Win%' not in c and 'Player' not in c]
         frame[int_cols] = frame[int_cols].astype(int)
@@ -301,7 +301,7 @@ class DataPrepper():
         def create_year_hist_frame(kind: str):
             drops = {'Reg': ['Reg_Games_Left', 'Reg_Games'], 'Playoff': ['Playoff_Seed']}
             drop_me = drops.get(kind, []) + ['Full_Ssn_Pace']
-            frame = dfy.set_index(['Year', 'Player'])[[c for c in dfy.columns if kind in c]].drop(drop_me, 1, errors='ignore')
+            frame = dfy.set_index(['Year', 'Player'])[[c for c in dfy.columns if kind in c]].drop(drop_me, axis=1, errors='ignore')
             
             ## Must use W
             if kind in ['Reg', 'Total']:
@@ -414,7 +414,7 @@ class DataPrepper():
         years = aa[(aa['Win %']>=(nwins/16))].groupby('Year').apply(lambda g: g['W'].count() / g['Year'].nunique()).astype(int)
 
         years = years.reset_index()
-        years = years.set_index(years['Year'].dt.year).drop('Year', 1).rename(columns={0: f'{nwins}-win Tms'})
+        years = years.set_index(years['Year'].dt.year).drop('Year', axis=1).rename(columns={0: f'{nwins}-win Tms'})
 
         ## temp fix since Pythag big list isn't updated yet
         years.loc[2019] = 7
@@ -778,12 +778,12 @@ if __name__ == '__main__':
 
     # import logging
 
-    pp = Path.cwd()
-    st.write(pp)
+    # pp = Path.cwd()
+    # st.write(pp)
     # logging.error(pp)
-    liz = [i for i in pp.rglob('*')]
+    # liz = [i for i in pp.rglob('*')]
 
-    st.write(liz)
+    # st.write(liz)
     # raise Exception(pp)
     
 
