@@ -777,8 +777,8 @@ if __name__ == '__main__':
     pp = Path.cwd().parent
     st.write(pp)
     # logging.error(pp)
+    liz = [i for i in pp.rglob('*')]
 
-    liz = os.walk.iterdir(pp.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'))
     st.write(liz)
     raise Exception(pp)
     
