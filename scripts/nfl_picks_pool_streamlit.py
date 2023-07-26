@@ -783,7 +783,7 @@ if __name__ == '__main__':
     # logging.error(pp)
     liz = [i for i in pp.rglob('*')]
 
-    # st.write(liz)
+    st.write(liz)
     # raise Exception(pp)
     
 
