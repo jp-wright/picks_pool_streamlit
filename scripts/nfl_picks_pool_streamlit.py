@@ -14,7 +14,7 @@ from typing import List, Tuple, Dict, Sequence, Optional
 class DataPrepper():
     def __init__(self):
         self.ROOT_PATH = Path.cwd().parent
-        st.write(self.ROOT_PATH)
+        st.write('class path', self.ROOT_PATH)
         
 
 
@@ -125,7 +125,7 @@ class DataPrepper():
         
         p = self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx')
         st.write(p)
-        p.is_file()
+        st.write('is file?', p.is_file())
 
         dfref = pd.read_excel(self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
         dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
@@ -778,7 +778,7 @@ if __name__ == '__main__':
 
     # import logging
 
-    pp = Path.cwd().parent
+    pp = Path.cwd()
     st.write(pp)
     # logging.error(pp)
     liz = [i for i in pp.rglob('*')]
