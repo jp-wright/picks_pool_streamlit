@@ -13,7 +13,8 @@ from typing import List, Tuple, Dict, Sequence, Optional
 
 class DataPrepper():
     def __init__(self):
-        self.ROOT_PATH = Path(os.getcwd()).parent
+        self.ROOT_PATH = Path.cwd().parent
+        print(self.ROOT_PATH)
         
 
 
@@ -28,6 +29,7 @@ class DataPrepper():
             'LEFTOVER': '#d9d9d9',
             'Leftover': '#d9d9d9',
             }
+
 
         self.plot_bg_clr_dct = {
             'Alex': '#ffd966',
