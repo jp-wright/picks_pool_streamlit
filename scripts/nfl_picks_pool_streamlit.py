@@ -772,8 +772,14 @@ if __name__ == '__main__':
         )
 
 
+    import logging
+
     pp = Path.cwd().parent
     print(pp)
+    logging.error(pp)
+
+    raise Exception(pp)
+    
     assert 1 == 0, 'blaap'
 
     DP = DataPrepper()
