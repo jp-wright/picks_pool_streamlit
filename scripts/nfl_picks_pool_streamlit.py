@@ -783,8 +783,8 @@ if __name__ == '__main__':
     # logging.error(pp)
     liz = [i for i in pp.rglob('*')]
 
-    st.write(liz)
-    raise Exception(pp)
+    # st.write(liz)
+    # raise Exception(pp)
     
 
     DP = DataPrepper()
