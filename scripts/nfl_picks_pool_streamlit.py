@@ -12,6 +12,12 @@ import os
 import sys
 from typing import List, Tuple, Dict, Sequence, Optional
 
+import subprocess
+
+def install(package):
+    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+install('openpyxl')
 
 class DataPrepper():
     def __init__(self):
