@@ -12,12 +12,12 @@ import os
 import sys
 from typing import List, Tuple, Dict, Sequence, Optional
 
-import subprocess
+# import subprocess
 
-def install(package):
-    subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+# def install(package):
+#     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
-install('openpyxl')
+# install('openpyxl')
 
 class DataPrepper():
     def __init__(self):
@@ -138,7 +138,8 @@ class DataPrepper():
         # st.write(p)
         # st.write('is file?', p.is_file())
 
-        dfref = pd.read_excel(self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
+        # dfref = pd.read_excel(self.ROOT_PATH.joinpath('data', 'input', 'nfl_picks_pool_draft_history.xlsx'), sheet_name='draft_history')
+        dfref = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_picks_pool_draft_history.csv')).replace('Redskins', 'Commanders')
         dfref.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
         df = dfref.copy()
         df.loc[df['Player'] == 'LEFTOVER', 'Player'] = 'Leftover'
