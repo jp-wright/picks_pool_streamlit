@@ -1,3 +1,5 @@
+## Run in terminal with "streamlit run <this file>.py"
+
 import streamlit as st
 import streamlit.components.v1 as components
 import pandas as pd
@@ -26,6 +28,8 @@ class DataPrepper():
             'Brandon': '#e6b8af',
             'Jackson': '#d9d2e9',
             'Dan': '#fce5cd',
+            'Victoria': '#FFDAEC',
+            # 'Victoria': '#FFB2E4',
             'LEFTOVER': '#d9d9d9',
             'Leftover': '#d9d9d9',
             }
@@ -40,6 +44,7 @@ class DataPrepper():
             'Jordan': '#e48181',
             'Leftover': '#b3b3b3',
             'Mike': '#85b6e0',
+            'Victoria': '#FFB2E4',
             # 'LEFTOVER': '#b3b3b3',
             }
         
@@ -165,8 +170,8 @@ class DataPrepper():
         # print(df.head(10))
         
         df['Tm_Yr'] = df['Team'] + " " + df['Year'].astype(str)
-        df['Tm_Yr_Win'] = df['Tm_Yr'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
-        df['Tm_Win'] = df['Team'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
+        df['Tm_Yr_Win'] = df['Tm_Yr'] + " (" + df['Total_Win'].fillna(0).astype(int).astype(str) + ")"
+        df['Tm_Win'] = df['Team'] + " (" + df['Total_Win'].fillna(0).astype(int).astype(str) + ")"
 
         return df
 
@@ -246,13 +251,17 @@ class DataPrepper():
         frame = frame.sort_values(sort_col, ascending=False)
 
         int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
-        frame[int_cols] = frame[int_cols].astype(int)
+        frame[int_cols] = frame[int_cols].fillna(0).astype(int)
 
         win_cols = np.array(['Win%', 'Total_Win'])
         win_col = win_cols[np.isin(win_cols, frame.columns)]
-        frame.insert(0, 'Rank', frame[win_col].rank(ascending=False).astype('int'))
+        frame.insert(0, 'Rank', frame[win_col].rank(ascending=False).fillna(0).astype('int'))
         frame.columns = [c.replace('_', ' ') for c in frame.columns]
+        # cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Total_Win%']
+        # if 'Total_Win%' not in frame.columns: frame['Total_Win%'] = 0.0
         cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Total Win%']
+        if 'Total Win%' not in frame.columns: frame['Total Win%'] = 0.0
+        if frame['Win%'].isnull().all(): frame['Win%'] = 0.0
         frame[cols] = frame[cols].round(1)
         return frame
 
@@ -277,7 +286,7 @@ class DataPrepper():
         int_cols = [c for c in frame.columns if '16' not in c and 'Win%' not in c and 'Player' not in c]
         frame[int_cols] = frame[int_cols].astype(int)
 
-        frame.insert(0, 'Rank', frame['Win%'].rank(ascending=False).astype('int'))
+        frame.insert(0, 'Rank', frame['Win%'].rank(ascending=False).fillna(0).astype('int'))
         frame.columns = [c.replace('_', ' ') for c in frame.columns]
         return frame
         
@@ -306,7 +315,7 @@ class DataPrepper():
             ## Must use W
             if kind in ['Reg', 'Total']:
                 sort_col = f'{kind}_Win%_Rk'
-                frame.insert(0, sort_col, frame[f'{kind}_Win%'].rank(ascending=False, method='dense').astype(int))
+                frame.insert(0, sort_col, frame[f'{kind}_Win%'].rank(ascending=False, method='dense').fillna(0).astype(int))
             else:
                 sort_col = f'{kind}_Win_Rk'
                 frame.insert(0, sort_col, frame[f'{kind}_Win'].rank(ascending=False, method='dense').astype(int))
@@ -333,27 +342,38 @@ class DataPrepper():
         frames = []
         for plyr in dff['Player'].unique():
             frame = dff[dff['Player']==plyr]
-            frame.insert(0, 'Rank', frame['Total_Win%'].rank(ascending=False, method='dense').astype(int))
+            frame.insert(0, 'Rank', frame['Total_Win%'].rank(ascending=False, method='dense').fillna(0).astype(int))
             frame = frame.sort_values('Rank', ascending=True)
             frames.append(frame)
         res = pd.concat(frames)
+        res['Total_Win%'] = res['Total_Win%'].fillna(0.0)
         champs = pd.DataFrame.from_dict(self.champ_hist, orient='index')\
                             .reset_index()\
                             .rename(columns={'index': 'Year', 0: 'Player'})
+        
+        ## Insert dummy Victoria years so ST Plotting functions are happy downstream
+        # vic = res[(res['Player']=='JP') & (res['Year']<2023)].copy().assign(Player='Victoria')#.assign(Champ=False)
+        # vic[['Rank', 'Total_Win%', 'Total_Win', 'Total_Loss', 'Reg_Win', 'Playoff_Win']] = 0
+        # res = pd.concat([res, vic.sort_values(by='Year', ascending=False)], axis=0)
+
         return res.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
 
     # @st.cache
     def prep_player_teams_this_year(self, df: pd.DataFrame, curr_year: int):
-        df['Team'] = df['Team'] + " (" + df['Total_Win'].astype(int).astype(str) + ")"
+        df['Team'] = df['Team'] + " (" + df['Total_Win'].fillna(0).astype(int).astype(str) + ")"
         # if curr_year not in df['Year'].unique(): curr_year = df['Year'].unique().max()
         frame = df[df['Year'] == curr_year].sort_values(['Player', 'Pick'], ascending=[True, True])[['Player', 'Round', 'Team']].copy()
-        global ff
-        ff = frame
-        frame.loc[frame['Player']=='Leftover', 'Round'] = [1,2,3,4]
+        # global ff
+        # ff = frame
+        if 'Leftover' in frame['Player'].unique():
+            frame.loc[frame['Player']=='Leftover', 'Round'] = [1,2,3,4]
         frame = frame.set_index(['Round', 'Player']).unstack()
         frame.columns = frame.columns.droplevel(0)
         frame.columns.name = ''
-        frame = frame[[c for c in frame.columns if c != 'Leftover'] + ['Leftover']]
+        leftovers = frame['Leftover'] if 'Leftover' in frame.columns else None
+        frame = frame[[c for c in frame.columns if c != 'Leftover']]
+        if leftovers:
+            frame = pd.concat([frame, leftovers], axis=1)
         frame.loc[0] = frame.columns
         frame.index = frame.index + 1
         frame = frame.sort_index()
@@ -526,27 +546,27 @@ class DataPrepper():
                     x=alt.X('rd4:O', title=''),
                     size=alt.value(2),
                 )
-        rule4 = alt.Chart().mark_rule(color='black')\
-                .encode(
-                    # x=,
-                    x=alt.X('leftover:O', title=''),
-                    size=alt.value(2),
-                    # name=''
-                )
+        # rule4 = alt.Chart().mark_rule(color='black')\
+        #         .encode(
+        #             # x=,
+        #             x=alt.X('leftover:O', title=''),
+        #             size=alt.value(2),
+        #             # name=''
+        #         )
 
-        ## color changing marks via radio buttons
-        # input_checkbox = alt.binding_checkbox()
-    # checkbox_selection = alt.selection_single(bind=input_checkbox, name="Big Budget Films")
+            ## color changing marks via radio buttons
+            # input_checkbox = alt.binding_checkbox()
+        # checkbox_selection = alt.selection_single(bind=input_checkbox, name="Big Budget Films")
 
-    # size_checkbox_condition = alt.condition(checkbox_selection,
-    #                                         alt.SizeValue(25),
-    #                                         alt.Size('Hundred_Million_Production:Q')
-    #                      
-                      # )
-    # selection = alt.selection_multi(fields=['name'])
-    # color = alt.condition(selection, alt.Color('name:N'), alt.value('lightgray'))
-    # make_selector = alt.Chart(make).mark_rect().encode(y='name', color=color).add_selection(selection)
-    # fuel_chart = alt.Chart(fuel).mark_line().encode(x='index', y=alt.Y('fuel', scale=alt.Scale(domain=[0, 10])), color='name').transform_filter(selection)
+        # size_checkbox_condition = alt.condition(checkbox_selection,
+        #                                         alt.SizeValue(25),
+        #                                         alt.Size('Hundred_Million_Production:Q')
+        #                      
+                        # )
+        # selection = alt.selection_multi(fields=['name'])
+        # color = alt.condition(selection, alt.Color('name:N'), alt.value('lightgray'))
+        # make_selector = alt.Chart(make).mark_rect().encode(y='name', color=color).add_selection(selection)
+        # fuel_chart = alt.Chart(fuel).mark_line().encode(x='index', y=alt.Y('fuel', scale=alt.Scale(domain=[0, 10])), color='name').transform_filter(selection)
                                            
                                            
         player_selection = alt.selection_multi(fields=['Player'])
@@ -566,7 +586,7 @@ class DataPrepper():
                                     color=player_color_condition,
                                     opacity=opacity_
                                     )\
-                                .properties(title=f"{year_range} Picks by Player")
+                                .properties(title=f"{', '.join([str(i) for i in year_range])} Picks by Player")
         
         player_selector = alt.Chart(source).mark_rect()\
                 .encode(x='Player', color=player_color_condition)\
@@ -629,14 +649,15 @@ class DataPrepper():
         
         
         
+            # rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
         res = alt.layer(
-            rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
+            rule1, rule2, rule3, text_wins, text_tm, highlight_players,
             data=source, width=1250
             ).transform_calculate(
-                rd2="7.5",          ## use pick halfway b/w rounds to draw vert line
-                rd3="14.5",
-                rd4="21.5",
-                leftover="28.5"
+                rd2="8.5",          ## use pick halfway b/w rounds to draw vert line
+                rd3="16.5",
+                rd4="24.5",
+                # leftover="28.5"
             )
             
         st.altair_chart(res) 
@@ -648,6 +669,7 @@ class DataPrepper():
         st.dataframe(self.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=700)
 
     def plot_wins_by_year(self, frame):
+        # print(frame)
         points = alt.Chart(frame)\
                     .mark_line(strokeWidth=4, color='grey')\
                     .encode(
@@ -800,7 +822,7 @@ if __name__ == '__main__':
     st.write(f"""
     ## Global NFL Picks Pool
     ##### Colorado, Texas, California, England, Japan, and Sweden
-    Picks Pool {DP.po_inc} as of week {DP.the_wk} - {DP.the_ssn}!  
+    Picks Pool {DP.po_inc} as of week {int(DP.the_wk)} - {DP.the_ssn}!  
     #
     """)
     
@@ -815,7 +837,7 @@ if __name__ == '__main__':
     st.dataframe(DP.style_frame(DP.dfy_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', 'Total Win%': '{:.1f}'}), width=900)
 
 
-    st.write("""By virtue of his Bucs' win over Brandon's Eagles, Dan has won this year's Picks Pool.  Congratulations to Dan on his first Pool title! Be sure to send us your NFL item request, around $60 or less.""")
+    # st.write("""By virtue of his Bucs' win over Brandon's Eagles, Dan has won this year's Picks Pool.  Congratulations to Dan on his first Pool title! Be sure to send us your NFL item request, around $60 or less.""")
 
 
 
@@ -831,15 +853,16 @@ if __name__ == '__main__':
 
     ## Draft Overview Chart
     st.write("""#### Draft Overview """)
+    # DP.df['Total_Win'] = np.random.randint(1,18, size=DP.df.shape[0])  ## testing for chart
     DP.plot_draft_overview_altair(DP.df, year_range=[DP.curr_year])
 
     st.write("""# """)
-    st.write(""" Looking at this, click on **Dan's button** to highlight only his draft picks.  You can see that, by round, he picked a team that finished   
-    (1) tied for the most wins    
-    (2) tied for the most wins    
-    (3) tied for the most wins    
-    (4) with the second most wins!   
-    Can't beat that....""")
+    # st.write(""" Looking at this, click on **Dan's button** to highlight only his draft picks.  You can see that, by round, he picked a team that finished   
+    # (1) tied for the most wins    
+    # (2) tied for the most wins    
+    # (3) tied for the most wins    
+    # (4) with the second most wins!   
+    # Can't beat that....""")
 
 
 
@@ -953,7 +976,10 @@ How about the top 10 Playoff runs?
     st.write("""#""")
     # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
     # dfs_
-    player_hist = DP.player_hist.merge(DP.champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
+    if 'Champ' in DP.player_hist.columns:
+        player_hist = DP.player_hist 
+    else:
+        player_hist = DP.player_hist.merge(DP.champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
     # player_hist = player_hist.merge(champs.assign(Champ='Yes')[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna('No')
     # player_hist.loc[(player_hist['Year']==curr_year) & (player_hist['Champ']=='Yes'), 'Champ'] = 'Proj'
     # player_hist.tail(20)
@@ -989,7 +1015,6 @@ How about the top 10 Playoff runs?
                 
     ## Can't use "+" layer operator with faceted plots
     chart = alt.layer(bars, text, data=player_hist).facet(column=alt.Column('Year:O', header=alt.Header(title='')), title=alt.TitleParams(text='Wins by Year', anchor='middle'))#.resolve_scale(color='independent')
-
 
     st.altair_chart(chart)
     
@@ -1062,7 +1087,7 @@ How about the top 10 Playoff runs?
     st.write("""Last, here are the personal records for each player, sorted by most at top.  \nBlue highlight is for this season and shows who might have a chance at setting a new personal record for total wins.""")
     
     
-    
+    # print(DP.player_hist)
 
     left_column, right_column = st.columns([2, 1])
     
