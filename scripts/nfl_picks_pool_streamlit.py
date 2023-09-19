@@ -139,9 +139,9 @@ class DataPrepper():
         df = df[['Year', 'Round', 'Pick', 'Player', 'Team']]
 
         ## get regular ssn, post ssn, and total win/loss info
-        dfreg = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_regular_ssn_standings_pool_years.csv')).drop('Team', axis=1)
-        dfpost = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_post_ssn_standings_pool_years.csv'))
-        dftot = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_regular_plus_post_ssn_standings_pool_years.csv'))
+        dfreg = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_regular_ssn_standings_pool_years.csv')).drop('Team', axis=1).replace('Redskins', 'Commanders')
+        dfpost = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_post_ssn_standings_pool_years.csv')).replace('Redskins', 'Commanders')
+        dftot = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_regular_plus_post_ssn_standings_pool_years.csv')).replace('Redskins', 'Commanders')
 
         dfreg['Playoffs'] = [True if seed > 0 else False for seed in dfreg['Playoff_Seed']]
         
@@ -251,7 +251,7 @@ class DataPrepper():
         frame = frame.sort_values(sort_col, ascending=False)
 
         int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
-        print(frame[int_cols])
+        # print(frame[int_cols])
         frame[int_cols] = frame[int_cols].fillna('0').astype(int)
 
         win_cols = np.array(['Win%', 'Total_Win'])
