@@ -189,7 +189,7 @@ class DataPrepper():
         dfy = df.groupby(['Year', 'Player'], as_index=False).sum().copy()
         idx = dfy.columns.get_loc('Reg_Games')
         dfy.insert(idx+1, 'Reg_Games_Left', (16*4) - dfy['Reg_Games'])
-        mask = (dfy['Year'] >= 2021) ## start of 17-game seasons
+        mask = (dfy['Year'] >= 2021) ## start of 17-game seasons -- overwrite 16gms
         dfy.loc[mask, 'Reg_Games_Left'] = (17*4) - dfy.loc[mask, 'Reg_Games']
 
         for kind in ['Reg', 'Playoff', 'Total']:
@@ -251,15 +251,14 @@ class DataPrepper():
 
             frame.columns = [c.replace('Reg_', '') if 'Left' not in c else c for c in frame.columns]
             sort_col = 'Total_Win%' if 'Total_Win%' in frame.columns else 'Win%'
+            cols = np.array(['Rank', 'Year', 'Player', 'Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Win%', 'Full_Ssn_Pace', 'Playoff_Teams'])
+            frame = frame[cols[np.isin(cols, frame.columns)]]
         else:
             ## switch to tot win once PO begins b/c bye weeks are done
             sort_col = 'Total_Win'
             frame = frame[['Year', 'Player', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Total_Win%', 'Playoff_Teams', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']]
 
         frame = frame.sort_values(sort_col, ascending=False)
-
-        # int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
-        # int_cols = frame.select_dtypes(include=['int']).columns
         int_cols = np.array(['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams'])
         int_cols = int_cols[np.isin(int_cols, frame.columns)]
         
