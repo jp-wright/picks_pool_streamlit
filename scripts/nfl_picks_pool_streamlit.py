@@ -1115,12 +1115,19 @@ How about the top 10 Playoff runs?
 
     left_column, right_column = st.columns([2, 1])
     
-    # st.write(DP.player_hist)
-    with left_column:
-        for name in DP.dfy_['Player'].unique():
-            DP.show_player_hist_table(name)
-            st.write("\n\n\n _")
+    # # st.write(DP.player_hist)
+    # with left_column:
+    #     for name in DP.dfy_['Player'].unique():
+    #         DP.show_player_hist_table(name)
+    #         st.write("\n\n\n _")
 
-    with right_column: 
-        for name in DP.dfy_['Player'].unique():
+    # with right_column: 
+    #     for name in DP.dfy_['Player'].unique():
+    #         DP.plot_wins_by_year(DP.player_hist[DP.player_hist['Player'] == name])
+
+
+    for name in DP.dfy_['Player'].unique():
+        with left_column:
+            DP.show_player_hist_table(name)
+        with right_column: 
             DP.plot_wins_by_year(DP.player_hist[DP.player_hist['Player'] == name])
