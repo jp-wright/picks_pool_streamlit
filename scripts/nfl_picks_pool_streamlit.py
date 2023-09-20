@@ -258,16 +258,16 @@ class DataPrepper():
 
         frame = frame.sort_values(sort_col, ascending=False)
 
-        int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
+        # int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
+        int_cols = frame.select_dtypes(include=['int']).columns
         
         for col in int_cols:
-            print(col)
-            print(frame[col])
-            logging.error(col)
-            logging.error(frame[col])
-            
-        frame[int_cols] = frame[int_cols].fillna(0).astype(int)
-
+            try:
+                frame[int_cols] = frame[int_cols].fillna(0).astype(int)
+            except ValueError:
+                logging.error(col)
+                logging.error(frame[col])
+        
         win_cols = np.array(['Win%', 'Total_Win'])
         win_col = win_cols[np.isin(win_cols, frame.columns)]
         frame.insert(0, 'Rank', frame[win_col].rank(ascending=False).fillna(0).astype('int'))
