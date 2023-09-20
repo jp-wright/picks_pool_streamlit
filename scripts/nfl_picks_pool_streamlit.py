@@ -251,7 +251,10 @@ class DataPrepper():
 
             frame.columns = [c.replace('Reg_', '') if 'Left' not in c else c for c in frame.columns]
             sort_col = 'Total_Win%' if 'Total_Win%' in frame.columns else 'Win%'
-            cols = np.array(['Rank', 'Year', 'Player', 'Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Win%', 'Full_Ssn_Pace', 'Playoff_Teams'])
+            cols = np.array(['Rank', 'Year', 'Player', 'Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Win%', 'Full_Ssn_Pace'])
+            # st.dataframe(frame.head())
+            # if frame[frame['Playoff_Seed'] > 0].shape[0] > 0: 
+            #     cols.append('Playoff_Seed')
             frame = frame[cols[np.isin(cols, frame.columns)]]
         else:
             ## switch to tot win once PO begins b/c bye weeks are done
@@ -276,6 +279,7 @@ class DataPrepper():
         # cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Total_Win%']
         # if 'Total_Win%' not in frame.columns: frame['Total_Win%'] = 0.0
         cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Total Win%']
+        # if frame['Win'].sum() == 0: 
         if 'Total Win%' not in frame.columns: frame['Total Win%'] = 0.0
         if frame['Win%'].isnull().all(): frame['Win%'] = 0.0
         frame[cols] = frame[cols].round(1)
@@ -594,8 +598,7 @@ class DataPrepper():
         opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
         
         player_color_condition = alt.condition(player_selection,
-                                    alt.Color('Player:N', 
-                                        scale=alt.Scale(domain=domain_, range=range_)),
+                                    alt.Color('Player:N', scale=alt.Scale(domain=domain_, range=range_)),
                                     alt.value('lightgray')
                                 )
 
@@ -684,7 +687,7 @@ class DataPrepper():
         
 
     def show_player_hist_table(self, name):
-        st.dataframe(self.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']), width=700)
+        st.dataframe(self.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']), width=700)
 
     def plot_wins_by_year(self, frame):
         # print(frame)
@@ -723,7 +726,9 @@ class DataPrepper():
 
     def prep_best_worst_picks_by_rd(self, df):
         frame = df.query(f"Year=={self.curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('\s\(\d+\)', '', regex=True)
-        frame['Playoffs'] = frame['Playoff_Seed'] > 0
+        # frame['Playoffs'] = frame['Playoff_Seed'] > 0  ##return bools now rendered as checkbox in Streamlit (blah)
+        neg = 'No' if frame['Playoff_Seed'].sum() > 0 else 'TBD'
+        frame['Playoffs'] = np.where(frame['Playoff_Seed'] > 0, 'Yes', neg)
         return frame.drop('Playoff_Seed', axis=1)
 
     def picks_by_round(self, frame, best_worst): 
@@ -852,7 +857,8 @@ if __name__ == '__main__':
     
     st.write(""" # """)
     st.write("""###### Player Totals""")
-    st.dataframe(DP.style_frame(DP.dfy_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', 'Total Win%': '{:.1f}'}), width=900)
+    col = 'Total Win%' if 'Total Win%' in DP.dfy_ else 'Win%'
+    st.dataframe(DP.style_frame(DP.dfy_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', col: '{:.1f}'}), width=900)
 
 
     # st.write("""By virtue of his Bucs' win over Brandon's Eagles, Dan has won this year's Picks Pool.  Congratulations to Dan on his first Pool title! Be sure to send us your NFL item request, around $60 or less.""")
@@ -968,7 +974,7 @@ How about the top 10 Playoff runs?
     """)
     
     
-    st.dataframe(DP.style_frame(DP.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=2021, bold_cols=['Total_Win']))
+    st.dataframe(DP.style_frame(DP.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=DP.curr_year, bold_cols=['Total_Win']))
     
     
     st.write("""#""")
@@ -979,7 +985,7 @@ How about the top 10 Playoff runs?
     st.dataframe(DP.style_frame(DP.dfc_, bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
     
     
-    st.write("""Jackson, Alex, and Brandon have all amassed 180 wins or more, with Jackson currently above Alex by a single win.  Mike and Jordan are next, while thanks to his current season, Dan has officially passed Pizzard via winning percentage, leaving Pize in last place in the very pool he created. Yay!""")
+    st.write("""...Victoria hasn't even won as many games as the Leftovers.  Sad!""")
     
     
     
