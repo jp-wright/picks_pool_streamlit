@@ -433,6 +433,8 @@ class DataPrepper():
         frame['Conference'] = [self.conf_dct[tm] for tm in frame['Team']]
         frame.rename(columns={'Playoff_Loss': 'Eliminated'}, inplace=True)
         frame['Eliminated'] = frame['Eliminated'] > 0
+        # if frame.empty:
+        #     frame = pd.DataFrame({' ':'No Playoff Teams Yet'}, index=[0])
         return frame
 
     def get_count_teams_over_n_wins(self, nwins):
@@ -859,9 +861,9 @@ if __name__ == '__main__':
 
 
 
-    
-    st.write("""#### Playoff Teams Tracker""")
-    st.dataframe(DP.style_frame(DP.dfpo, bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}', 'Playoff_Loss': '{:.0f}'}), width=765, height=620)
+    if not DP.dfpo.empty:
+        st.write("""#### Playoff Teams Tracker""")
+        st.dataframe(DP.style_frame(DP.dfpo, bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}', 'Playoff_Loss': '{:.0f}'}), width=765, height=620)
 
 
 
