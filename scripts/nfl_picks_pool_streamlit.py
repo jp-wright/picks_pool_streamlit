@@ -259,7 +259,9 @@ class DataPrepper():
         frame = frame.sort_values(sort_col, ascending=False)
 
         # int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
-        int_cols = frame.select_dtypes(include=['int']).columns
+        # int_cols = frame.select_dtypes(include=['int']).columns
+        int_cols = np.array(['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams'])
+        int_cols = int_cols[np.isin(int_cols, frame.columns)]
         
         for col in int_cols:
             try:
