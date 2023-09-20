@@ -1131,3 +1131,4 @@ How about the top 10 Playoff runs?
             DP.show_player_hist_table(name)
         with right_column: 
             DP.plot_wins_by_year(DP.player_hist[DP.player_hist['Player'] == name])
+            st.write("\n\n\n _")
