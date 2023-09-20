@@ -11,6 +11,7 @@ import re
 import os
 import sys
 from typing import List, Tuple, Dict, Sequence, Optional
+import logging
 
 # import subprocess
 
@@ -262,8 +263,9 @@ class DataPrepper():
         for col in int_cols:
             print(col)
             print(frame[col])
-            sys.stdout(col)
-            sys.stdout(frame[col])
+            logging.error(col)
+            logging.error(frame[col])
+            
         frame[int_cols] = frame[int_cols].fillna(0).astype(int)
 
         win_cols = np.array(['Win%', 'Total_Win'])
