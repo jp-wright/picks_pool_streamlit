@@ -260,7 +260,10 @@ class DataPrepper():
         int_cols = [c for c in frame.columns if 'proj' not in c and 'Win%' not in c and 'Player' not in c]
         
         for col in int_cols:
+            print(col)
             print(frame[col])
+            sys.stdout(col)
+            sys.stdout(frame[col])
         frame[int_cols] = frame[int_cols].fillna(0).astype(int)
 
         win_cols = np.array(['Win%', 'Total_Win'])
