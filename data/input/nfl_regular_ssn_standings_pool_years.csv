@@ -191,35 +191,35 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2022,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,4,13,0,17,0.235,1..5,340,449,L7,NFC West,NFC,,3..9
 2022,NFL,Reg_Ssn,Houston Texans,Texans,3,13,1,17,0.206,3..2..1,289,420,W1,AFC South,AFC,,3..8..1
 2022,NFL,Reg_Ssn,Chicago Bears,Bears,3,14,0,17,0.176,0..6,326,463,L10,NFC North,NFC,,1..11
-2023,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,2,0,0,2,1.0,1..0,70,10,W2,NFC East,NFC,,1..0
-2023,NFL,Reg_Ssn,Miami Dolphins,Dolphins,2,0,0,2,1.0,1..0,60,51,W2,AFC East,AFC,,2..0
-2023,NFL,Reg_Ssn,San Francisco 49ers,49ers,2,0,0,2,1.0,1..0,60,30,W2,NFC West,NFC,,1..0
-2023,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,2,0,0,2,1.0,0..0,59,48,W2,NFC East,NFC,,1..0
-2023,NFL,Reg_Ssn,Washington Redskins,Redskins,2,0,0,2,1.0,0..0,55,49,W2,NFC East,NFC,,1..0
-2023,NFL,Reg_Ssn,Baltimore Ravens,Ravens,2,0,0,2,1.0,1..0,52,33,W2,AFC North,AFC,,2..0
-2023,NFL,Reg_Ssn,Atlanta Falcons,Falcons,2,0,0,2,1.0,1..0,49,34,W2,NFC South,NFC,,2..0
-2023,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,2,0,0,2,1.0,0..0,47,34,W2,NFC South,NFC,,2..0
-2023,NFL,Reg_Ssn,New Orleans Saints,Saints,2,0,0,2,1.0,1..0,36,32,W2,NFC South,NFC,,1..0
-2023,NFL,Reg_Ssn,Green Bay Packers,Packers,1,1,0,2,0.5,1..0,62,45,L1,NFC North,NFC,,1..1
-2023,NFL,Reg_Ssn,Buffalo Bills,Bills,1,1,0,2,0.5,0..1,54,32,W1,AFC East,AFC,,1..1
-2023,NFL,Reg_Ssn,Los Angeles Rams,Rams,1,1,0,2,0.5,1..1,53,43,L1,NFC West,NFC,,1..1
-2023,NFL,Reg_Ssn,Indianapolis Colts,Colts,1,1,0,2,0.5,1..1,52,51,W1,AFC South,AFC,,1..1
-2023,NFL,Reg_Ssn,Detroit Lions,Lions,1,1,0,2,0.5,0..0,52,57,L1,NFC North,NFC,,0..1
-2023,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,1,1,0,2,0.5,0..1,50,61,W1,NFC West,NFC,,1..1
-2023,NFL,Reg_Ssn,Cleveland Browns,Browns,1,1,0,2,0.5,1..1,46,29,L1,AFC North,AFC,,1..1
-2023,NFL,Reg_Ssn,Tennessee Titans,Titans,1,1,0,2,0.5,0..0,42,40,W1,AFC South,AFC,,1..0
-2023,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,1,1,0,2,0.5,1..0,40,38,L1,AFC South,AFC,,1..1
-2023,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,1,1,0,2,0.5,0..0,37,30,W1,AFC West,AFC,,1..0
-2023,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,1,1,0,2,0.5,1..0,33,52,W1,AFC North,AFC,,1..0
-2023,NFL,Reg_Ssn,New York Jets,Jets,1,1,0,2,0.5,1..0,32,46,L1,AFC East,AFC,,1..0
-2023,NFL,Reg_Ssn,New York Giants,Giants,1,1,0,2,0.5,0..1,31,68,W1,NFC East,NFC,,1..1
-2023,NFL,Reg_Ssn,Las Vegas Raiders,Raiders,1,1,0,2,0.5,1..0,27,54,L1,AFC West,AFC,,1..1
-2023,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,0,2,0,2,0.0,0..0,58,63,L2,AFC West,AFC,,0..2
-2023,NFL,Reg_Ssn,Denver Broncos,Broncos,0,2,0,2,0.0,0..1,49,52,L2,AFC West,AFC,,0..1
-2023,NFL,Reg_Ssn,Minnesota Vikings,Vikings,0,2,0,2,0.0,0..0,45,54,L2,NFC North,NFC,,0..2
-2023,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,0,2,0,2,0.0,0..0,44,51,L2,NFC West,NFC,,0..2
-2023,NFL,Reg_Ssn,New England Patriots,Patriots,0,2,0,2,0.0,0..1,37,49,L2,AFC East,AFC,,0..1
-2023,NFL,Reg_Ssn,Chicago Bears,Bears,0,2,0,2,0.0,0..1,37,65,L2,NFC North,NFC,,0..2
-2023,NFL,Reg_Ssn,Houston Texans,Texans,0,2,0,2,0.0,0..1,29,56,L2,AFC South,AFC,,0..2
-2023,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,0,2,0,2,0.0,0..2,27,51,L2,AFC North,AFC,,0..2
-2023,NFL,Reg_Ssn,Carolina Panthers,Panthers,0,2,0,2,0.0,0..2,27,44,L2,NFC South,NFC,,0..2
+2023,NFL,Reg_Ssn,Miami Dolphins,Dolphins,3,0,0,3,1.0,1..0,130,71,W3,AFC East,AFC,,3..0
+2023,NFL,Reg_Ssn,San Francisco 49ers,49ers,3,0,0,3,1.0,1..0,90,42,W3,NFC West,NFC,,2..0
+2023,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,3,0,0,3,1.0,0..0,84,59,W3,NFC East,NFC,,2..0
+2023,NFL,Reg_Ssn,Buffalo Bills,Bills,2,1,0,3,0.667,0..1,91,35,W2,AFC East,AFC,,1..1
+2023,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,2,1,0,3,0.667,0..1,87,88,W2,NFC West,NFC,,2..1
+2023,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,2,1,0,3,0.667,1..0,86,38,L1,NFC East,NFC,,1..1
+2023,NFL,Reg_Ssn,Green Bay Packers,Packers,2,1,0,3,0.667,1..0,80,62,W1,NFC North,NFC,,2..1
+2023,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,2,1,0,3,0.667,0..0,78,40,W2,AFC West,AFC,,1..0
+2023,NFL,Reg_Ssn,Indianapolis Colts,Colts,2,1,0,3,0.667,1..1,74,70,W2,AFC South,AFC,,2..1
+2023,NFL,Reg_Ssn,Cleveland Browns,Browns,2,1,0,3,0.667,1..1,73,32,W1,AFC North,AFC,,2..1
+2023,NFL,Reg_Ssn,Detroit Lions,Lions,2,1,0,3,0.667,0..0,72,63,W1,NFC North,NFC,,1..1
+2023,NFL,Reg_Ssn,Baltimore Ravens,Ravens,2,1,0,3,0.667,1..0,71,55,L1,AFC North,AFC,,2..1
+2023,NFL,Reg_Ssn,Washington Redskins,Redskins,2,1,0,3,0.667,0..0,58,86,L1,NFC East,NFC,,1..0
+2023,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,2,1,0,3,0.667,0..0,58,59,L1,NFC South,NFC,,2..1
+2023,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,2,1,0,3,0.667,1..0,56,70,W2,AFC North,AFC,,2..0
+2023,NFL,Reg_Ssn,Atlanta Falcons,Falcons,2,1,0,3,0.667,1..0,55,54,L1,NFC South,NFC,,2..1
+2023,NFL,Reg_Ssn,New Orleans Saints,Saints,2,1,0,3,0.667,1..0,53,50,L1,NFC South,NFC,,1..1
+2023,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,1,2,0,3,0.333,0..0,86,87,W1,AFC West,AFC,,0..2
+2023,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,1,2,0,3,0.333,0..0,72,67,W1,NFC West,NFC,,1..2
+2023,NFL,Reg_Ssn,Los Angeles Rams,Rams,1,2,0,3,0.333,1..1,69,62,L2,NFC West,NFC,,1..1
+2023,NFL,Reg_Ssn,Houston Texans,Texans,1,2,0,3,0.333,1..1,66,73,W1,AFC South,AFC,,1..2
+2023,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,1,2,0,3,0.333,1..1,57,75,L2,AFC South,AFC,,1..2
+2023,NFL,Reg_Ssn,New England Patriots,Patriots,1,2,0,3,0.333,1..1,52,59,W1,AFC East,AFC,,1..1
+2023,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,1,2,0,3,0.333,0..2,46,67,W1,AFC North,AFC,,0..2
+2023,NFL,Reg_Ssn,Tennessee Titans,Titans,1,2,0,3,0.333,0..0,45,67,L1,AFC South,AFC,,1..1
+2023,NFL,Reg_Ssn,Las Vegas Raiders,Raiders,1,2,0,3,0.333,1..0,45,77,L2,AFC West,AFC,,1..2
+2023,NFL,Reg_Ssn,New York Giants,Giants,1,2,0,3,0.333,0..1,43,98,L1,NFC East,NFC,,1..2
+2023,NFL,Reg_Ssn,New York Jets,Jets,1,2,0,3,0.333,1..1,42,61,L2,AFC East,AFC,,1..1
+2023,NFL,Reg_Ssn,Denver Broncos,Broncos,0,3,0,3,0.0,0..1,69,122,L3,AFC West,AFC,,0..2
+2023,NFL,Reg_Ssn,Minnesota Vikings,Vikings,0,3,0,3,0.0,0..0,69,82,L3,NFC North,NFC,,0..2
+2023,NFL,Reg_Ssn,Carolina Panthers,Panthers,0,3,0,3,0.0,0..2,54,81,L3,NFC South,NFC,,0..3
+2023,NFL,Reg_Ssn,Chicago Bears,Bears,0,3,0,3,0.0,0..1,47,106,L3,NFC North,NFC,,0..2
