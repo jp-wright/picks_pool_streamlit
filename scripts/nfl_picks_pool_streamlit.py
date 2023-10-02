@@ -107,7 +107,8 @@ class DataPrepper():
 
         self.df = self.load_and_prep_data()
         self.curr_year = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
-        if self.curr_year not in self.df['Year'].unique(): self.curr_year = self.df['Year'].unique().max()
+        if self.curr_year not in self.df['Year'].unique(): 
+            self.curr_year = self.df['Year'].unique().max()
 
         self.dfy = self.stats_by_year(self.df, self.champ_hist)
         self.dfr = self.stats_by_round(self.df)
