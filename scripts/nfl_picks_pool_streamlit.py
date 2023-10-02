@@ -13,7 +13,7 @@ import sys
 from typing import List, Tuple, Dict, Sequence, Optional
 import logging
 
-print("Marin")
+print("Test")
 
 # import subprocess
 

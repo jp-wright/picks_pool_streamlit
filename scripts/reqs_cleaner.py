@@ -2,7 +2,7 @@
 ## pip's "freeze" export lists URL destinations for some packages installed by conda
 ## this prevents version numbers being used via requirements.txt
 ## conda's export does include version numbers for all packages, so if I clean it
-## I can use version specific package installs in the streamlit app
+## I can use version specific package installs in the streamlit app..
 
 import os
 
