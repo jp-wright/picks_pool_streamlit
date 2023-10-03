@@ -128,9 +128,10 @@ class DataPrepper():
         self.the_time = time.strftime("%H:%M CST", time.localtime())
         self.the_ssn = self.curr_year
         # self.the_ssn = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
-        self.the_wk = self.df.loc[self.df['Year'] == self.the_ssn, 'Reg_Games'].max()
+        self.the_wk = int(self.df.loc[self.df['Year'] == self.the_ssn, 'Reg_Games'].max())
         if self.the_wk > 12: 
             self.the_wk += 1
+        
     
     # @st.cache
     def load_and_prep_data(self): 
@@ -519,7 +520,7 @@ class DataPrepper():
                 # .applymap(lambda cell: colorize_curr_year(cell, clr_yr))\
                 # .applymap(lambda cell: colorize_player_names_new(cell, bg_clr_dct))\
 
-
+        
     def plot_draft_overview_altair(self, df: pd.DataFrame, year_range: bool=False) -> None:
         if not isinstance(year_range, list):
             year_range = [year_range]
@@ -528,7 +529,8 @@ class DataPrepper():
                     .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
                     .encode(
                         alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
-                        alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
+                        alt.Y('Total_Win:Q', scale=alt.Scale(zero=True), 
+                                axis=alt.Axis(values=list(range(self.the_wk + 1)))),
                         tooltip="Player:N"
                         )
 
