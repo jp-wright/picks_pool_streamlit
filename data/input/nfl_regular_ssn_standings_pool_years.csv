@@ -207,15 +207,15 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2023,NFL,Reg_Ssn,Atlanta Falcons,Falcons,3,2,0,5,0.6,1..0,83,96,W1,NFC South,NFC,,2..1
 2023,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,3,2,0,5,0.6,2..0,79,110,W1,AFC North,AFC,,3..1
 2023,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,2,2,0,4,0.5,1..0,110,104,W2,AFC West,AFC,,1..2
-2023,NFL,Reg_Ssn,Green Bay Packers,Packers,2,2,0,4,0.5,1..1,100,96,L1,NFC North,NFC,,2..2
 2023,NFL,Reg_Ssn,Cleveland Browns,Browns,2,2,0,4,0.5,1..2,76,60,L1,AFC North,AFC,,2..2
 2023,NFL,Reg_Ssn,Houston Texans,Texans,2,3,0,5,0.4,1..1,115,100,L1,AFC South,AFC,,2..2
+2023,NFL,Reg_Ssn,Green Bay Packers,Packers,2,3,0,5,0.4,1..1,113,113,L2,NFC North,NFC,,2..2
 2023,NFL,Reg_Ssn,Los Angeles Rams,Rams,2,3,0,5,0.4,1..1,112,108,L1,NFC West,NFC,,1..2
 2023,NFL,Reg_Ssn,Washington Redskins,Redskins,2,3,0,5,0.4,0..1,109,160,L3,NFC East,NFC,,1..2
 2023,NFL,Reg_Ssn,New York Jets,Jets,2,3,0,5,0.4,1..1,93,105,W1,AFC East,AFC,,2..2
 2023,NFL,Reg_Ssn,Tennessee Titans,Titans,2,3,0,5,0.4,0..1,88,93,L1,AFC South,AFC,,2..2
 2023,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,2,3,0,5,0.4,0..2,83,114,W1,AFC North,AFC,,0..3
-2023,NFL,Reg_Ssn,Las Vegas Raiders,Raiders,1,3,0,4,0.25,1..1,62,101,L3,AFC West,AFC,,1..3
+2023,NFL,Reg_Ssn,Las Vegas Raiders,Raiders,2,3,0,5,0.4,1..1,79,114,W1,AFC West,AFC,,1..3
 2023,NFL,Reg_Ssn,Denver Broncos,Broncos,1,4,0,5,0.2,0..1,121,181,L1,AFC West,AFC,,0..3
 2023,NFL,Reg_Ssn,Chicago Bears,Bears,1,4,0,5,0.2,0..1,115,157,W1,NFC North,NFC,,1..2
 2023,NFL,Reg_Ssn,Minnesota Vikings,Vikings,1,4,0,5,0.2,0..0,110,122,L1,NFC North,NFC,,1..2
