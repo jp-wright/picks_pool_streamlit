@@ -1,49 +1,128 @@
-#!/opt/anaconda3/envs/nflpickspool
+## Run in terminal with "streamlit run <this file>.py"
 
-# import streamlit as st
-# import streamlit.components.v1 as components
+import streamlit as st
+import streamlit.components.v1 as components
+import pandas as pd
+import numpy as np
+import altair as alt
 import time
 from pathlib import Path
-import logging
-logging.basicConfig(level=logging.INFO)
 import re
 import os
 import sys
 from typing import List, Tuple, Dict, Sequence, Optional
-import pandas as pd
-import numpy as np
-# import altair as alt
-from utility.pickspool_styling import champ_hist
-from utility.pickspool_funcs import get_curr_year, export_to_csv
+import logging
 
+print("Test")
+
+# import subprocess
+
+# def install(package):
+#     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
+
+# install('openpyxl')
 
 class DataPrepper():
-    """asd
-    """
     def __init__(self):
         self.ROOT_PATH = Path.cwd()
         # st.write('class path', self.ROOT_PATH)
+        
+
+
+        self.bg_clr_dct = {
+            'Alex': '#fff2cc',
+            'Mike': '#cfe2f3',
+            'JP': '#d9ead3',
+            'Jordan': '#f4cccc',
+            'Brandon': '#e6b8af',
+            'Jackson': '#d9d2e9',
+            'Dan': '#fce5cd',
+            'Victoria': '#FFDAEC',
+            # 'Victoria': '#FFB2E4',
+            'LEFTOVER': '#d9d9d9',
+            'Leftover': '#d9d9d9',
+            }
+
+
+        self.plot_bg_clr_dct = {
+            'Alex': '#ffd966',
+            'Brandon': '#da988b',
+            'Dan': '#f7b56e',
+            'JP': '#a6cd98',
+            'Jackson': '#a898cd',
+            'Jordan': '#e48181',
+            'Leftover': '#b3b3b3',
+            'Mike': '#85b6e0',
+            'Victoria': '#FFB2E4',
+            # 'LEFTOVER': '#b3b3b3',
+            }
+        
+        self.txt_clr_dct = {
+            'AFC': 'red',
+            'NFC': 'blue',
+            }
+            
+        self.conf_dct = {
+            'Chiefs': 'AFC',
+            'Bills': 'AFC',
+            'Patriots': 'AFC',
+            'Browns': 'AFC',
+            'Ravens': 'AFC',
+            'Titans': 'AFC',
+            'Chargers': 'AFC',
+            'Colts': 'AFC',
+            'Dolphins': 'AFC',
+            'Broncos': 'AFC',
+            'Steelers': 'AFC',
+            'Jets': 'AFC',
+            'Raiders': 'AFC',
+            'Jaguars': 'AFC',
+            'Bengals': 'AFC',
+            'Texans': 'AFC',
+            'Buccaneers': 'NFC',
+            'Rams': 'NFC',
+            'Packers': 'NFC',
+            '49ers': 'NFC',
+            'Seahawks': 'NFC',
+            'Cowboys': 'NFC',
+            'Saints': 'NFC',
+            'Falcons': 'NFC',
+            'Vikings': 'NFC',
+            'Redskins': 'NFC',
+            'Cardinals': 'NFC',
+            'Bears': 'NFC',
+            'Giants': 'NFC',
+            'Panthers': 'NFC',
+            'Eagles': 'NFC',
+            'Lions': 'NFC',
+            }
+
+        self.champ_hist = {
+            2017: 'Jackson',
+            2018: 'Brandon',
+            2019: 'Jordan',
+            2020: 'Alex',
+            2021: 'Dan',
+            }
 
         self.df = self.load_and_prep_data()
-        self.curr_year = get_curr_year()
+        self.curr_year = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
         if self.curr_year not in self.df['Year'].unique(): 
             self.curr_year = self.df['Year'].unique().max()
 
-        self.dfy = self.stats_by_year(self.df, champ_hist)
+        self.dfy = self.stats_by_year(self.df, self.champ_hist)
         self.dfr = self.stats_by_round(self.df)
         self.dfc = self.stats_by_career(self.df)
         self.dfy_ = self.prep_year_data_for_website(self.dfy)
         self.dfr_ = self.prep_round_data_for_website(self.dfr)
         self.dfc_ = self.prep_career_data_for_website(self.dfc)
-        self.dfpt = self.prep_player_teams_this_year(self.df, self.curr_year)
+        self.dfpt = self.prep_manager_teams_this_year(self.df, self.curr_year)
         self.dfpo = self.prep_playoff_teams_this_year(self.df)
         self.dfd = self.prep_best_worst_picks_by_rd(self.df)
         self.hist_frames = self.prep_year_history(self.dfy, self.curr_year)
         self.player_hist = self.prep_player_history(self.dfy, self.curr_year)
         self.champs = self.prep_champ_history(self.dfy, self.curr_year)
         
-        
-
         self.po_inc = '(playoffs included)' if 'Playoff Win' in str(self.dfy_) else ''
         self.the_date = time.strftime("%A, %d %b %Y", time.localtime())
         self.the_time = time.strftime("%H:%M CST", time.localtime())
@@ -54,7 +133,7 @@ class DataPrepper():
             self.the_wk += 1
         
     
-    
+    # @st.cache
     def load_and_prep_data(self): 
         ## Read from but never write to this file. Ref only.
         # ROOT_PATH = Path(os.getcwd())
@@ -108,7 +187,7 @@ class DataPrepper():
 
         return df
 
-    
+    # @st.cache
     def stats_by_year(self, df: pd.DataFrame, champ_hist: Dict[int, str]) -> pd.DataFrame:
         ## Yearly Stats
         dfy = df.groupby(['Year', 'Player'], as_index=False).sum().copy()
@@ -134,7 +213,7 @@ class DataPrepper():
         dfy.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'picks_pool_stats_by_year.csv'))
         return dfy.reset_index()
 
-    
+    # @st.cache
     def stats_by_round(self, df):
         dfr = df.groupby(['Year', 'Round']).sum()
         for kind in ['Reg', 'Playoff', 'Total']:
@@ -146,7 +225,7 @@ class DataPrepper():
         dfr.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'picks_pool_stats_by_round.csv'))
         return dfr.reset_index()
 
-    
+    # @st.cache
     def stats_by_career(self, df):
         dfc = df.groupby(['Player']).sum().drop(['Round', 'Pick', 'Reg_Win%', 'Playoff_Win%', 'Total_Win%'], axis=1)
 
@@ -159,7 +238,7 @@ class DataPrepper():
         dfc.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'picks_pool_stats_by_career.csv'))
         return dfc.reset_index().sort_values(['Total_Win', 'Total_Win%'], ascending=False)
 
-    
+    # @st.cache
     def prep_year_data_for_website(self, dfy: pd.DataFrame) -> pd.DataFrame:
         '''advanced formatting possible via df.style (requires jinja2).
         https://code.i-harness.com/en/q/df3234
@@ -208,10 +287,9 @@ class DataPrepper():
         if 'Total Win%' not in frame.columns: frame['Total Win%'] = 0.0
         if frame['Win%'].isnull().all(): frame['Win%'] = 0.0
         frame[cols] = frame[cols].round(1)
-        export_to_csv(frame, fname='year_data.csv', subdir='email_tables')
         return frame
 
-    
+    # @st.cache
     def prep_round_data_for_website(self, dfr: pd.DataFrame):
         '''advanced formatting possible via df.style (requires jinja2).
         https://code.i-harness.com/en/q/df3234
@@ -234,10 +312,9 @@ class DataPrepper():
 
         frame.insert(0, 'Rank', frame['Win%'].rank(ascending=False).fillna(0).astype('int'))
         frame.columns = [c.replace('_', ' ') for c in frame.columns]
-        export_to_csv(frame, fname='round_data.csv', subdir='email_tables')
         return frame
         
-    
+    # @st.cache
     def prep_career_data_for_website(self, dfc: pd.DataFrame):
         '''advanced formatting possible via df.style (requires jinja2).
         https://code.i-harness.com/en/q/df3234
@@ -248,10 +325,9 @@ class DataPrepper():
 
         frame.insert(0, 'Rank', frame['Total_Win'].rank(ascending=False).astype('int'))
         frame.columns = [c.replace('_', ' ') for c in frame.columns]
-        export_to_csv(frame, fname='career_data.csv', subdir='email_tables')
         return frame
 
-    
+    # @st.cache
     def prep_year_history(self, dfy: pd.DataFrame, highlight_year: int):
         '''Do Reg, Playoff, and Tot as separate tables?'''
 
@@ -278,11 +354,9 @@ class DataPrepper():
             hist.columns = [c.replace(f"{kind}_", '') for c in hist.columns]
             col_order = [f"{kind}_Win_Rk"] + [c for c in hist.columns if c != f"{kind}_Win_Rk"]
             frames.append(hist)
-        
-        export_to_csv(pd.concat(frames, axis=0), fname='year_hist_data.csv', subdir='email_tables')
         return frames
 
-    
+    # @st.cache
     def prep_player_history(self, dfy: pd.DataFrame, highlight_year: int):
         '''The dilemma is whether to rank each player's history by total_wins or total_win%.  Prior to 2021, total_wins was best.  But starting in 2021, with 17 games in the season, raw count of wins is misleading, and win% is the more fair metric.
         '''
@@ -306,12 +380,10 @@ class DataPrepper():
         # vic[['Rank', 'Total_Win%', 'Total_Win', 'Total_Loss', 'Reg_Win', 'Playoff_Win']] = 0
         # res = pd.concat([res, vic.sort_values(by='Year', ascending=False)], axis=0)
 
-        frame = res.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
-        export_to_csv(frame, fname='year_data.csv', subdir='email_tables')
-        return frame
+        return res.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
 
-    
-    def prep_player_teams_this_year(self, df: pd.DataFrame, curr_year: int):
+    # @st.cache
+    def prep_manager_teams_this_year(self, df: pd.DataFrame, curr_year: int):
         df['Team'] = df['Team'] + " (" + df['Total_Win'].fillna(0).astype(int).astype(str) + ")"
         # if curr_year not in df['Year'].unique(): curr_year = df['Year'].unique().max()
         frame = df[df['Year'] == curr_year].sort_values(['Player', 'Pick'], ascending=[True, True])[['Player', 'Round', 'Team']].copy()
@@ -334,10 +406,9 @@ class DataPrepper():
         frame['Round'] = frame['Round'].shift(1).fillna(0).astype(int).astype(str)
         frame.loc[0, 'Round'] = 'Round'
         frame.columns = [''.join([' ']*i) for i in range(len(frame.columns))]
-        export_to_csv(frame, fname='player_teams_data.csv', subdir='email_tables')
         return frame
 
-    
+    # @st.cache
     def prep_champ_history(self, dfy: pd.DataFrame, highlight_year: int):
         frame = dfy.copy().sort_values(['Total_Win', 'Total_Win%'], ascending=False)
         
@@ -353,7 +424,6 @@ class DataPrepper():
         #     .sort_values('Year', ascending=False)
         int_cols = [c for c in frame.columns if any(['Win' in c, 'Loss' in c]) and '%' not in c]
         frame[int_cols] = frame[int_cols].astype(int)
-        export_to_csv(frame, fname='champ_data.csv', subdir='email_tables')
         return frame
 
     def prep_playoff_teams_this_year(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -373,7 +443,6 @@ class DataPrepper():
         frame['Eliminated'] = frame['Eliminated'] > 0
         # if frame.empty:
         #     frame = pd.DataFrame({' ':'No Playoff Teams Yet'}, index=[0])
-        export_to_csv(frame, fname='playoff_teams_data.csv', subdir='email_tables')
         return frame
 
     def get_count_teams_over_n_wins(self, nwins):
@@ -452,153 +521,151 @@ class DataPrepper():
                 # .applymap(lambda cell: colorize_player_names_new(cell, bg_clr_dct))\
 
         
-    # def plot_draft_overview_altair(self, df: pd.DataFrame, year_range: bool=False) -> None:
-    #     if not isinstance(year_range, list):
-    #         year_range = [year_range]
-    #     source = df[df['Year'].isin(year_range)]
-    #     points = alt.Chart()\
-    #                 .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
-    #                 .encode(
-    #                     alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
-    #                     alt.Y('Total_Win:Q', scale=alt.Scale(zero=True), 
-    #                             axis=alt.Axis(values=list(range(self.the_wk + 1)))),
-    #                     tooltip="Player:N"
-    #                     )
+    def plot_draft_overview_altair(self, df: pd.DataFrame, year_range: bool=False) -> None:
+        if not isinstance(year_range, list):
+            year_range = [year_range]
+        source = df[df['Year'].isin(year_range)]
+        points = alt.Chart()\
+                    .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
+                    .encode(
+                        alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
+                        alt.Y('Total_Win:Q', scale=alt.Scale(zero=True), 
+                                axis=alt.Axis(values=list(range(self.the_wk + 1)))),
+                        tooltip="Player:N"
+                        )
 
-    #     text_wins = points.mark_text(
-    #                 align='center',
-    #                 baseline='top',
-    #                 dx=0,
-    #                 dy=12
-    #             )\
-    #             .encode(
-    #                 text='Total_Win'
-    #             )
+        text_wins = points.mark_text(
+                    align='center',
+                    baseline='top',
+                    dx=0,
+                    dy=12
+                )\
+                .encode(
+                    text='Total_Win'
+                )
                 
-    #     text_tm = points.mark_text(
-    #                 align='center',
-    #                 baseline='bottom',
-    #                 dx=0,
-    #                 dy=-10
-    #             )\
-    #             .encode(
-    #                 text='Team'
-    #             )
+        text_tm = points.mark_text(
+                    align='center',
+                    baseline='bottom',
+                    dx=0,
+                    dy=-10
+                )\
+                .encode(
+                    text='Team'
+                )
 
-    #     rule1 = alt.Chart().mark_rule(color='black')\
-    #             .encode(
-    #                 x=alt.X('rd2:O', title='pick'),
-    #                 size=alt.value(2),
-    #                 # x='rd2:O',
-    #             )
-    #     rule2 = alt.Chart().mark_rule(color='black')\
-    #             .encode(
-    #                 # x='rd3:O',
-    #                 x=alt.X('rd3:O', title=''),
-    #                 size=alt.value(2),
-    #                 # title=''
-    #             )
-    #     rule3 = alt.Chart().mark_rule(color='black')\
-    #             .encode(
-    #                 # x='rd4:O',
-    #                 x=alt.X('rd4:O', title=''),
-    #                 size=alt.value(2),
-    #             )
-    #     # rule4 = alt.Chart().mark_rule(color='black')\
-    #     #         .encode(
-    #     #             # x=,
-    #     #             x=alt.X('leftover:O', title=''),
-    #     #             size=alt.value(2),
-    #     #             # name=''
-    #     #         )
+        rule1 = alt.Chart().mark_rule(color='black')\
+                .encode(
+                    x=alt.X('rd2:O', title='pick'),
+                    size=alt.value(2),
+                    # x='rd2:O',
+                )
+        rule2 = alt.Chart().mark_rule(color='black')\
+                .encode(
+                    # x='rd3:O',
+                    x=alt.X('rd3:O', title=''),
+                    size=alt.value(2),
+                    # title=''
+                )
+        rule3 = alt.Chart().mark_rule(color='black')\
+                .encode(
+                    # x='rd4:O',
+                    x=alt.X('rd4:O', title=''),
+                    size=alt.value(2),
+                )
+        # rule4 = alt.Chart().mark_rule(color='black')\
+        #         .encode(
+        #             # x=,
+        #             x=alt.X('leftover:O', title=''),
+        #             size=alt.value(2),
+        #             # name=''
+        #         )
 
-    #         ## color changing marks via radio buttons
-    #         # input_checkbox = alt.binding_checkbox()
-    #     # checkbox_selection = alt.selection_single(bind=input_checkbox, name="Big Budget Films")
+            ## color changing marks via radio buttons
+            # input_checkbox = alt.binding_checkbox()
+        # checkbox_selection = alt.selection_single(bind=input_checkbox, name="Big Budget Films")
 
-    #     # size_checkbox_condition = alt.condition(checkbox_selection,
-    #     #                                         alt.SizeValue(25),
-    #     #                                         alt.Size('Hundred_Million_Production:Q')
-    #     #                      
-    #                     # )
-    #     # selection = alt.selection_multi(fields=['name'])
-    #     # color = alt.condition(selection, alt.Color('name:N'), alt.value('lightgray'))
-    #     # make_selector = alt.Chart(make).mark_rect().encode(y='name', color=color).add_selection(selection)
-    #     # fuel_chart = alt.Chart(fuel).mark_line().encode(x='index', y=alt.Y('fuel', scale=alt.Scale(domain=[0, 10])), color='name').transform_filter(selection)
+        # size_checkbox_condition = alt.condition(checkbox_selection,
+        #                                         alt.SizeValue(25),
+        #                                         alt.Size('Hundred_Million_Production:Q')
+        #                      
+                        # )
+        # selection = alt.selection_multi(fields=['name'])
+        # color = alt.condition(selection, alt.Color('name:N'), alt.value('lightgray'))
+        # make_selector = alt.Chart(make).mark_rect().encode(y='name', color=color).add_selection(selection)
+        # fuel_chart = alt.Chart(fuel).mark_line().encode(x='index', y=alt.Y('fuel', scale=alt.Scale(domain=[0, 10])), color='name').transform_filter(selection)
                                            
                                            
-    #     player_selection = alt.selection_multi(fields=['Player'])
+        player_selection = alt.selection_multi(fields=['Player'])
 
-    #     domain_ = list(DP.plot_bg_clr_dct.keys())
-    #     range_ = list(DP.plot_bg_clr_dct.values())
-    #     opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
+        domain_ = list(DP.plot_bg_clr_dct.keys())
+        range_ = list(DP.plot_bg_clr_dct.values())
+        opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
         
-    #     player_color_condition = alt.condition(player_selection,
-    #                                 alt.Color('Player:N', scale=alt.Scale(domain=domain_, range=range_)),
-    #                                 alt.value('lightgray')
-    #                             )
+        player_color_condition = alt.condition(player_selection,
+                                    alt.Color('Player:N', scale=alt.Scale(domain=domain_, range=range_)),
+                                    alt.value('lightgray')
+                                )
 
-    #     highlight_players = points.add_selection(player_selection)\
-    #                             .encode(
-    #                                 color=player_color_condition,
-    #                                 opacity=opacity_
-    #                                 )\
-    #                             .properties(title=f"{', '.join([str(i) for i in year_range])} Picks by Player")
+        highlight_players = points.add_selection(player_selection)\
+                                .encode(
+                                    color=player_color_condition,
+                                    opacity=opacity_
+                                    )\
+                                .properties(title=f"{', '.join([str(i) for i in year_range])} Picks by Player")
         
-    #     player_selector = alt.Chart(source).mark_rect()\
-    #             .encode(x='Player', color=player_color_condition)\
-    #             .add_selection(player_selection)
-        
-        
-        
-        
-    #     # ## color changing marks via radio buttons - WORKS
-    #     # player_radio = alt.binding_radio(options=df['Player'].unique())
-    #     # player_selection = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
-    #     # 
-    #     # domain_ = list(plot_bg_clr_dct.keys())
-    #     # range_ = list(plot_bg_clr_dct.values())
-    #     # opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
-    #     # 
-    #     # player_color_condition = alt.condition(player_selection,
-    #     #                             alt.Color('Player:N', 
-    #     #                                 scale=alt.Scale(domain=domain_, range=range_)),
-    #     #                             alt.value('lightgray')
-    #     #                         )
-    #     # 
-    #     # highlight_players = points.add_selection(player_selection)\
-    #     #                         .encode(
-    #     #                             color=player_color_condition,
-    #     #                             opacity=opacity_
-    #     #                             )\
-    #     #                         .properties(title=f"{curr_year} Picks by Player")
-    #     # 
-    #     # 
+        player_selector = alt.Chart(source).mark_rect()\
+                .encode(x='Player', color=player_color_condition)\
+                .add_selection(player_selection)
         
         
         
-    #     # ## PLAYOFFS ? color changing marks via radio buttons
-    #     # po_radio = alt.binding_radio(options=['Playoffs'])
-    #     # po_select = alt.selection_single(fields=['Playoffs'], bind=po_radio, name="po!")
-    #     # 
-    #     # # domain_ = list(plot_bg_clr_dct.keys())
-    #     # # range_ = list(plot_bg_clr_dct.values())
-    #     # opacity_ = alt.condition(po_select, alt.value(1.0), alt.value(.4))
-    #     # 
-    #     # po_color_condition = alt.condition(po_select,
-    #     #                             alt.Color('Playoffs:N', 
-    #     #                                 scale=alt.Scale(domain=domain_, range=range_)),
-    #     #                             alt.value('lightgray')
-    #     #                         )
-    #     # 
-    #     # highlight_po = points.add_selection(po_select)\
-    #     #                         .encode(
-    #     #                             color=po_color_condition,
-    #     #                             opacity=opacity_
-    #     #                             )\
-    #     #                         .properties(title=f"{curr_year} PO")
+        
+        # ## color changing marks via radio buttons - WORKS
+        # player_radio = alt.binding_radio(options=df['Player'].unique())
+        # player_selection = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
+        # 
+        # domain_ = list(plot_bg_clr_dct.keys())
+        # range_ = list(plot_bg_clr_dct.values())
+        # opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
+        # 
+        # player_color_condition = alt.condition(player_selection,
+        #                             alt.Color('Player:N', 
+        #                                 scale=alt.Scale(domain=domain_, range=range_)),
+        #                             alt.value('lightgray')
+        #                         )
+        # 
+        # highlight_players = points.add_selection(player_selection)\
+        #                         .encode(
+        #                             color=player_color_condition,
+        #                             opacity=opacity_
+        #                             )\
+        #                         .properties(title=f"{curr_year} Picks by Player")
+        # 
+        # 
         
         
+        
+        # ## PLAYOFFS ? color changing marks via radio buttons
+        # po_radio = alt.binding_radio(options=['Playoffs'])
+        # po_select = alt.selection_single(fields=['Playoffs'], bind=po_radio, name="po!")
+        # 
+        # # domain_ = list(plot_bg_clr_dct.keys())
+        # # range_ = list(plot_bg_clr_dct.values())
+        # opacity_ = alt.condition(po_select, alt.value(1.0), alt.value(.4))
+        # 
+        # po_color_condition = alt.condition(po_select,
+        #                             alt.Color('Playoffs:N', 
+        #                                 scale=alt.Scale(domain=domain_, range=range_)),
+        #                             alt.value('lightgray')
+        #                         )
+        # 
+        # highlight_po = points.add_selection(po_select)\
+        #                         .encode(
+        #                             color=po_color_condition,
+        #                             opacity=opacity_
+        #                             )\
+        #                         .properties(title=f"{curr_year} PO")
         
         
         
@@ -606,26 +673,28 @@ class DataPrepper():
         
         
         
-    #         # rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
-    #     res = alt.layer(
-    #         rule1, rule2, rule3, text_wins, text_tm, highlight_players,
-    #         data=source, width=1250
-    #         ).transform_calculate(
-    #             rd2="8.5",          ## use pick halfway b/w rounds to draw vert line
-    #             rd3="16.5",
-    #             rd4="24.5",
-    #             # leftover="28.5"
-    #         )
+        
+        
+            # rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
+        res = alt.layer(
+            rule1, rule2, rule3, text_wins, text_tm, highlight_players,
+            data=source, width=1250
+            ).transform_calculate(
+                rd2="8.5",          ## use pick halfway b/w rounds to draw vert line
+                rd3="16.5",
+                rd4="24.5",
+                # leftover="28.5"
+            )
             
-    #     st.altair_chart(res) 
-    #     # st.altair_chart(player_selector)
-    #     st.write("*TIP: Click any player's dot to see only their picks. Shift-Click dots to add more players; double-click to reset.*")
+        st.altair_chart(res) 
+        # st.altair_chart(player_selector)
+        st.write("*TIP: Click any player's dot to see only their picks. Shift-Click dots to add more players; double-click to reset.*")
         
 
-    # def show_player_hist_table(self, name):
-    #     st.dataframe(self.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']), width=700)
+    def show_player_hist_table(self, name):
+        st.dataframe(self.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']), width=700)
 
-    # def plot_wins_by_year(self, frame):
+    def plot_wins_by_year(self, frame):
         # print(frame)
         points = alt.Chart(frame)\
                     .mark_line(strokeWidth=4, color='grey')\
@@ -665,9 +734,7 @@ class DataPrepper():
         # frame['Playoffs'] = frame['Playoff_Seed'] > 0  ##return bools now rendered as checkbox in Streamlit (blah)
         neg = 'No' if frame['Playoff_Seed'].sum() > 0 else 'TBD'
         frame['Playoffs'] = np.where(frame['Playoff_Seed'] > 0, 'Yes', neg)
-        frame = frame.drop('Playoff_Seed', axis=1)
-        export_to_csv(frame, fname='best_worst_picks_data.csv', subdir='email_tables')
-        return frame
+        return frame.drop('Playoff_Seed', axis=1)
 
     def picks_by_round(self, frame, best_worst): 
         idx_max = frame.groupby('Round')['Total_Win'].transform('max') == frame['Total_Win']
@@ -685,52 +752,388 @@ class DataPrepper():
 
 
      
-    # def plot_ridge_altair(self):
-    #     ## very cool but not currently in use b/c not sure what to plot with it
-    #     ridge = alt.Chart(source, height=step).transform_joinaggregate(
-    #         mean_wins='mean(Total_Win)', groupby=['Year']
-    #     ).transform_bin(
-    #         ['bin_max', 'bin_min'], 'Total_Win'
-    #     ).transform_aggregate(
-    #         value='count()', groupby=['Year', 'mean_wins', 'bin_min', 'bin_max']
-    #     ).transform_impute(
-    #         impute='value', groupby=['Year', 'mean_wins'], key='bin_min', value=0
-    #     ).mark_area(
-    #         interpolate='monotone',
-    #         fillOpacity=0.8,
-    #         stroke='lightgray',
-    #         strokeWidth=0.5
-    #     ).encode(
-    #         alt.X('bin_min:Q', bin='binned', title='Total Wins'),
-    #         alt.Y(
-    #             'value:Q',
-    #             scale=alt.Scale(range=[step, -step * overlap]),
-    #             axis=None
-    #         ),
-    #         alt.Fill(
-    #             'mean_wins:Q',
-    #             legend=None,
-    #             scale=alt.Scale(domain=[1, 100], scheme='redyellowblue')
-    #         )
-    #     ).facet(
-    #         row=alt.Row(
-    #             'Year:T',
-    #             title=None,
-    #             header=alt.Header(labelAngle=0, labelAlign='right', format='%Y')
-    #         )
-    #     ).properties(
-    #         title='Win History by Player',
-    #         bounds='flush'
-    #     ).configure_facet(
-    #         spacing=0
-    #     ).configure_view(
-    #         stroke=None
-    #     ).configure_title(
-    #         anchor='end'
-    #     )
+    def plot_ridge_altair(self):
+        ## very cool but not currently in use b/c not sure what to plot with it
+        ridge = alt.Chart(source, height=step).transform_joinaggregate(
+            mean_wins='mean(Total_Win)', groupby=['Year']
+        ).transform_bin(
+            ['bin_max', 'bin_min'], 'Total_Win'
+        ).transform_aggregate(
+            value='count()', groupby=['Year', 'mean_wins', 'bin_min', 'bin_max']
+        ).transform_impute(
+            impute='value', groupby=['Year', 'mean_wins'], key='bin_min', value=0
+        ).mark_area(
+            interpolate='monotone',
+            fillOpacity=0.8,
+            stroke='lightgray',
+            strokeWidth=0.5
+        ).encode(
+            alt.X('bin_min:Q', bin='binned', title='Total Wins'),
+            alt.Y(
+                'value:Q',
+                scale=alt.Scale(range=[step, -step * overlap]),
+                axis=None
+            ),
+            alt.Fill(
+                'mean_wins:Q',
+                legend=None,
+                scale=alt.Scale(domain=[1, 100], scheme='redyellowblue')
+            )
+        ).facet(
+            row=alt.Row(
+                'Year:T',
+                title=None,
+                header=alt.Header(labelAngle=0, labelAlign='right', format='%Y')
+            )
+        ).properties(
+            title='Win History by Player',
+            bounds='flush'
+        ).configure_facet(
+            spacing=0
+        ).configure_view(
+            stroke=None
+        ).configure_title(
+            anchor='end'
+        )
         
-    #     st.altair_chart(ridge)
+        st.altair_chart(ridge)
     
     
+
+
+
+
+
+def streamlit_layout():
+    pass
+    
+
+
+
+
+
 if __name__ == '__main__':
-    DataPrepper()
+    st.set_page_config(
+        page_title="NFL Picks Pool",
+        page_icon="🧊",
+        layout="wide",
+        initial_sidebar_state="expanded",
+        menu_items={
+            'Get Help': 'https://www.extremelycoolapp.com/help',
+            'Report a bug': "https://www.extremelycoolapp.com/bug",
+            'About': "# This is a header. This is an *extremely* cool app!"
+            }
+        )
+
+
+    # import logging
+
+    # pp = Path.cwd()
+    # st.write(pp)
+    # logging.error(pp)
+    # liz = [i for i in pp.rglob('*')]
+
+    # st.write(liz)
+    # raise Exception(pp)
+    
+
+    DP = DataPrepper()
+    df = DP.df
+    bg_clr_dct = DP.bg_clr_dct
+    txt_clr_dct = DP.txt_clr_dct
+    plot_bg_clr_dct = DP.plot_bg_clr_dct
+    
+
+
+
+
+    st.write(f"""
+    ## Global NFL Picks Pool
+    ##### Colorado, Texas, California, England, Japan, and Sweden
+    Picks Pool {DP.po_inc} as of week {int(DP.the_wk)} - {DP.the_ssn}!  
+    #
+    """)
+    
+    
+    st.write("""#### Win Totals this Season""")
+    st.write("""###### Team by Round""")
+    st.dataframe(DP.style_frame(DP.dfpt, bg_clr_dct), width=1100) ## sortable, honors center alignment and bold
+
+    
+    st.write(""" # """)
+    st.write("""###### Player Totals""")
+    col = 'Total Win%' if 'Total Win%' in DP.dfy_ else 'Win%'
+    st.dataframe(DP.style_frame(DP.dfy_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', col: '{:.1f}'}), width=900)
+
+
+    # st.write("""By virtue of his Bucs' win over Brandon's Eagles, Dan has won this year's Picks Pool.  Congratulations to Dan on his first Pool title! Be sure to send us your NFL item request, around $60 or less.""")
+
+
+
+
+
+    if not DP.dfpo.empty:
+        st.write("""#### Playoff Teams Tracker""")
+        st.dataframe(DP.style_frame(DP.dfpo, bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}', 'Playoff_Loss': '{:.0f}'}), width=765, height=620)
+
+
+
+
+
+    ## Draft Overview Chart
+    st.write("""#### Draft Overview """)
+    # DP.df['Total_Win'] = np.random.randint(1,18, size=DP.df.shape[0])  ## testing for chart
+    DP.plot_draft_overview_altair(DP.df, year_range=[DP.curr_year])
+
+    st.write("""# """)
+    # st.write(""" Looking at this, click on **Dan's button** to highlight only his draft picks.  You can see that, by round, he picked a team that finished   
+    # (1) tied for the most wins    
+    # (2) tied for the most wins    
+    # (3) tied for the most wins    
+    # (4) with the second most wins!   
+    # Can't beat that....""")
+
+
+
+
+
+
+
+
+
+    ## BEST/WORST PICKS BY ROUND
+    st.write('  #')
+    
+    left_column, right_column = st.columns([1, 1])
+    with left_column:
+        st.write("""**Here are the best picks by round:**""")
+        DP.picks_by_round(DP.dfd, 'Best')
+    
+    with right_column:
+        st.write("""**And here are the worst picks by round:**""")
+        DP.picks_by_round(DP.dfd, 'Worst')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    st.write(""" # """)
+    st.write("""#### Wins by Round""")
+    st.write("""How did we do in our draft, by rounds? 
+    Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?""")
+    
+    st.dataframe(DP.style_frame(DP.dfr_, bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    # st.write(body_dct['reghist_txt'])
+    st.write(f"""
+Let's take a look at the top 10 Regular Season finishes.
+    """)
+    st.dataframe(DP.style_frame(DP.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
+    
+    
+    
+    
+    # st.write(body_dct['pohist_txt'])
+    st.write(f"""
+How about the top 10 Playoff runs?
+""")
+
+
+    st.dataframe(DP.style_frame(DP.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)
+    
+    
+    
+    
+    # st.write(body_dct['tothist_txt'])
+    st.write(f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? 
+        """)
+    
+    st.dataframe(DP.style_frame(DP.hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)        
+        
+    
+    
+    st.write("""#### Champions""")
+    st.write("""Past champions and their results, as well as projected champion for the current year (highlighted in blue).
+        """)
+    st.write("""I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.  
+    """)
+    
+    
+    st.dataframe(DP.style_frame(DP.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=DP.curr_year, bold_cols=['Total_Win']))
+    
+    
+    st.write("""#""")
+    st.write("""#### Career Performance""")
+    st.write("Who in our pool has been the best over their careers (sorted by Wins)?")
+    
+    
+    st.dataframe(DP.style_frame(DP.dfc_, bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
+    
+    
+    st.write("""...Victoria hasn't even won as many games as the Leftovers.  Sad!""")
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    st.write("""#""")
+    # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
+    # dfs_
+    if 'Champ' in DP.player_hist.columns:
+        player_hist = DP.player_hist 
+    else:
+        player_hist = DP.player_hist.merge(DP.champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
+    # player_hist = player_hist.merge(champs.assign(Champ='Yes')[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna('No')
+    # player_hist.loc[(player_hist['Year']==curr_year) & (player_hist['Champ']=='Yes'), 'Champ'] = 'Proj'
+    # player_hist.tail(20)
+    
+    
+    ## tried to use this for color=champ_condition .. can't get to work
+    # champ_condition = {
+    #     'condition': [
+    #         {alt.datum.Champ: 'Yes', 'value': 'firebrick'},
+    #         {alt.datum.Champ: 'Proj', 'value': 'Navy'}],
+    #      'value': 'orange'}
+         
+        
+    
+    bars = alt.Chart()\
+                .mark_bar()\
+                .encode(
+                    alt.X('Player:N', axis=alt.Axis(title='')),
+                    alt.Y('Total_Win:Q', scale=alt.Scale(domain=[0, 50], zero=True)),
+                    # color=alt.Color('Player:N', scale=alt.Scale(domain=dfs_['Player'].unique(),       range=list(plot_bg_clr_dct.values()))),
+                    # color=champ_condition
+                    color=alt.condition(
+                        alt.datum.Champ == True, 
+                        alt.value('firebrick'), 
+                        # alt.value(list(plot_bg_clr_dct.values())),
+                        alt.value(plot_bg_clr_dct['Mike']),
+                        ),
+                    )
+                    
+
+    text = bars.mark_text(align='center', baseline='bottom')\
+                .encode(text='Total_Win:Q')
+                
+    ## Can't use "+" layer operator with faceted plots
+    chart = alt.layer(bars, text, data=player_hist).facet(column=alt.Column('Year:O', header=alt.Header(title='')), title=alt.TitleParams(text='Wins by Year', anchor='middle'))#.resolve_scale(color='independent')
+
+    st.altair_chart(chart)
+    
+    
+    
+    
+    
+    
+    ## Ridgeline Plot - not using ATM
+    # source = data.seattle_weather.url
+    source = DP.dfy
+    step = 30
+    overlap = 1
+
+    # st.write(source.head(100))
+    
+    ridge = alt.Chart(source, height=step).transform_joinaggregate(
+        mean_wins='mean(Total_Win)', groupby=['Player']
+    ).transform_bin(
+        ['bin_max', 'bin_min'], 'Total_Win'
+    ).transform_aggregate(
+        value='count()', groupby=['Player', 'mean_wins', 'bin_min', 'bin_max']
+    ).transform_impute(
+        impute='value', groupby=['Player', 'mean_wins'], key='bin_min', value=0
+    ).mark_area(
+        interpolate='monotone',
+        fillOpacity=0.8,
+        stroke='lightgray',
+        strokeWidth=0.5
+    ).encode(
+        alt.X('bin_min:Q', bin='binned', title='Total Wins'),
+        alt.Y(
+            'value:Q',
+            scale=alt.Scale(range=[step, -step * overlap]),
+            axis=None
+        ),
+        alt.Fill(
+            'mean_wins:Q',
+            legend=None,
+            scale=alt.Scale(domain=[source['Total_Win'].max(), source['Total_Win'].min()], scheme='redyellowblue')
+        )
+    ).facet(
+        row=alt.Row(
+            'Player:N',
+            title=None,
+            header=alt.Header(labelAngle=0, labelAlign='left')
+        )
+    ).properties(
+        title='Win History by Player',
+        bounds='flush'
+    ).configure_facet(
+        spacing=0
+    ).configure_view(
+        stroke=None
+    ).configure_title(
+        anchor='end'
+    )
+    # st.altair_chart(ridge)
+    
+    
+
+    
+    
+    
+    
+
+    st.write("""#""")
+    st.write("""#### Personal Records""")    
+    # st.write(body_dct['pr_txt'])
+    st.write("""Last, here are the personal records for each player, sorted by most at top.  \nBlue highlight is for this season and shows who might have a chance at setting a new personal record for total wins.""")
+    
+    
+    # print(DP.player_hist)
+
+    left_column, right_column = st.columns([2, 1])
+    
+    # # st.write(DP.player_hist)
+    # with left_column:
+    #     for name in DP.dfy_['Player'].unique():
+    #         DP.show_player_hist_table(name)
+    #         st.write("\n\n\n _")
+
+    # with right_column: 
+    #     for name in DP.dfy_['Player'].unique():
+    #         DP.plot_wins_by_year(DP.player_hist[DP.player_hist['Player'] == name])
+
+
+    for name in DP.dfy_['Player'].unique():
+        with left_column:
+            DP.show_player_hist_table(name)
+        with right_column: 
+            DP.plot_wins_by_year(DP.player_hist[DP.player_hist['Player'] == name])
+            st.write("\n\n\n _")

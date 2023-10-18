@@ -3,7 +3,8 @@ from typing import Optional
 import os
 import pandas as pd
 
-ROOT_PATH = os.path.join(os.environ['DS_PROJ'], 'local_projects/2021-11-10_nfl_picks_pool_streamlit/data/output')
+LOCAL_ROOT_PATH = os.path.join(os.environ['DS_PROJ'], 'local_projects/2021-11-10_nfl_picks_pool/data/output')
+REPO_ROOT_PATH = os.path.join(os.environ['DS_PROJ'], 'github_projects/2021-11-10_nfl_picks_pool_streamlit/data/output')
 NFL_WEEK1 = datetime.date(2023, 9, 7)  ## using first Thursday, of season. Correct?
 
 def get_curr_year() -> int:
@@ -23,9 +24,11 @@ def get_curr_week() -> int:
     return (((datetime.date.today() - NFL_WEEK1) / 7) + datetime.timedelta(1)).days
 
 
-def export_to_csv(frame: pd.DataFrame, fname: str, ovrwrt: bool=False, index: bool=False, subdir: Optional[str]=None, path: Optional[str]=None, **kwargs):
+def export_to_csv(frame: pd.DataFrame, fname: str, ovrwrt: bool=False, index: bool=False, subdir: Optional[str]=None, path: Optional[str]=None, local_or_repo: str='repo', **kwargs):
     
-    if path is None: path = ROOT_PATH
+    if path is None: 
+        path = {'local': LOCAL_ROOT_PATH, 'repo': REPO_ROOT_PATH}[local_or_repo]
+        
     if subdir: path = os.path.join(path, subdir)
     save_path = os.path.join(path, fname)
     
