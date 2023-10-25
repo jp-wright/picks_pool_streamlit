@@ -1,4 +1,4 @@
-#! /opt/anaconda3/envs/nflpickspool/bin/python
+#!/opt/anaconda3/envs/nflpickspool/bin/python
 import pandas as pd
 import os
 import sys
@@ -286,12 +286,16 @@ def send_email_html(tables, send_to_pool: bool=False) -> None:
 
 
 def main():
-    tables_and_formats = {'year_data_current.csv': dict(frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', 'Win%': '{:.1f}'}), 
-                    'manager_teams_data.csv': {}}
+    tables_and_formats = {'year_data_current.csv': dict(frmt_dct={'Win%': '{:.1f}', 
+                                                                    'Full_Ssn_Pace': '{:.1f}', 
+                                                                    'Win%': '{:.1f}'}), 
+                        'manager_teams_data.csv': {}}
 
 
     tables = compile_tables_for_email(tables_and_formats)
-    send_email_html(tables, send_to_pool=enforce_cli_bool(False))
+    
+    send_to_pool = False if len(sys.argv) == 1 else sys.argv[1]
+    send_email_html(tables, send_to_pool=enforce_cli_bool(send_to_pool))
 
 if __name__ == '__main__':
     main()

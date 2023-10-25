@@ -13,7 +13,7 @@ import sys
 from typing import List, Tuple, Dict, Sequence, Optional
 import logging
 
-print("Test")
+# print("Test")
 
 # import subprocess
 
@@ -942,56 +942,57 @@ if __name__ == '__main__':
     
     
     
-    
-    
-    # st.write(body_dct['reghist_txt'])
-    st.write(f"""
-Let's take a look at the top 10 Regular Season finishes.
-    """)
-    st.dataframe(DP.style_frame(DP.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
-    
-    
-    
-    
-    # st.write(body_dct['pohist_txt'])
-    st.write(f"""
-How about the top 10 Playoff runs?
-""")
-
-
-    st.dataframe(DP.style_frame(DP.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)
-    
-    
-    
-    
-    # st.write(body_dct['tothist_txt'])
-    st.write(f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? 
+    if 1 == 0:
+    # if not DP.dfpo.empty:
+    # if DP.po_inc != '':
+        # st.write(body_dct['reghist_txt'])
+        st.write(f"""
+    Let's take a look at the top 10 Regular Season finishes.
         """)
-    
-    st.dataframe(DP.style_frame(DP.hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)        
+        st.dataframe(DP.style_frame(DP.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
         
-    
-    
-    st.write("""#### Champions""")
-    st.write("""Past champions and their results, as well as projected champion for the current year (highlighted in blue).
+        
+        
+        
+        # st.write(body_dct['pohist_txt'])
+        st.write(f"""
+        How about the top 10 Playoff runs?
         """)
-    st.write("""I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.  
-    """)
-    
-    
-    st.dataframe(DP.style_frame(DP.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=DP.curr_year, bold_cols=['Total_Win']))
-    
-    
-    st.write("""#""")
-    st.write("""#### Career Performance""")
-    st.write("Who in our pool has been the best over their careers (sorted by Wins)?")
-    
-    
-    st.dataframe(DP.style_frame(DP.dfc_, bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
-    
-    
-    st.write("""...Victoria hasn't even won as many games as the Leftovers.  Sad!""")
-    
+
+
+        st.dataframe(DP.style_frame(DP.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)
+        
+        
+        
+        
+        # st.write(body_dct['tothist_txt'])
+        st.write(f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? 
+            """)
+        
+        st.dataframe(DP.style_frame(DP.hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)        
+            
+        
+        
+        st.write("""#### Champions""")
+        st.write("""Past champions and their results, as well as projected champion for the current year (highlighted in blue).
+            """)
+        st.write("""I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.  
+        """)
+        
+        
+        st.dataframe(DP.style_frame(DP.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=DP.curr_year, bold_cols=['Total_Win']))
+        
+        
+        st.write("""#""")
+        st.write("""#### Career Performance""")
+        st.write("Who in our pool has been the best over their careers (sorted by Wins)?")
+        
+        
+        st.dataframe(DP.style_frame(DP.dfc_, bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
+        
+        
+        st.write("""...Victoria hasn't even won as many games as the Leftovers.  Sad!""")
+        
     
     
     

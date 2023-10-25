@@ -107,7 +107,8 @@ def main():
     update_data_outputs()
 
     ## 4. Compose and send email with updated results
-    compose_and_send_email(email_type='hybrid', send_to_pool=enforce_cli_bool(sys.argv[1]))
+    send_to_pool = False if len(sys.argv) == 1 else sys.argv[1]
+    compose_and_send_email(email_type='hybrid', send_to_pool=enforce_cli_bool(send_to_pool))
 
 
 
