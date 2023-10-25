@@ -3,25 +3,14 @@ import pandas as pd
 import os
 import sys
 import time 
-from sports_emails import picks_pool_emails, test_emails
+from sports_modules.sports_emails import picks_pool_emails, test_emails
+from py_modules.python_cli_utilities import enforce_cli_bool
 import smtplib, ssl
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 from typing import Dict
 
 REPO_PATH = os.path.join(os.environ['DS_PROJ'], "github_projects/2021-11-10_nfl_picks_pool_streamlit")
-
-
-def enforce_bool(arg):
-    '''convert 'True' or 'False' command-line arg from crontab into actual Python bool'''
-    if isinstance(arg, bool):
-        return arg
-    if arg.lower() in ('yes', 'true', 'y', '1'):
-        return True
-    elif arg.lower() in ('no', 'false', 'n', '0'):
-        return False
-    else:
-        raise TypeError(f'Boolean value expected. {type(arg)} received.')
 
 
 def create_email_object(send_to_pool: bool=False) -> Dict[str, str]:
@@ -110,4 +99,4 @@ def send_html_email(send_to_pool: bool=False) -> None:
 
 
 if __name__ == '__main__':
-    send_html_email(send_to_pool=enforce_bool(sys.argv[1]))
+    send_html_email(send_to_pool=enforce_cli_bool(sys.argv[1]))
