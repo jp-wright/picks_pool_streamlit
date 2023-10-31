@@ -8,7 +8,7 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 1,2018,Brandon,61.4,43,27,40,3,True
 2,2017,Brandon,55.4,36,29,36,0,False
 3,2021,Brandon,54.2,39,33,37,2,False
-4,2023,Brandon,51.6,16,15,16,0,False
+4,2023,Brandon,50.0,16,16,16,0,False
 5,2019,Brandon,48.5,32,34,31,1,False
 5,2020,Brandon,48.5,32,34,31,1,False
 1,2021,Dan,62.5,45,27,44,1,True
@@ -46,4 +46,4 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 4,2017,Mike,46.9,30,34,30,0,False
 5,2019,Mike,46.2,30,35,30,0,False
 6,2023,Mike,40.0,12,18,12,0,False
-1,2023,Victoria,53.3,16,14,16,0,False
+1,2023,Victoria,54.8,17,14,17,0,False
