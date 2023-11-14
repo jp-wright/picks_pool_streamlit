@@ -1,3 +1,4 @@
 .DS_Store
 env/requirements_conda.txt
 env/requirements_conda_condensed.txt
+ignore_me/
