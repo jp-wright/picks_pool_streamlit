@@ -21,6 +21,7 @@ class PageLayout():
         
         # st.table()
         self.intro()
+        self.WoW_metrics()
         self.manager_ranking()
         self.manager_by_round()
         st.markdown("***")
@@ -38,7 +39,7 @@ class PageLayout():
         gradient(blue_bath1[1], blue_bath1[3], blue_bath1[5], '#fcfbfb', f"🏈 NFL Picks Pool", "A Swimming Pool of Interceptions", 27)
 
         st.markdown(f"""<h6 align=center>We've gone global: Colorado, Texas, California, England, Japan, and Sweden</h6><BR>""", unsafe_allow_html=True)
-        st.markdown(f"<h5 align=center>Standings {DP.po_inc} as of Week {int(DP.the_wk)} - {DP.the_ssn}!</h5>", unsafe_allow_html=True)
+        st.markdown(f"<h3 align=center>Standings {DP.po_inc} as of Week {int(DP.the_wk)} - {DP.the_ssn}!</h3>", unsafe_allow_html=True)
         
     def manager_ranking(self):
         """
@@ -61,11 +62,38 @@ class PageLayout():
         """
         """
         st.write("""<BR><h6 align=center>Week over Week Changes 📈</h6>""", unsafe_allow_html=True)
-        DP.
+
+        def show_metric(frame, idx):
+            if frame.iloc[idx]['WoW_Wins'] <= 1:
+                clr = 'inverse'
+            elif frame.iloc[idx]['WoW_Wins'] < 3:
+                clr = 'off'
+            else:
+                clr = 'normal'
+
+            # plot_bg_clr_dct
+
+            st.metric(f":blue[{idx+1}. {frame.iloc[idx]['Player']}]", f"{int(frame.iloc[idx]['Total_Win'])} wins", f"{int(frame.iloc[idx]['WoW_Wins'])} last week", delta_color=clr)
+            
+
         with st.container():
             col1, col2, col3, col4 = st.columns(4)
             with col1:
-                st.metric('Alex', )
+                show_metric(DP.wow, 0)
+            with col2:
+                show_metric(DP.wow, 1)
+            with col3:
+                show_metric(DP.wow, 2)
+            with col4:
+                show_metric(DP.wow, 3)
+            with col1:
+                show_metric(DP.wow, 4)
+            with col2:
+                show_metric(DP.wow, 5)
+            with col3:
+                show_metric(DP.wow, 6)
+            with col4:
+                show_metric(DP.wow, 7)
 
 
 

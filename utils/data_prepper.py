@@ -3,6 +3,7 @@ import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
 import altair as alt
+import os
 import time
 from pathlib import Path
 from utils.palettes import *
@@ -60,7 +61,6 @@ class DataPrepper():
             }
 
 
-        self.pfr_wlt = self.prep_WoW_metrics()
         self.df = self.load_and_prep_data()
         self.curr_year = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
         if self.curr_year not in self.df['Year'].unique(): 
@@ -78,6 +78,7 @@ class DataPrepper():
         self.hist_frames = self.prep_year_history(self.dfy, self.curr_year)
         self.player_hist = self.prep_player_history(self.dfy, self.curr_year)
         self.champs = self.prep_champ_history(self.dfy, self.curr_year)
+        self.wow = self.prep_WoW_metrics(self.curr_year)
         
         self.po_inc = '(playoffs included)' if 'Playoff Win' in str(self.dfy_) else ''
         self.the_date = time.strftime("%A, %d %b %Y", time.localtime())
@@ -676,6 +677,8 @@ class DataPrepper():
         st.altair_chart(points + champ_pts + text, use_container_width=False)
 
     def prep_best_worst_picks_by_rd(self, df):
+        """
+        """
         frame = df.query(f"Year=={self.curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('\s\(\d+\)', '', regex=True)
         # frame['Playoffs'] = frame['Playoff_Seed'] > 0  ##return bools now rendered as checkbox in Streamlit (blah)
         neg = 'No' if frame['Playoff_Seed'].sum() > 0 else 'TBD'
@@ -683,6 +686,8 @@ class DataPrepper():
         return frame.drop('Playoff_Seed', axis=1)
 
     def picks_by_round(self, frame: pd.DataFrame, best_worst: str, rd: int): 
+        """
+        """
         # idx_max = frame.groupby('Round')['Total_Win'].transform('max') == frame['Total_Win']
         # idx_min = frame.groupby('Round')['Total_Win'].transform('min') == frame['Total_Win']
         
@@ -705,15 +710,14 @@ class DataPrepper():
         #     st.dataframe(self.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
 
 
-    def prep_WoW_metrics(self):
-        pfr_wlt = pd.read_csv('/Users/jpw/Dropbox/Data_Science/datasets/sports_data/NFL_databases/pfr_data/concatenated_pfr_tables/2023_tmssn__games_all.csv')
+    def prep_WoW_metrics(self, year: int):
+        """
+        """
+        wow = pd.read_csv(self.ROOT_PATH.joinpath('data', 'output', f'{year}', f'{year}_WoW_wins.csv'))
+        wow = wow.merge(self.dfy[['Year', 'Player', 'Total_Win', 'Total_Win%']], on=['Year', 'Player'], how='left')
+        wow[['WoW_Wins', 'Total_Win']] = wow[['WoW_Wins', 'Total_Win']].astype(int)
+        return wow[(wow['Week_Int']==wow['Week_Int'].max())].sort_values(['Total_Win', 'Total_Win%', 'WoW_Wins'], ascending=False)
 
-        df = pd.read_csv(self.ROOT_PATH.joinpath('data/input/nfl_picks_pool_draft_history.csv')).replace('Redskins', 'Commanders')
-        df.rename(columns=lambda col: col.title().replace(' ', '_'), inplace=True)
-        df.loc[df['Player'] == 'LEFTOVER', 'Player'] = 'Leftover'
-        df = df[['Year', 'Round', 'Pick', 'Player', 'Team']]
-
-        df = df.merge(pfr_wlt[['Week', 'Team', 'Wins', 'Losses']], on=['Week', 'Team'], how='left')
         
 
 
@@ -766,3 +770,6 @@ class DataPrepper():
     
 
 
+if __name__ == '__main__':
+    D = DataPrepper()
+    # D.prep_WoW_metrics(2023)
