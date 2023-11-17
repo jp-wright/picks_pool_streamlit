@@ -9,10 +9,17 @@ from pathlib import Path
 from utils.palettes import *
 from typing import List, Tuple, Dict, Sequence, Optional
 import logging
+from utils.reference import champ_hist
+from utils.utilities import get_curr_year
+
+
+# import logging
+# logging.basicConfig(filename='logs/dplog.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+# logging.info(print(frame.columns))
 
 
 class DataPrepper():
-    def __init__(self):
+    def __init__(self, year: int):
         self.ROOT_PATH = Path.cwd()
         self.bg_clr_dct = bg_clr_dct
         self.plot_bg_clr_dct = plot_bg_clr_dct
@@ -52,29 +59,24 @@ class DataPrepper():
             'Lions': 'NFC',
             }
 
-        self.champ_hist = {
-            2017: 'Jackson',
-            2018: 'Brandon',
-            2019: 'Jordan',
-            2020: 'Alex',
-            2021: 'Dan',
-            }
-
+        self.int_cols = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams']
+        self.float_cols = ['Win%', 'Total_Win%', 'Playoff_Win%']
+        self.year = year
+        self.curr_year = get_curr_year()
 
         self.df = self.load_and_prep_data()
-        self.curr_year = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
-        if self.curr_year not in self.df['Year'].unique(): 
-            self.curr_year = self.df['Year'].unique().max()
-
-        self.dfy = self.stats_by_year(self.df, self.champ_hist)
+        self.dfy = self.stats_by_year(self.df)
         self.dfr = self.stats_by_round(self.df)
         self.dfc = self.stats_by_career(self.df)
-        self.dfy_ = self.prep_year_data_for_website(self.dfy)
-        self.dfr_ = self.prep_round_data_for_website(self.dfr)
+
+        self.dfy_ = self.prep_year_data_for_website(self.dfy, self.year)
+        self.dfr_ = self.prep_round_data_for_website(self.dfr, self.year)
         self.dfc_ = self.prep_career_data_for_website(self.dfc)
-        self.dfpt = self.prep_manager_teams_this_year(self.df, self.curr_year)
-        self.dfpo = self.prep_playoff_teams_this_year(self.df)
-        self.dfd = self.prep_best_worst_picks_by_rd(self.df)
+        
+        self.dfpt = self.prep_manager_teams_this_year(self.df, self.year)
+        self.dfpo = self.prep_playoff_teams_this_year(self.df, self.year)
+        self.dfd = self.prep_best_worst_picks_by_rd(self.df, self.year)
+        
         self.hist_frames = self.prep_year_history(self.dfy, self.curr_year)
         self.player_hist = self.prep_player_history(self.dfy, self.curr_year)
         self.champs = self.prep_champ_history(self.dfy, self.curr_year)
@@ -83,14 +85,40 @@ class DataPrepper():
         self.po_inc = '(playoffs included)' if 'Playoff Win' in str(self.dfy_) else ''
         self.the_date = time.strftime("%A, %d %b %Y", time.localtime())
         self.the_time = time.strftime("%H:%M CST", time.localtime())
-        self.the_ssn = self.curr_year
-        # self.the_ssn = time.localtime().tm_year - 1 if time.localtime().tm_mon < 9 else time.localtime().tm_year
-        self.the_wk = int(self.df.loc[self.df['Year'] == self.the_ssn, 'Reg_Games'].max())
-        if self.the_wk > 12: 
-            self.the_wk += 1
+
+
+    def enforce_int_cols(self, frame: pd.DataFrame, extra_cols: List[str]=[]):
+        """
+        asd
+        """
+        int_cols = np.array(self.int_cols + extra_cols)
+        int_cols = int_cols[np.isin(int_cols, frame.columns)]
         
-    
+        for col in int_cols:
+            try:
+                frame[int_cols] = frame[int_cols].fillna(0).astype(int)
+            except ValueError:
+                logging.error(col)
+                logging.error(frame[col])
+
+    def enforce_float_cols(self, frame: pd.DataFrame, extra_cols: List[str]=[]):
+        """
+        asd
+        """
+        float_cols = np.array(self.float_cols + extra_cols)
+        float_cols = float_cols[np.isin(float_cols, frame.columns)]
+        
+        for col in float_cols:
+            try:
+                frame[float_cols] = frame[float_cols].fillna(0).astype(float).round(1)
+            except ValueError:
+                logging.error(col)
+                logging.error(frame[col])
+
     def load_and_prep_data(self): 
+        """
+        a
+        """
         ## Read from but never write to this file. Ref only.
         # ROOT_PATH = Path(os.getcwd())
         # st.write(os.getcwd())
@@ -143,8 +171,10 @@ class DataPrepper():
 
         return df
 
-    def stats_by_year(self, df: pd.DataFrame, champ_hist: Dict[int, str]) -> pd.DataFrame:
-        ## Yearly Stats
+    def stats_by_year(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        Yearly Stats
+        """
         dfy = df.groupby(['Year', 'Player'], as_index=False).sum().copy()
         idx = dfy.columns.get_loc('Reg_Games')
         dfy.insert(idx+1, 'Reg_Games_Left', (16*4) - dfy['Reg_Games'])
@@ -169,6 +199,9 @@ class DataPrepper():
         return dfy.reset_index()
 
     def stats_by_round(self, df):
+        """
+        asd
+        """
         dfr = df.groupby(['Year', 'Round']).sum()
         for kind in ['Reg', 'Playoff', 'Total']:
             dfr[f"{kind}_Win%"] = dfr[f"{kind}_Win"].div(dfr[f"{kind}_Games"])
@@ -180,6 +213,9 @@ class DataPrepper():
         return dfr.reset_index()
 
     def stats_by_career(self, df):
+        """
+        asd
+        """
         dfc = df.groupby(['Player']).sum().drop(['Round', 'Pick', 'Reg_Win%', 'Playoff_Win%', 'Total_Win%'], axis=1)
 
         for kind in ['Reg', 'Playoff', 'Total']:
@@ -191,62 +227,47 @@ class DataPrepper():
         dfc.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'picks_pool_stats_by_career.csv'))
         return dfc.reset_index().sort_values(['Total_Win', 'Total_Win%'], ascending=False)
 
-    def prep_year_data_for_website(self, dfy: pd.DataFrame) -> pd.DataFrame:
+    def prep_year_data_for_website(self, dfy: pd.DataFrame, year: int) -> pd.DataFrame:
         '''advanced formatting possible via df.style (requires jinja2).
         https://code.i-harness.com/en/q/df3234
         '''
-        frame = dfy[dfy['Year'] == dfy['Year'].max()].drop(['Round', 'Pick'], axis=1)
+        frame = dfy[dfy['Year'] == year].drop(['Round', 'Pick'], axis=1)
 
-        if frame['Playoff_Games'].sum() == 0:
-            sort_col = 'Total_Win%'
-            frame = frame.drop([c for c in frame.columns if all(['Playoff' in c, 'Teams' not in c]) or 'Total' in c], axis=1)
-            if frame['Reg_Games_Left'].sum() == 0:
-                frame.drop(['Full_Ssn_Pace'], axis=1, inplace=True)
-            else:
-                frame = frame.round({'Full_Ssn_Pace': 1}).sort_values('Reg_Win%', ascending=False)
-
-            frame.columns = [c.replace('Reg_', '') if 'Left' not in c else c for c in frame.columns]
-            sort_col = 'Total_Win%' if 'Total_Win%' in frame.columns else 'Win%'
-            cols = np.array(['Rank', 'Year', 'Player', 'Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Win%', 'Full_Ssn_Pace'])
-            # st.dataframe(frame.head())
-            # if frame[frame['Playoff_Seed'] > 0].shape[0] > 0: 
-            #     cols.append('Playoff_Seed')
-            frame = frame[cols[np.isin(cols, frame.columns)]]
+        ## Still in Reg Ssn
+        if frame['Reg_Games_Left'].sum() > 0:
+            frame = frame.drop([c for c in frame.columns if 'Playoff' in c or 'Total' in c], axis=1)\
+                        .round({'Full_Ssn_Pace': 1}).sort_values('Reg_Win%', ascending=False)
+            frame.columns = [c.replace('Reg_', '') if c != 'Reg_Games_Left' else c for c in frame.columns]
+            ## Use winning % when still reg season to account for BYE weeks which give some managers fewer games played
+            cols = np.array(['Rank', 'Year', 'Player', 'Win', 'Loss', 'Tie', 'Win%', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace'])
+            cols = cols[np.isin(cols, frame.columns)]
+            sort_col = 'Win%'
         else:
             ## switch to tot win once PO begins b/c bye weeks are done
+            cols = ['Year', 'Player', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Total_Win%', 'Playoff_Teams', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']
             sort_col = 'Total_Win'
-            frame = frame[['Year', 'Player', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Total_Win%', 'Playoff_Teams', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']]
 
-        frame = frame.sort_values(sort_col, ascending=False)
-        int_cols = np.array(['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams'])
-        int_cols = int_cols[np.isin(int_cols, frame.columns)]
-        
-        for col in int_cols:
-            try:
-                frame[int_cols] = frame[int_cols].fillna(0).astype(int)
-            except ValueError:
-                logging.error(col)
-                logging.error(frame[col])
-        
-        win_cols = np.array(['Win%', 'Total_Win'])
-        win_col = win_cols[np.isin(win_cols, frame.columns)]
-        frame.insert(0, 'Rank', frame[win_col].rank(ascending=False).fillna(0).astype('int'))
-        frame.columns = [c.replace('_', ' ') for c in frame.columns]
-        # cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Total_Win%']
-        # if 'Total_Win%' not in frame.columns: frame['Total_Win%'] = 0.0
-        cols = ['Win%', 'Full_Ssn_Pace'] if 'Full_Ssn_Pace' in frame.columns else ['Total Win%']
-        # if frame['Win'].sum() == 0: 
-        if 'Total Win%' not in frame.columns: frame['Total Win%'] = 0.0
-        if frame['Win%'].isnull().all(): frame['Win%'] = 0.0
-        frame[cols] = frame[cols].round(1)
-        return frame
+        frame = frame[cols].sort_values(sort_col, ascending=False)
+        frame.insert(0, 'Rank', frame[sort_col].rank(ascending=False, method='dense').fillna(0).astype('int'))
+        self.enforce_int_cols(frame)
+        self.enforce_float_cols(frame)
 
-    def prep_round_data_for_website(self, dfr: pd.DataFrame):
+        ## Drop Tie cols if no ties exist.  Just visual clutter.
+        ties = [c for c in frame.columns if 'Tie' in c]
+        if frame[ties].sum().sum() == 0:
+            frame = frame.drop(ties, axis=1)
+
+        frame.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'year_data_site.csv'))
+        return frame.rename(columns={c: c.replace('_', ' ') for c in frame.columns})
+
+    def prep_round_data_for_website(self, dfr: pd.DataFrame, year: Optional[int]=None):
         '''advanced formatting possible via df.style (requires jinja2).
         https://code.i-harness.com/en/q/df3234
         '''
+        if year is None: 
+            year = self.curr_year
         ## Remove LEFTOVER b/c they're in round "99"
-        frame = dfr[(dfr['Year'] == dfr['Year'].max()) & (dfr['Round'].isin([1,2,3,4]))].drop(['Pick'], axis=1)
+        frame = dfr[(dfr['Year'] == year) & (dfr['Round'].isin([1,2,3,4]))].drop(['Pick'], axis=1)
         frame = frame.sort_values('Total_Win%', ascending=False)
         if frame['Playoff_Games'].sum() == 0:
             frame = frame.drop([c for c in frame.columns if all(['Playoff' in c, 'Teams' not in c]) or 'Total' in c], axis=1)
@@ -319,7 +340,7 @@ class DataPrepper():
             frames.append(frame)
         res = pd.concat(frames)
         res['Total_Win%'] = res['Total_Win%'].fillna(0.0)
-        champs = pd.DataFrame.from_dict(self.champ_hist, orient='index')\
+        champs = pd.DataFrame.from_dict(champ_hist, orient='index')\
                             .reset_index()\
                             .rename(columns={'index': 'Year', 0: 'Player'})
         
@@ -330,10 +351,12 @@ class DataPrepper():
 
         return res.merge(champs.assign(Champ=True)[['Player', 'Year', 'Champ']], on=['Player', 'Year'], how='left').fillna(False)
 
-    def prep_manager_teams_this_year(self, df: pd.DataFrame, curr_year: int):
+    def prep_manager_teams_this_year(self, df: pd.DataFrame, year: Optional[int]=None):
+        if year is None:
+            year = self.curr_year
         df['Team'] = df['Team'] + " (" + df['Total_Win'].fillna(0).astype(int).astype(str) + ")"
-        # if curr_year not in df['Year'].unique(): curr_year = df['Year'].unique().max()
-        frame = df[df['Year'] == curr_year].sort_values(['Player', 'Pick'], ascending=[True, True])[['Player', 'Round', 'Team']].copy()
+        # if year not in df['Year'].unique(): curr_year = df['Year'].unique().max()
+        frame = df[df['Year'] == year].sort_values(['Player', 'Pick'], ascending=[True, True])[['Player', 'Round', 'Team']].copy()
         # global ff
         # ff = frame
         if 'Leftover' in frame['Player'].unique():
@@ -343,7 +366,7 @@ class DataPrepper():
         frame.columns.name = ''
         leftovers = frame['Leftover'] if 'Leftover' in frame.columns else None
         frame = frame[[c for c in frame.columns if c != 'Leftover']]
-        if leftovers:
+        if leftovers is not None:
             frame = pd.concat([frame, leftovers], axis=1)
         frame.loc[0] = frame.columns
         frame.index = frame.index + 1
@@ -372,11 +395,13 @@ class DataPrepper():
         frame[int_cols] = frame[int_cols].astype(int)
         return frame
 
-    def prep_playoff_teams_this_year(self, df: pd.DataFrame) -> pd.DataFrame:
+    def prep_playoff_teams_this_year(self, df: pd.DataFrame, year: Optional[int]=None) -> pd.DataFrame:
         df['Team'] = df['Team'].str.replace('\s\(\d+\)', '', regex=True)
         
+        if year is None:
+            year = self.curr_year
         ## use 'zLeftover' so Mike isn't after Leftover
-        frame = df.loc[(df['Year']==self.curr_year) & (df['Playoff_Seed']>0), ['Round', 'Player', 'Team', 'Playoff_Win', 'Playoff_Loss', 'Playoff_Seed']]\
+        frame = df.loc[(df['Year']==year) & (df['Playoff_Seed']>0), ['Round', 'Player', 'Team', 'Playoff_Win', 'Playoff_Loss', 'Playoff_Seed']]\
             .replace('Leftover', 'zLeftover')\
             .sort_values(['Player', 'Playoff_Seed'])\
             .replace('zLeftover', 'Leftover')\
@@ -433,282 +458,17 @@ class DataPrepper():
         decade = clr_decades(decade)
         return decade, years
 
-    def colorize_frame(self, cell, year, bg_clr_dct):
-        if cell == year:
-            res = self.colorize_curr_year(cell, year)
-        else:
-            res = self.colorize_player_names_new(cell, conf_clr_dct, bg_clr_dct)
-            # res = f"background-color: #FAFAFF; color: black"
-        return res
-        
-    def colorize_curr_year(self, cell, year):
-        # if cell == year:
-        #     res = f"background-color: blue; color: white"
-        # else:
-        #     res = ''
-            # res = f"background-color: #FAFAFF; color: black"
-        # return res
-        # return f{"background-color: blue; color: white" if cell == year else '#FAFAFF'}"
-        return "background-color: blue; color: white"
-    
-    def colorize_player_names_new(self, cell, conf_clr_dct, bg_clr_dct):
-        return f'text-align:center; color:{conf_clr_dct.get(cell, "black")}; background-color:{bg_clr_dct.get(cell, "#FAFAFF")};'
-        # return f'align:center; color:{conf_clr_dct.get(cell, "black")}; background-color:{bg_clr_dct.get(cell, "#FAFAFF")};'
-        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "")};'
-        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "#FAFAFF")};'
-        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "#EAEAEE")};'
-        # return f'text-align:center; color:black; background-color:{bg_clr_dct.get(cell, "#EDEDEE")};'
-    
-    def style_frame(self, frame, bg_clr_dct, frmt_dct={}, bold_cols=[], clr_yr=None):
-        return frame.reset_index(drop=True).style\
-                .applymap(lambda cell: self.colorize_frame(cell, clr_yr, bg_clr_dct))\
-                .format(frmt_dct)\
-                .set_properties(**{'font-weight': 'bold'}, subset=bold_cols)
-                # .applymap(lambda cell: colorize_curr_year(cell, clr_yr))\
-                # .applymap(lambda cell: colorize_player_names_new(cell, bg_clr_dct))\
 
-        
-    def plot_draft_overview_altair(self, df: pd.DataFrame, year_range: bool=False) -> None:
-        if not isinstance(year_range, list):
-            year_range = [year_range]
-        source = df[df['Year'].isin(year_range)]
-        points = alt.Chart()\
-                    .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
-                    .encode(
-                        alt.X('Pick:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelAngle=0, labelFlush=True, grid=True)),
-                        alt.Y('Total_Win:Q', scale=alt.Scale(zero=True), 
-                                axis=alt.Axis(values=list(range(self.the_wk + 1)))),
-                        tooltip="Player:N"
-                        )
-
-        text_wins = points.mark_text(
-                    align='center',
-                    baseline='top',
-                    dx=0,
-                    dy=12
-                )\
-                .encode(
-                    text='Total_Win'
-                )
-                
-        text_tm = points.mark_text(
-                    align='center',
-                    baseline='bottom',
-                    dx=0,
-                    dy=-10
-                )\
-                .encode(
-                    text='Team'
-                )
-
-        rule1 = alt.Chart().mark_rule(color='black')\
-                .encode(
-                    x=alt.X('rd2:O', title='pick'),
-                    size=alt.value(2),
-                    # x='rd2:O',
-                )
-        rule2 = alt.Chart().mark_rule(color='black')\
-                .encode(
-                    # x='rd3:O',
-                    x=alt.X('rd3:O', title=''),
-                    size=alt.value(2),
-                    # title=''
-                )
-        rule3 = alt.Chart().mark_rule(color='black')\
-                .encode(
-                    # x='rd4:O',
-                    x=alt.X('rd4:O', title=''),
-                    size=alt.value(2),
-                )
-        # rule4 = alt.Chart().mark_rule(color='black')\
-        #         .encode(
-        #             # x=,
-        #             x=alt.X('leftover:O', title=''),
-        #             size=alt.value(2),
-        #             # name=''
-        #         )
-
-            ## color changing marks via radio buttons
-            # input_checkbox = alt.binding_checkbox()
-        # checkbox_selection = alt.selection_single(bind=input_checkbox, name="Big Budget Films")
-
-        # size_checkbox_condition = alt.condition(checkbox_selection,
-        #                                         alt.SizeValue(25),
-        #                                         alt.Size('Hundred_Million_Production:Q')
-        #                      
-                        # )
-        # selection = alt.selection_multi(fields=['name'])
-        # color = alt.condition(selection, alt.Color('name:N'), alt.value('lightgray'))
-        # make_selector = alt.Chart(make).mark_rect().encode(y='name', color=color).add_selection(selection)
-        # fuel_chart = alt.Chart(fuel).mark_line().encode(x='index', y=alt.Y('fuel', scale=alt.Scale(domain=[0, 10])), color='name').transform_filter(selection)
-                                           
-                                           
-        player_selection = alt.selection_multi(fields=['Player'])
-
-        domain_ = list(plot_bg_clr_dct.keys())
-        range_ = list(plot_bg_clr_dct.values())
-        opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
-        
-        player_color_condition = alt.condition(player_selection,
-                                    alt.Color('Player:N', scale=alt.Scale(domain=domain_, range=range_)),
-                                    alt.value('lightgray')
-                                )
-
-        highlight_players = points.add_selection(player_selection)\
-                                .encode(
-                                    color=player_color_condition,
-                                    opacity=opacity_
-                                    )#\
-                                # .properties(title=f"{', '.join([str(i) for i in year_range])} Picks by Player")
-        
-        player_selector = alt.Chart(source).mark_rect()\
-                .encode(x='Player', color=player_color_condition)\
-                .add_selection(player_selection)
-        
-        
-        
-        
-        # ## color changing marks via radio buttons - WORKS
-        # player_radio = alt.binding_radio(options=df['Player'].unique())
-        # player_selection = alt.selection_single(fields=['Player'], bind=player_radio, name=".")
-        # 
-        # domain_ = list(plot_bg_clr_dct.keys())
-        # range_ = list(plot_bg_clr_dct.values())
-        # opacity_ = alt.condition(player_selection, alt.value(1.0), alt.value(.4))
-        # 
-        # player_color_condition = alt.condition(player_selection,
-        #                             alt.Color('Player:N', 
-        #                                 scale=alt.Scale(domain=domain_, range=range_)),
-        #                             alt.value('lightgray')
-        #                         )
-        # 
-        # highlight_players = points.add_selection(player_selection)\
-        #                         .encode(
-        #                             color=player_color_condition,
-        #                             opacity=opacity_
-        #                             )\
-        #                         .properties(title=f"{curr_year} Picks by Player")
-        # 
-        # 
-        
-        
-        
-        # ## PLAYOFFS ? color changing marks via radio buttons
-        # po_radio = alt.binding_radio(options=['Playoffs'])
-        # po_select = alt.selection_single(fields=['Playoffs'], bind=po_radio, name="po!")
-        # 
-        # # domain_ = list(plot_bg_clr_dct.keys())
-        # # range_ = list(plot_bg_clr_dct.values())
-        # opacity_ = alt.condition(po_select, alt.value(1.0), alt.value(.4))
-        # 
-        # po_color_condition = alt.condition(po_select,
-        #                             alt.Color('Playoffs:N', 
-        #                                 scale=alt.Scale(domain=domain_, range=range_)),
-        #                             alt.value('lightgray')
-        #                         )
-        # 
-        # highlight_po = points.add_selection(po_select)\
-        #                         .encode(
-        #                             color=po_color_condition,
-        #                             opacity=opacity_
-        #                             )\
-        #                         .properties(title=f"{curr_year} PO")
-        
-        
-        
-        
-        
-        
-        
-        
-        
-            # rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
-        res = alt.layer(
-            rule1, rule2, rule3, text_wins, text_tm, highlight_players,
-            data=source, width=1250
-            ).transform_calculate(
-                rd2="8.5",          ## use pick halfway b/w rounds to draw vert line
-                rd3="16.5",
-                rd4="24.5",
-                # leftover="28.5"
-            )
-            
-        st.altair_chart(res) 
-        # st.altair_chart(player_selector)
-        # st.write("""<p align=center><font size=3>TIP: Click any player's dot to see only their picks. Shift-Click dots to add more players; double-click to reset.</font></p>""", unsafe_allow_html=True)
-        
-
-    def show_player_hist_table(self, name):
-        st.dataframe(self.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']), width=700)
-
-    def plot_wins_by_year(self, frame):
-        # print(frame)
-        points = alt.Chart(frame)\
-                    .mark_line(strokeWidth=4, color='grey')\
-                    .encode(
-                        alt.X('Year:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
-                        alt.Y('Total_Win:Q', scale=alt.Scale(zero=True)),
-                        order='Year',
-                        )\
-                    .properties(
-                        title='Wins by Year',
-                        width=400,
-                        height=200
-                        )
-
-        champ_pts = alt.Chart(frame)\
-                    .mark_point(filled=True, stroke='black', strokeWidth=1, size=100, opacity=1)\
-                    .encode(
-                        alt.X('Year:O'),
-                        alt.Y('Total_Win:Q', axis=alt.Axis(title=None)),
-                        color=alt.Color('Champ', scale=alt.Scale(domain=[True, False], range=['azure', plot_bg_clr_dct[frame['Player'].unique().item()]]))
-                        )
-        
-        text = points.mark_text(
-                    align='center',
-                    baseline='top',
-                    dx=0,
-                    dy=10
-                )\
-                .encode(
-                    text='Total_Win'
-                )
-        
-        st.altair_chart(points + champ_pts + text, use_container_width=False)
-
-    def prep_best_worst_picks_by_rd(self, df):
+    def prep_best_worst_picks_by_rd(self, frame: pd.DataFrame, year: Optional[int]=None):
         """
         """
-        frame = df.query(f"Year=={self.curr_year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('\s\(\d+\)', '', regex=True)
+        if year is None:
+            year = self.curr_year
+        frame = frame.query(f"Year=={year} and Player!='Leftover'")[['Round', 'Pick', 'Player', 'Team', 'Total_Win', 'Playoff_Seed']].replace('\s\(\d+\)', '', regex=True)
         # frame['Playoffs'] = frame['Playoff_Seed'] > 0  ##return bools now rendered as checkbox in Streamlit (blah)
         neg = 'No' if frame['Playoff_Seed'].sum() > 0 else 'TBD'
         frame['Playoffs'] = np.where(frame['Playoff_Seed'] > 0, 'Yes', neg)
         return frame.drop('Playoff_Seed', axis=1)
-
-    def picks_by_round(self, frame: pd.DataFrame, best_worst: str, rd: int): 
-        """
-        """
-        # idx_max = frame.groupby('Round')['Total_Win'].transform('max') == frame['Total_Win']
-        # idx_min = frame.groupby('Round')['Total_Win'].transform('min') == frame['Total_Win']
-        
-        
-        
-        # components.html(f'<div style="text-align: center"> Round {rd} </div>')
-        st.write(f""" <div align=center>Round {rd}</div>""", unsafe_allow_html=True)
-        # idx = idx_max if best_worst.lower() == 'best' else idx_min
-        max_min = 'max' if best_worst.lower() == 'best' else 'min'
-        idx = frame.groupby('Round')['Total_Win'].transform(max_min) == frame['Total_Win']
-        
-        st.dataframe(self.style_frame(frame[(idx) & (frame['Round']==rd)], bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-        # st.dataframe(self.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-    
-        # for rd_res in [(rd, best_worst) for rd in range(1,5)]:
-        #     rd, res = rd_res[0], rd_res[1]
-        #     # components.html(f'<div style="text-align: center"> Round {rd} </div>')
-        #     st.write(f""" Round {rd}""")
-        #     idx = idx_max if res == 'Best' else idx_min
-        #     st.dataframe(self.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-
 
     def prep_WoW_metrics(self, year: int):
         """
@@ -719,57 +479,10 @@ class DataPrepper():
         return wow[(wow['Week_Int']==wow['Week_Int'].max())].sort_values(['Total_Win', 'Total_Win%', 'WoW_Wins'], ascending=False)
 
         
-
-
      
-    def plot_ridge_altair(self):
-        ## very cool but not currently in use b/c not sure what to plot with it
-        ridge = alt.Chart(source, height=step).transform_joinaggregate(
-            mean_wins='mean(Total_Win)', groupby=['Year']
-        ).transform_bin(
-            ['bin_max', 'bin_min'], 'Total_Win'
-        ).transform_aggregate(
-            value='count()', groupby=['Year', 'mean_wins', 'bin_min', 'bin_max']
-        ).transform_impute(
-            impute='value', groupby=['Year', 'mean_wins'], key='bin_min', value=0
-        ).mark_area(
-            interpolate='monotone',
-            fillOpacity=0.8,
-            stroke='lightgray',
-            strokeWidth=0.5
-        ).encode(
-            alt.X('bin_min:Q', bin='binned', title='Total Wins'),
-            alt.Y(
-                'value:Q',
-                scale=alt.Scale(range=[step, -step * overlap]),
-                axis=None
-            ),
-            alt.Fill(
-                'mean_wins:Q',
-                legend=None,
-                scale=alt.Scale(domain=[1, 100], scheme='redyellowblue')
-            )
-        ).facet(
-            row=alt.Row(
-                'Year:T',
-                title=None,
-                header=alt.Header(labelAngle=0, labelAlign='right', format='%Y')
-            )
-        ).properties(
-            title='Win History by Player',
-            bounds='flush'
-        ).configure_facet(
-            spacing=0
-        ).configure_view(
-            stroke=None
-        ).configure_title(
-            anchor='end'
-        )
-        
-        st.altair_chart(ridge)
-    
-
 
 if __name__ == '__main__':
-    D = DataPrepper()
+    # pass
+    import sys
+    D = DataPrepper(int(sys.argv[1]))
     # D.prep_WoW_metrics(2023)

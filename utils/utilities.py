@@ -1,5 +1,9 @@
+""" 
+utilities
+"""
 import streamlit as st
-import utils.image_refs as images
+import datetime
+# import utils.image_refs as images
 from typing import Optional
 import requests
 
@@ -27,6 +31,7 @@ def gradient(grad_clr1, grad_clr2, title_clr, subtitle_clr, title, subtitle, sub
                 f'<span style="color:{subtitle_clr};font-size:{subtitle_size}px;">{subtitle}</span></h1>', 
                 unsafe_allow_html=True)
 
+
 def show_img(url: str, width: int=100, height: int=100, hover: Optional[str]=None, caption: Optional[str]=None, link: bool=False, spacer: Optional[int]=1):
     """
     """    
@@ -50,3 +55,9 @@ def show_img(url: str, width: int=100, height: int=100, hover: Optional[str]=Non
 #     st.markdown(f'''<img src="{images.logos[name]}" width={width} height={height}>''', unsafe_allow_html=True)
 #     if spacer:
 #         st.markdown("<BR>" * spacer, unsafe_allow_html=True)
+
+def get_curr_year() -> int:
+    """
+    """
+    today = datetime.date.today()
+    return today.year if today.month >= 9 else today.year - 1
