@@ -1,9 +1,9 @@
-import streamlit as st
-import streamlit.components.v1 as components
+# import streamlit as st
+# import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
-import altair as alt
-import os
+# import altair as alt
+# import os
 import time
 from pathlib import Path
 from utils.palettes import *
@@ -59,8 +59,8 @@ class DataPrepper():
             'Lions': 'NFC',
             }
 
-        self.int_cols = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams']
-        self.float_cols = ['Win%', 'Total_Win%', 'Playoff_Win%']
+        self.int_cols = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']
+        self.float_cols = ['Win%', 'Total_Win%', 'Playoff_Win%', 'Total Win%']
         self.year = year
         self.curr_year = get_curr_year()
 
@@ -69,7 +69,7 @@ class DataPrepper():
         self.dfr = self.stats_by_round(self.df)
         self.dfc = self.stats_by_career(self.df)
 
-        self.dfy_ = self.prep_year_data_for_website(self.dfy, self.year)
+        self.dfy_ = self.create_mgr_rk_table_for_site(self.dfy, self.year)
         self.dfr_ = self.prep_round_data_for_website(self.dfr, self.year)
         self.dfc_ = self.prep_career_data_for_website(self.dfc)
         
@@ -87,10 +87,12 @@ class DataPrepper():
         self.the_time = time.strftime("%H:%M CST", time.localtime())
 
 
-    def enforce_int_cols(self, frame: pd.DataFrame, extra_cols: List[str]=[]):
+    def enforce_int_cols(self, frame: pd.DataFrame, extra_cols: Optional[List[str]]=None):
         """
         asd
         """
+        if extra_cols is None:
+            extra_cols = []
         int_cols = np.array(self.int_cols + extra_cols)
         int_cols = int_cols[np.isin(int_cols, frame.columns)]
         
@@ -100,11 +102,14 @@ class DataPrepper():
             except ValueError:
                 logging.error(col)
                 logging.error(frame[col])
+        return frame
 
-    def enforce_float_cols(self, frame: pd.DataFrame, extra_cols: List[str]=[]):
+    def enforce_float_cols(self, frame: pd.DataFrame, extra_cols: Optional[List[str]]=None):
         """
         asd
         """
+        if extra_cols is None:
+            extra_cols = []        
         float_cols = np.array(self.float_cols + extra_cols)
         float_cols = float_cols[np.isin(float_cols, frame.columns)]
         
@@ -114,6 +119,7 @@ class DataPrepper():
             except ValueError:
                 logging.error(col)
                 logging.error(frame[col])
+        return frame
 
     def load_and_prep_data(self): 
         """
@@ -227,7 +233,7 @@ class DataPrepper():
         dfc.to_csv(self.ROOT_PATH.joinpath('data', 'output', 'picks_pool_stats_by_career.csv'))
         return dfc.reset_index().sort_values(['Total_Win', 'Total_Win%'], ascending=False)
 
-    def prep_year_data_for_website(self, dfy: pd.DataFrame, year: int) -> pd.DataFrame:
+    def create_mgr_rk_table_for_site(self, dfy: pd.DataFrame, year: int) -> pd.DataFrame:
         '''advanced formatting possible via df.style (requires jinja2).
         https://code.i-harness.com/en/q/df3234
         '''
@@ -249,8 +255,8 @@ class DataPrepper():
 
         frame = frame[cols].sort_values(sort_col, ascending=False)
         frame.insert(0, 'Rank', frame[sort_col].rank(ascending=False, method='dense').fillna(0).astype('int'))
-        self.enforce_int_cols(frame)
-        self.enforce_float_cols(frame)
+        frame = self.enforce_int_cols(frame)
+        frame = self.enforce_float_cols(frame)
 
         ## Drop Tie cols if no ties exist.  Just visual clutter.
         ties = [c for c in frame.columns if 'Tie' in c]

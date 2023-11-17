@@ -1,9 +1,9 @@
 """ 
 utilities
 """
-from utils.palettes import *
-from pandas import DataFrame
 from typing import Union, List, Dict, Mapping
+from pandas import DataFrame
+from utils.palettes import *
 
 
 def colorize_frame(cell: Union[float, int, str], year: int, bg_clr_dct: Dict[str, str]):

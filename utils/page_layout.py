@@ -29,7 +29,7 @@ class PageLayout(DataPrepper):
             st.markdown("***")
             self.draft_overview_chart()
             self.best_worst_picks()
-            self.wins_by_round()
+            self.best_draft_rounds()
             # self.project_info()
             # self.conclusion()
             # self.gallery()
@@ -100,15 +100,13 @@ class PageLayout(DataPrepper):
         with st.container():
             _, col2, _ = st.columns([.05, .9, .05])
             with col2:
-                st.dataframe(sty.style_frame(frame, bg_clr_dct, frmt_dct=self.frmt_cols(), bold_cols=[bold]), use_container_width=True, hide_index=True)
+                # st.dataframe(sty.style_frame(frame, bg_clr_dct, frmt_dct=self.frmt_cols(), bold_cols=[bold]), use_container_width=True, hide_index=True)
                 
-            ## using st.table() honors intracellular formatting...  I actually like this more, but it's hard to center (yes..) and isn't sortable AND can't get rid of the damned index yet
-            # with col2:
-            #     frame = sty.style_frame(frame.set_index('Rank').drop('Total Win%' if frame['Total Win%'].sum() == 0 else '', errors='ignore', axis=1), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}', 'Full_Ssn_Pace': '{:.1f}', col: '{:.1f}'}, bold_cols=['Win'])
-            #     st.table(frame)
-
+                ## using st.table() honors intracellular formatting...  I actually like this more, but it's hard to center (yes..) and isn't sortable AND can't get rid of the damned index yet
+                st.table(sty.style_frame(frame, bg_clr_dct, frmt_dct=self.frmt_cols(), bold_cols=[bold]))
+                
     def manager_by_round(self):
-        """
+        """Use st.dataframe() here to allow for the colored column 'headers' (really row 1, not column header row, but it's the workaround for now...)
         """
         st.write("""<BR><h6 align=center>Manager by Round (wins) </h6>""", unsafe_allow_html=True)
         with st.container():
@@ -126,14 +124,24 @@ class PageLayout(DataPrepper):
     def draft_overview_chart(self):
         """
         """
-        st.write(f"""<BR><h4 align=center>The {self.curr_year} Draft</h4>""", unsafe_allow_html=True)
+        st.write(f"""<BR><h4 align=center>The {self.year} Draft</h4>""", unsafe_allow_html=True)
         st.write("""<p align=center>TIP: Click any player's dot to see only their picks. Shift-Click dots to add more players; double-click to reset.</p>""", unsafe_allow_html=True)
-        # self.df['Total_Win'] = np.random.randint(1,18, size=self.df.shape[0])  ## testing for chart
-        plt.plot_draft_overview_altair(self.df, year_range=[self.curr_year])
+        plt.plot_draft_overview_altair(self.df, self.year)
 
     def best_worst_picks(self):
         """
         """
+        def picks_by_round(frame: DataFrame, best_worst: str, rd: int): 
+            """
+            """
+            st.write(f""" <div align=center>Round {rd}</div>""", unsafe_allow_html=True)
+            max_min = 'max' if best_worst.lower() == 'best' else 'min'
+            idx = frame.groupby('Round')['Total_Win'].transform(max_min) == frame['Total_Win']
+            
+            # st.dataframe(sty.style_frame(frame[(idx) & (frame['Round']==rd)], bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495, hide_index=True, use_container_width=True)
+            st.table(sty.style_frame(frame[(idx) & (frame['Round']==rd)], bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}))
+
+
         st.write('  #')
         with st.container():
             left_col, right_col = st.columns([1, 1])
@@ -147,14 +155,11 @@ class PageLayout(DataPrepper):
             with st.container():
                 left_col, right_col = st.columns([1, 1])
                 with left_col:
-                    # st.write("""**Best picks by round:**""")
-                    self.picks_by_round(self.dfd, 'Best', rd)
-                
+                    picks_by_round(self.dfd, 'Best', rd)
                 with right_col:
-                    # st.write("""**Worst picks by round:**""")
-                    self.picks_by_round(self.dfd, 'Worst', rd)
+                    picks_by_round(self.dfd, 'Worst', rd)
 
-    def wins_by_round(self):
+    def best_draft_rounds(self):
         st.write(""" # """)
         st.write(f"""<BR><h5 align=center>Best Draft Rounds</h5>""", unsafe_allow_html=True)
         st.write("""<div align=center>Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?</div>""", unsafe_allow_html=True)
@@ -162,31 +167,33 @@ class PageLayout(DataPrepper):
         drop_cols = ['Rank', 'Year'] if self.dfr_['Playoff Teams'].sum() > 0 else ['Rank', 'Year', 'Playoff Teams']
         frame = self.dfr_.drop(drop_cols, axis=1)[['Round', 'Win%', 'Win', 'Loss', 'Tie', 'Games']]
         with st.container():
-            col1, col2 = st.columns([.45, 1])
+            _, col2, _ = st.columns([.35, 1, .35])
             with col2:
-                st.dataframe(sty.style_frame(frame, self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
+                st.table(sty.style_frame(frame, bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
+        # with st.container():
+        #     _, col2 = st.columns([.45, 1])
+        #     with col2:
+        #         st.dataframe(sty.style_frame(frame, bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
             
     def top_10_reg_ssn(self):
         st.write(f"""
             Let's take a look at the top 10 Regular Season finishes.
             """)
-        st.dataframe(sty.style_frame(self.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
+        st.dataframe(sty.style_frame(self.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
         
-    # def top_10_playoffs(self):
-    #     # st.write(body_dct['pohist_txt'])
-    #     st.write(f"""
-    #     How about the top 10 Playoff runs?
-    #     """)
+    def top_10_playoffs(self):
+        # st.write(body_dct['pohist_txt'])
+        st.markdown("""<h6 align=center>How about the top 10 Playoff runs in Pool history?</h6>""", unsafe_allow_html=True)
 
-    #     st.dataframe(sty.style_frame(self.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)
+        # st.dataframe(DP.style_frame(DP.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]).head(10), DP.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620)
+        st.table(sty.style_frame(self.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']))
+
+    def top_10_total_wins(self):
+        # st.write(body_dct['tothist_txt'])
+        st.write("""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins?""")
         
-    # def top_10_total_wins(self):
-    #     # st.write(body_dct['tothist_txt'])
-    #     st.write(f"""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins? 
-    #         """)
-        
-    #     st.dataframe(sty.style_frame(self.hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, height=550)        
-            
+        st.dataframe(sty.style_frame(self.hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620)      
+    
     def champions(self):
         st.write("""#### Champions""")
         st.write("""Past champions and their results, as well as projected champion for the current year (highlighted in blue).
@@ -194,7 +201,7 @@ class PageLayout(DataPrepper):
         st.write("""I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.  
         """)
         
-        st.dataframe(sty.style_frame(self.champs, self.bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']))  
+        st.dataframe(sty.style_frame(self.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']))  
         
     def careers(self):
         st.write("""#""")
@@ -330,30 +337,7 @@ class PageLayout(DataPrepper):
                 st.write("\n\n\n _")
 
 
-    def picks_by_round(self, frame: DataFrame, best_worst: str, rd: int): 
-        """
-        """
-        # idx_max = frame.groupby('Round')['Total_Win'].transform('max') == frame['Total_Win']
-        # idx_min = frame.groupby('Round')['Total_Win'].transform('min') == frame['Total_Win']
-        
-        
-        
-        # components.html(f'<div style="text-align: center"> Round {rd} </div>')
-        st.write(f""" <div align=center>Round {rd}</div>""", unsafe_allow_html=True)
-        # idx = idx_max if best_worst.lower() == 'best' else idx_min
-        max_min = 'max' if best_worst.lower() == 'best' else 'min'
-        idx = frame.groupby('Round')['Total_Win'].transform(max_min) == frame['Total_Win']
-        
-        st.dataframe(sty.style_frame(frame[(idx) & (frame['Round']==rd)], bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-        # st.dataframe(sty.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-    
-        # for rd_res in [(rd, best_worst) for rd in range(1,5)]:
-        #     rd, res = rd_res[0], rd_res[1]
-        #     # components.html(f'<div style="text-align: center"> Round {rd} </div>')
-        #     st.write(f""" Round {rd}""")
-        #     idx = idx_max if res == 'Best' else idx_min
-        #     st.dataframe(sty.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-
+ 
 
 
 
@@ -450,7 +434,7 @@ class PageLayout(DataPrepper):
     #     st.markdown("<BR>", unsafe_allow_html=True)
     #     with st.container():
     #         st.header('🖼 Gallery')
-
+    # 
     #         col1, col2 = st.columns([1, 1])
     #         with col1:
     #             show_img(signals['us_geo_growth'], width=450, height=450, hover='', caption='Example of the type of geo-based activity that signals offered.')

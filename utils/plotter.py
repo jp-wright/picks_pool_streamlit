@@ -8,19 +8,22 @@ from utils.palettes import *
 from typing import List, Tuple, Dict, Sequence, Optional, Union
 from utils.utilities import get_curr_year
 
-ssn = get_curr_year()
-games = read_csv('data/output/nfl_picks_pool_player_standings_history.csv', dtype={'Year': int})
-the_wk = int(games.loc[games['Year']==ssn, 'Reg_Games'].max())
-## ??? What is this += 1 business?
-if the_wk > 12: 
-    the_wk += 1
+# ssn = get_curr_year()
+# games = read_csv('data/output/nfl_picks_pool_player_standings_history.csv', dtype={'Year': int})
+# the_wk = int(games.loc[games['Year']==ssn, 'Reg_Games'].max())
+# if the_wk > 12: 
+#     the_wk += 1
 
 
 
-def plot_draft_overview_altair(frame: DataFrame, year_range: Sequence[int]) -> None:
-    if not isinstance(year_range, Sequence):
-        year_range = [year_range]
-    source = frame[frame['Year'].isin(year_range)]
+def plot_draft_overview_altair(frame: DataFrame, year: int) -> None:
+    """
+    In theory can plot multiple years but I don't think it's good viz at all to do so.
+    """
+    the_wk = int(frame.loc[frame['Year']==year, 'Reg_Games'].max())
+    if the_wk > 12: the_wk += 1
+    source = frame[frame['Year']==year]
+
     points = alt.Chart()\
                 .mark_point(strokeWidth=1, filled=True, stroke='black', size=185)\
                 .encode(
@@ -50,32 +53,34 @@ def plot_draft_overview_altair(frame: DataFrame, year_range: Sequence[int]) -> N
                 text='Team'
             )
 
+
+
     rule1 = alt.Chart().mark_rule(color='black')\
             .encode(
                 x=alt.X('rd2:O', title='pick'),
                 size=alt.value(2),
-                # x='rd2:O',
             )
     rule2 = alt.Chart().mark_rule(color='black')\
             .encode(
-                # x='rd3:O',
                 x=alt.X('rd3:O', title=''),
                 size=alt.value(2),
                 # title=''
             )
     rule3 = alt.Chart().mark_rule(color='black')\
             .encode(
-                # x='rd4:O',
                 x=alt.X('rd4:O', title=''),
                 size=alt.value(2),
             )
-    # rule4 = alt.Chart().mark_rule(color='black')\
-    #         .encode(
-    #             # x=,
-    #             x=alt.X('leftover:O', title=''),
-    #             size=alt.value(2),
-    #             # name=''
-    #         )
+
+    ## Prior to 2023 we only had 7 mgrs so we used Leftovers for the remaining 4 teams
+    size = 2 if year < 2023 else 0
+        
+    rule4 = alt.Chart().mark_rule(color='black')\
+            .encode(
+                x=alt.X('leftover:O', title=''),
+                size=alt.value(size),
+                # name=''
+            )
 
         ## color changing marks via radio buttons
         # input_checkbox = alt.binding_checkbox()
@@ -165,26 +170,23 @@ def plot_draft_overview_altair(frame: DataFrame, year_range: Sequence[int]) -> N
     
     
     
-    
-    
-    
-    
-    
-    
-        # rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
-    res = alt.layer(
-        rule1, rule2, rule3, text_wins, text_tm, highlight_players,
-        data=source, width=1250
-        ).transform_calculate(
-            rd2="8.5",          ## use pick halfway b/w rounds to draw vert line
-            rd3="16.5",
-            rd4="24.5",
-            # leftover="28.5"
-        )
+    if year < 2023:
+        dividers = dict(rd2="7.5",          ## use pick halfway b/w rounds to draw vert line
+                    rd3="14.5",
+                    rd4="21.5",
+                    leftover="28.5",
+                    )
+    else:
+        dividers = dict(rd2="8.5",          ## use pick halfway b/w rounds to draw vert line
+                    rd3="16.5",
+                    rd4="24.5",
+                    )
+
+    res = alt.layer(rule1, rule2, rule3, rule4, text_wins, text_tm, highlight_players,
+        data=source, width=1250).transform_calculate(**dividers)
         
     st.altair_chart(res) 
     # st.altair_chart(player_selector)
-    # st.write("""<p align=center><font size=3>TIP: Click any player's dot to see only their picks. Shift-Click dots to add more players; double-click to reset.</font></p>""", unsafe_allow_html=True)
 
 
 def plot_wins_by_year(frame: DataFrame):
