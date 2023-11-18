@@ -190,8 +190,11 @@ def plot_draft_overview_altair(frame: DataFrame, year: int) -> None:
 
 
 def plot_wins_by_year(frame: DataFrame):
-    # print(frame)
-    points = alt.Chart(frame)\
+    """
+    .
+    """
+    points = alt.Chart(frame,
+                title=alt.Title('Wins by Year', anchor='middle'))\
                 .mark_line(strokeWidth=4, color='grey')\
                 .encode(
                     alt.X('Year:O', axis=alt.Axis(format='.0f', tickMinStep=1, labelFlush=True, grid=True)),
@@ -199,7 +202,7 @@ def plot_wins_by_year(frame: DataFrame):
                     order='Year',
                     )\
                 .properties(
-                    title='Wins by Year',
+                    # title='Wins by Year',
                     width=400,
                     height=200
                     )
@@ -272,7 +275,56 @@ def plot_ridge_altair(source: DataFrame, step: Union[float, int], overlap: Union
     st.altair_chart(ridge)
 
 
-
+def sweet_ridge_plot():
+        # source = data.seattle_weather.url
+        source = self.dfy
+        step = 30
+        overlap = 1
+        # st.write(source.head(100))
+    
+        ridge = alt.Chart(source, height=step).transform_joinaggregate(
+            mean_wins='mean(Total_Win)', groupby=['Player']
+        ).transform_bin(
+            ['bin_max', 'bin_min'], 'Total_Win'
+        ).transform_aggregate(
+            value='count()', groupby=['Player', 'mean_wins', 'bin_min', 'bin_max']
+        ).transform_impute(
+            impute='value', groupby=['Player', 'mean_wins'], key='bin_min', value=0
+        ).mark_area(
+            interpolate='monotone',
+            fillOpacity=0.8,
+            stroke='lightgray',
+            strokeWidth=0.5
+        ).encode(
+            alt.X('bin_min:Q', bin='binned', title='Total Wins'),
+            alt.Y(
+                'value:Q',
+                scale=alt.Scale(range=[step, -step * overlap]),
+                axis=None
+            ),
+            alt.Fill(
+                'mean_wins:Q',
+                legend=None,
+                scale=alt.Scale(domain=[source['Total_Win'].max(), source['Total_Win'].min()], scheme='redyellowblue')
+            )
+        ).facet(
+            row=alt.Row(
+                'Player:N',
+                title=None,
+                header=alt.Header(labelAngle=0, labelAlign='left')
+            )
+        ).properties(
+            title='Win History by Player',
+            bounds='flush'
+        ).configure_facet(
+            spacing=0
+        ).configure_view(
+            stroke=None
+        ).configure_title(
+            anchor='end'
+        )
+        st.altair_chart(ridge)
+    
 
 
 

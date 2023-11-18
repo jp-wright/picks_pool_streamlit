@@ -102,3 +102,4 @@ fft_finath =            ['#d5d7c1', '#85abad', '#0a65a9', '#6b7c6d', '#565d24', 
 
 streamlit_blue = '#64B6FC'
 subheading_blue = '#9dd4fb'
+year_highlight = '#939294'

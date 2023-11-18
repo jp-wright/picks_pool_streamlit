@@ -28,6 +28,8 @@ conf_dct = {
     'Falcons': 'NFC',
     'Vikings': 'NFC',
     'Redskins': 'NFC',
+    'Commanders': 'NFC',
+    'Football Team': 'NFC',
     'Cardinals': 'NFC',
     'Bears': 'NFC',
     'Giants': 'NFC',

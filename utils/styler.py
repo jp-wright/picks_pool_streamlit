@@ -29,7 +29,8 @@ def colorize_curr_year(cell: Union[float, int, str], year: int):
         # res = f"background-color: #FAFAFF; color: black"
     # return res
     # return f{"background-color: blue; color: white" if cell == year else '#FAFAFF'}"
-    return "background-color: blue; color: white"
+    return f"background-color: {year_highlight}; color: white"
+    # return "background-color: #9c9c91; color: white"
 
 
 def colorize_player_names_new(cell: Union[float, int, str], conf_clr_dct: Dict[str, str], bg_clr_dct: Dict[str, str]):

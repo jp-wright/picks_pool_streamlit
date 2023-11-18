@@ -5,4 +5,4 @@ from utils.page_layout import PageLayout
 
 
 if __name__ == '__main__':
-    PageLayout('champs', None)
+    PageLayout('pool_records', None)

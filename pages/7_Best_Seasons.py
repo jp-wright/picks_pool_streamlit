@@ -5,4 +5,4 @@ from utils.page_layout import PageLayout
 
 
 if __name__ == '__main__':
-    PageLayout('playoffs', 2017)
+    PageLayout('best_seasons', None)

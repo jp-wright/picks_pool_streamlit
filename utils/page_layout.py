@@ -7,13 +7,15 @@ from utils.palettes import *
 from utils.data_prepper import DataPrepper
 import utils.styler as sty
 import utils.plotter as plt
+from typing import Optional
 
 
 
 class PageLayout(DataPrepper):
     """Layout class for all pages
     """
-    def __init__(self, page: str, year: int):
+    def __init__(self, page: str, year: Optional[int]=None):
+        if year is None: year = get_curr_year()
         super().__init__(year)
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
         local_css("style/style.css")
@@ -23,7 +25,8 @@ class PageLayout(DataPrepper):
         if page == 'season':
             # st.table()
             self.intro()
-            self.WoW_metrics()
+            if self.year == get_curr_year():
+                self.WoW_metrics()
             self.manager_ranking()
             self.manager_by_round()
             st.markdown("***")
@@ -34,13 +37,18 @@ class PageLayout(DataPrepper):
             # self.conclusion()
             # self.gallery()
 
-        elif page == 'playoffs':
-            pass
+        elif page == 'best_seasons':
+            self.best_seasons_header()
+            self.top_10_total_wins()
+            self.top_10_playoffs()
+            self.top_10_reg_ssn()
         elif page == 'champs':
-            pass
+            self.champions()
+            self.champs_by_year_bar_chart()
         elif page == 'career':
-            pass
-        elif page == 'records':
+            self.career_wins()
+            self.personal_records()
+        elif page == 'pool_records':
             pass
 
 
@@ -53,7 +61,9 @@ class PageLayout(DataPrepper):
         gradient(blue_bath1[1], blue_bath1[3], blue_bath1[5], '#fcfbfb', f"🏈 NFL Picks Pool", "A Swimming Pool of Interceptions", 27)
 
         st.markdown(f"""<h6 align=center>We've gone global: Colorado, Texas, California, England, Japan, and Sweden</h6><BR>""", unsafe_allow_html=True)
-        st.markdown(f"<h3 align=center>{self.year} Review</h3>", unsafe_allow_html=True)
+
+        hdr = 'Weekly Update!' if self.year == get_curr_year() else 'in Review!'
+        st.markdown(f"<h2 align=center>{self.year} {hdr}</h2>", unsafe_allow_html=True)
         
     def WoW_metrics(self):
         """
@@ -119,7 +129,7 @@ class PageLayout(DataPrepper):
         """
         if not self.dfpo.empty:
             st.write("""<BR><h6 align=center>Playoff Teams Tracker</h6>""", unsafe_allow_html=True)
-            st.dataframe(sty.style_frame(self.dfpo, self.bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}', 'Playoff_Loss': '{:.0f}'}), width=765, height=620)
+            st.dataframe(sty.style_frame(self.dfpo, self.bg_clr_dct, frmt_dct={'Playoff_Win': '{:.0f}', 'Playoff_Loss': '{:.0f}'}), width=765, height=620, hide_index=True)
 
     def draft_overview_chart(self):
         """
@@ -134,22 +144,22 @@ class PageLayout(DataPrepper):
         def picks_by_round(frame: DataFrame, best_worst: str, rd: int): 
             """
             """
-            st.write(f""" <div align=center>Round {rd}</div>""", unsafe_allow_html=True)
+            st.markdown(f"""<div align=center style="color:#76756e">Round {rd}</div>""", unsafe_allow_html=True)
             max_min = 'max' if best_worst.lower() == 'best' else 'min'
             idx = frame.groupby('Round')['Total_Win'].transform(max_min) == frame['Total_Win']
             
             # st.dataframe(sty.style_frame(frame[(idx) & (frame['Round']==rd)], bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495, hide_index=True, use_container_width=True)
-            st.table(sty.style_frame(frame[(idx) & (frame['Round']==rd)], bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}))
+            st.table(sty.style_frame(frame[(idx) & (frame['Round']==rd)].rename(columns={'Total_Win': 'Win'}), bg_clr_dct, frmt_dct={'Win': '{:.0f}'}, bold_cols=['Win']))
 
 
-        st.write('  #')
+        st.write('<h4 align=center> Best and Worst Picks By Round </h4>', unsafe_allow_html=True)
         with st.container():
             left_col, right_col = st.columns([1, 1])
             with left_col:
-                st.write("""<h6 align=center>✅ Best picks by round:</h6>""", unsafe_allow_html=True)
+                st.write("""<h6 align=center>✅ Best Picks</h6>""", unsafe_allow_html=True)
             
             with right_col:
-                st.write("""<h6 align=center>❌ Worst picks by round:</h6>""", unsafe_allow_html=True)
+                st.write("""<h6 align=center>❌ Worst Picks</h6>""", unsafe_allow_html=True)
 
         for rd in range(1, 5):
             with st.container():
@@ -175,46 +185,66 @@ class PageLayout(DataPrepper):
         #     with col2:
         #         st.dataframe(sty.style_frame(frame, bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
             
+    def best_seasons_header(self):
+        st.write("""<h1 align=center>Best Seasons in Pool History</h1>""", unsafe_allow_html=True)
+
     def top_10_reg_ssn(self):
-        st.write(f"""
-            Let's take a look at the top 10 Regular Season finishes.
-            """)
-        st.dataframe(sty.style_frame(self.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, height=550)
+        st.write("""<BR><h6 align=center>Top 10 Regular Seasons</h6>""", unsafe_allow_html=True)
+        with st.container():
+            _, col2, _ = st.columns([.25, 1, .25])
+            with col2:
+                # st.dataframe(sty.style_frame(self.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']), width=620, hide_index=True)
+
+                st.table(sty.style_frame(self.hist_frames[0].sort_values(['Win%_Rk', 'Win', 'Year'], ascending=[True, False, True]).rename(columns={'Win%_Rk': 'Rk'}).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%']))
         
     def top_10_playoffs(self):
-        # st.write(body_dct['pohist_txt'])
-        st.markdown("""<h6 align=center>How about the top 10 Playoff runs in Pool history?</h6>""", unsafe_allow_html=True)
+        
+        st.write("""<BR><h6 align=center>Top 10 Playoff Runs</h6>""", unsafe_allow_html=True)
+        with st.container():
+            _, col2, _ = st.columns([.25, 1, .25])
+            with col2:
+                # st.dataframe(sty.style_frame(self.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, hide_index=True)
 
-        # st.dataframe(DP.style_frame(DP.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]).head(10), DP.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620)
-        st.table(sty.style_frame(self.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']))
+                ## table vs dataframe formatting
+                st.table(sty.style_frame(self.hist_frames[1].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]).rename(columns={'Win_Rk': 'Rk'}).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']))
 
     def top_10_total_wins(self):
-        # st.write(body_dct['tothist_txt'])
-        st.write("""And what about the top 10 regular season and playoffs combined (for a single season) -- i.e. a player's total wins?""")
-        
-        st.dataframe(sty.style_frame(self.hist_frames[2].sort_values(['Win%_Rk', 'Win%', 'Year'], ascending=[True, False, True]).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620)      
-    
+
+        st.write("""<BR><h6 align=center>Top 10 Total Season Wins</h6>""", unsafe_allow_html=True)
+        with st.container():
+            _, col2, _ = st.columns([.25, 1, .25])
+            with col2:
+                # st.dataframe(sty.style_frame(self.hist_frames[2].sort_values(['Win_Rk', 'Win%', 'Year'], ascending=[True, False, True]), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']), width=620, hide_index=True)
+
+                ## table vs dataframe formatting
+                st.table(sty.style_frame(self.hist_frames[2].drop('Win%_Rk', axis=1).sort_values(['Win', 'Win%', 'Year'], ascending=[False, False, True]).head(10), self.bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win']))
+
     def champions(self):
-        st.write("""#### Champions""")
-        st.write("""Past champions and their results, as well as projected champion for the current year (highlighted in blue).
-            """)
-        st.write("""I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.  
-        """)
+        st.write("""<h1 align=center>Pool Champions</h1>""", unsafe_allow_html=True)
+        st.write("""<div align=center>Past champions and their results, as well as projected champion for the current year (highlighted in blue).</div>""", unsafe_allow_html=True)
+        st.write("""<div align=center>I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.</div>""", unsafe_allow_html=True)
         
-        st.dataframe(sty.style_frame(self.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']))  
+        with st.container():
+            _, col2, _ = st.columns([.25, 1, .25])
+            with col2:
+                # st.dataframe(sty.style_frame(self.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']), hide_index=True) 
+
+                st.table(sty.style_frame(self.champs, bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Total_Win']))
         
-    def careers(self):
-        st.write("""#""")
-        st.write("""#### Career Performance""")
-        st.write("Who in our pool has been the best over their careers (sorted by Wins)?")
+    def career_wins(self):
+        st.write("""<h1 align=center>Career Performance</h1>""", unsafe_allow_html=True)
+        st.write("<div align=center>Who in our pool has been the best over their careers (sorted by Wins)?</div>", unsafe_allow_html=True)
         
-        st.dataframe(sty.style_frame(self.dfc_, self.bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}))
+        with st.container():
+            _, col2, _ = st.columns([.25, 1, .25])
+            with col2:
+                # st.dataframe(sty.style_frame(self.dfc_, self.bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}), hide_index=True)
+                st.table(sty.style_frame(self.dfc_, self.bg_clr_dct, frmt_dct={'Total Win%': '{:.1f}'}, bold_cols=['Total Win']))
         
-        st.write("""...Victoria hasn't even won as many games as the Leftovers.  Sad! 😜""")
+        st.write("""<div align=center>...Victoria hasn't even won as many games as the Leftovers.  Sad! 😜</div>""", unsafe_allow_html=True)
         
-        st.write("""#""")
-        # dfs_ = player_hist.sort_values('Year', ascending=True).groupby(['Player', 'Year']).sum().groupby('Player').cumsum().reset_index().sort_values(['Player', 'Year'])
-        # dfs_
+    def champs_by_year_bar_chart(self):
+        st.write("""<h4 align=center>Champion Comparison per Year [NEEDS WORK]</h4>""", unsafe_allow_html=True)
         if 'Champ' in self.player_hist.columns:
             player_hist = self.player_hist 
         else:
@@ -257,84 +287,25 @@ class PageLayout(DataPrepper):
 
         st.altair_chart(chart)
     
-    def sweet_ridge_plot(self):
-        # source = data.seattle_weather.url
-        source = self.dfy
-        step = 30
-        overlap = 1
-        # st.write(source.head(100))
-    
-        ridge = alt.Chart(source, height=step).transform_joinaggregate(
-            mean_wins='mean(Total_Win)', groupby=['Player']
-        ).transform_bin(
-            ['bin_max', 'bin_min'], 'Total_Win'
-        ).transform_aggregate(
-            value='count()', groupby=['Player', 'mean_wins', 'bin_min', 'bin_max']
-        ).transform_impute(
-            impute='value', groupby=['Player', 'mean_wins'], key='bin_min', value=0
-        ).mark_area(
-            interpolate='monotone',
-            fillOpacity=0.8,
-            stroke='lightgray',
-            strokeWidth=0.5
-        ).encode(
-            alt.X('bin_min:Q', bin='binned', title='Total Wins'),
-            alt.Y(
-                'value:Q',
-                scale=alt.Scale(range=[step, -step * overlap]),
-                axis=None
-            ),
-            alt.Fill(
-                'mean_wins:Q',
-                legend=None,
-                scale=alt.Scale(domain=[source['Total_Win'].max(), source['Total_Win'].min()], scheme='redyellowblue')
-            )
-        ).facet(
-            row=alt.Row(
-                'Player:N',
-                title=None,
-                header=alt.Header(labelAngle=0, labelAlign='left')
-            )
-        ).properties(
-            title='Win History by Player',
-            bounds='flush'
-        ).configure_facet(
-            spacing=0
-        ).configure_view(
-            stroke=None
-        ).configure_title(
-            anchor='end'
-        )
-        st.altair_chart(ridge)
-    
+    def show_player_hist_table(self, name):
+        st.write(f"""<div align=center>Career Review</div>""", unsafe_allow_html=True)
+        # st.write(f"""<div align=center>Career Review - <text style="color:{plot_bg_clr_dct[name]}"><b>{name}</b></text></div>""", unsafe_allow_html=True)
+        st.dataframe(sty.style_frame(self.player_hist[self.player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1).rename(columns={c: c.replace('Total_', '') for c in self.player_hist.columns}), bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, clr_yr=self.curr_year, bold_cols=['Win%']), width=700, hide_index=True)
+
     def personal_records(self):
-        st.write("""#""")
-        st.write("""#### Personal Records""")    
-        # st.write(body_dct['pr_txt'])
-        st.write("""Last, here are the personal records for each player, sorted by most at top.  \nBlue highlight is for this season and shows who might have a chance at setting a new personal record for total wins.""")
+        st.write("""<h1 align=center>Pool Records [WIP]</h1>""", unsafe_allow_html=True)
+        st.write(f"""<div align=center>Each manager's career history, sorted by highest winning seasons at top.  <BR><text style="color:{year_highlight}"><b>Grey highlight</b></text> is for this season and shows at a glance where the current season ranks in each manger's career.</div>""", unsafe_allow_html=True)
         
-        
-        # print(self.player_hist)
-
-        left_column, right_column = st.columns([2, 1])
-        
-        # # st.write(self.player_hist)
-        # with left_column:
-        #     for name in self.dfy_['Player'].unique():
-        #         self.show_player_hist_table(name)
-        #         st.write("\n\n\n _")
-
-        # with right_column: 
-        #     for name in self.dfy_['Player'].unique():
-        #         self.plot_wins_by_year(self.player_hist[self.player_hist['Player'] == name])
-
-
         for name in self.dfy_['Player'].unique():
-            with left_column:
-                self.show_player_hist_table(name)
-            with right_column: 
-                self.plot_wins_by_year(self.player_hist[self.player_hist['Player'] == name])
-                st.write("\n\n\n _")
+            with st.container():
+                st.markdown('***')
+                st.write(f"""<div align=center><text style="color:{plot_bg_clr_dct[name]}; font-size:34px"><b>{name}</b></text></div>""", unsafe_allow_html=True)
+                col1, _, col3 = st.columns([1, .2,  1])
+                with col1:
+                    self.show_player_hist_table(name)
+                with col3: 
+                    plt.plot_wins_by_year(self.player_hist[self.player_hist['Player'] == name])
+                    st.write("\n\n\n _")
 
 
  

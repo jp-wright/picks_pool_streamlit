@@ -1,4 +1,4 @@
-# import streamlit as st
+import streamlit as st
 # import streamlit.components.v1 as components
 import pandas as pd
 import numpy as np
@@ -9,7 +9,7 @@ from pathlib import Path
 from utils.palettes import *
 from typing import List, Tuple, Dict, Sequence, Optional
 import logging
-from utils.reference import champ_hist
+from utils.reference import champ_hist, conf_dct
 from utils.utilities import get_curr_year
 
 
@@ -19,7 +19,7 @@ from utils.utilities import get_curr_year
 
 
 class DataPrepper():
-    def __init__(self, year: int):
+    def __init__(self, year: Optional[int]=None):
         self.ROOT_PATH = Path.cwd()
         self.bg_clr_dct = bg_clr_dct
         self.plot_bg_clr_dct = plot_bg_clr_dct
@@ -61,7 +61,7 @@ class DataPrepper():
 
         self.int_cols = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Playoff_Teams', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']
         self.float_cols = ['Win%', 'Total_Win%', 'Playoff_Win%', 'Total Win%']
-        self.year = year
+        self.year = year if year else get_curr_year()
         self.curr_year = get_curr_year()
 
         self.df = self.load_and_prep_data()
@@ -415,7 +415,7 @@ class DataPrepper():
 
         # frame['Potential_Wins'] = [3 if seed==1 else 4 for seed in frame['Playoff_Seed']]
         frame['Playoff_Seed'] = frame['Playoff_Seed'].astype(int)
-        frame['Conference'] = [self.conf_dct[tm] for tm in frame['Team']]
+        frame['Conference'] = [conf_dct[tm] for tm in frame['Team']]
         frame.rename(columns={'Playoff_Loss': 'Eliminated'}, inplace=True)
         frame['Eliminated'] = frame['Eliminated'] > 0
         # if frame.empty:
