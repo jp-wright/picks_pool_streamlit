@@ -1,14 +1,17 @@
+from typing import Optional
+import datetime as dte
 import streamlit as st
 import altair as alt
 # import pandas as pd
 from pandas import DataFrame
+import logging
+logging.basicConfig(filename='/Users/jpw/Dropbox/Data_Science/projects/github_projects/2021-11-10_nfl_picks_pool_streamlit/logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+# logging.basicConfig(filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 from utils.utilities import gradient, local_css, get_curr_year
 from utils.palettes import *
 from utils.data_prepper import DataPrepper
 import utils.styler as sty
 import utils.plotter as plt
-from typing import Optional
-
 
 
 class PageLayout(DataPrepper):
@@ -51,6 +54,20 @@ class PageLayout(DataPrepper):
         elif page == 'pool_records':
             pass
 
+    @staticmethod
+    def logger_deco(func: object):
+        def wrapper_logger_deco(*args, **kwargs):
+            # logging.warning(f"Running {func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
+            res = func(*args, **kwargs)
+            logging.warning("Completed {func.__name__}".format('') - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
+            return res
+        return wrapper_logger_deco
+
+
+    # def do_twice(func):
+    #     def wrapper_do_twice(*args, **kwargs):
+    #         return func(*args, **kwargs)
+    #     return wrapper_do_twice
 
     def frmt_cols(self):
         frmts = {k: '{:.0f}' for k in self.int_cols}
@@ -64,7 +81,8 @@ class PageLayout(DataPrepper):
 
         hdr = 'Weekly Update!' if self.year == get_curr_year() else 'in Review!'
         st.markdown(f"<h2 align=center>{self.year} {hdr}</h2>", unsafe_allow_html=True)
-        
+
+    @logger_deco
     def WoW_metrics(self):
         """
         """
@@ -221,7 +239,7 @@ class PageLayout(DataPrepper):
 
     def champions(self):
         st.write("""<h1 align=center>Pool Champions</h1>""", unsafe_allow_html=True)
-        st.write("""<div align=center>Past champions and their results, as well as projected champion for the current year (highlighted in blue).</div>""", unsafe_allow_html=True)
+        st.write("""<div align=center>Past champions and their results, as well as projected champion for the current year (<text style="color:{year_highlight}"><b>highlighted in grey</b></text>).</div>""", unsafe_allow_html=True)
         st.write("""<div align=center>I'm not sure how to parse the added week 18 in the regular season except to use win percent as opposed to wins.</div>""", unsafe_allow_html=True)
         
         with st.container():
