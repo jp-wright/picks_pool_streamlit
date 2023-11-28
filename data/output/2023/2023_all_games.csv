@@ -63,6 +63,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,7,Brandon,Bills,7,4,7,RegSsn
 2023,1,7,Brandon,Bills,8,5,8,RegSsn
 2023,1,7,Brandon,Bills,9,5,9,RegSsn
+2023,1,7,Brandon,Bills,10,5,10,RegSsn
 2023,1,8,Dan,Cowboys,1,1,1,RegSsn
 2023,1,8,Dan,Cowboys,2,2,2,RegSsn
 2023,1,8,Dan,Cowboys,3,2,3,RegSsn
@@ -182,6 +183,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,3,20,Jordan,Broncos,6,1,6,RegSsn
 2023,3,20,Jordan,Broncos,7,2,7,RegSsn
 2023,3,20,Jordan,Broncos,8,3,8,RegSsn
+2023,3,20,Jordan,Broncos,10,4,9,RegSsn
 2023,3,21,Alex,Seahawks,1,0,1,RegSsn
 2023,3,21,Alex,Seahawks,2,1,2,RegSsn
 2023,3,21,Alex,Seahawks,3,2,3,RegSsn
