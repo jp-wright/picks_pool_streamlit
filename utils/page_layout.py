@@ -4,9 +4,9 @@ import streamlit as st
 import altair as alt
 # import pandas as pd
 from pandas import DataFrame
+import functools
 import logging
-logging.basicConfig(filename='/Users/jpw/Dropbox/Data_Science/projects/github_projects/2021-11-10_nfl_picks_pool_streamlit/logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-# logging.basicConfig(filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+logging.basicConfig(filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 from utils.utilities import gradient, local_css, get_curr_year
 from utils.palettes import *
 from utils.data_prepper import DataPrepper
@@ -18,6 +18,7 @@ class PageLayout(DataPrepper):
     """Layout class for all pages
     """
     def __init__(self, page: str, year: Optional[int]=None):
+        print("Reloading Page...")
         if year is None: year = get_curr_year()
         super().__init__(year)
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
@@ -54,21 +55,6 @@ class PageLayout(DataPrepper):
         elif page == 'pool_records':
             pass
 
-    @staticmethod
-    def logger_deco(func: object):
-        def wrapper_logger_deco(*args, **kwargs):
-            # logging.warning(f"Running {func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
-            res = func(*args, **kwargs)
-            logging.warning("Completed {func.__name__}".format('') - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
-            return res
-        return wrapper_logger_deco
-
-
-    # def do_twice(func):
-    #     def wrapper_do_twice(*args, **kwargs):
-    #         return func(*args, **kwargs)
-    #     return wrapper_do_twice
-
     def frmt_cols(self):
         frmts = {k: '{:.0f}' for k in self.int_cols}
         frmts.update({k: '{:.1f}' for k in self.float_cols})
@@ -82,7 +68,7 @@ class PageLayout(DataPrepper):
         hdr = 'Weekly Update!' if self.year == get_curr_year() else 'in Review!'
         st.markdown(f"<h2 align=center>{self.year} {hdr}</h2>", unsafe_allow_html=True)
 
-    @logger_deco
+    @func_metadata
     def WoW_metrics(self):
         """
         """
