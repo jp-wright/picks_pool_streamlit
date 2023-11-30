@@ -6,8 +6,8 @@ import altair as alt
 from pandas import DataFrame
 import functools
 import logging
-logging.basicConfig(filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-from utils.utilities import gradient, local_css, get_curr_year
+logging.basicConfig(level=logging.INFO, filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+from utils.utilities import gradient, local_css, get_curr_year, func_metadata
 from utils.palettes import *
 from utils.data_prepper import DataPrepper
 import utils.styler as sty
@@ -104,6 +104,7 @@ class PageLayout(DataPrepper):
             with col4:
                 show_metric(self.wow, 7)
 
+    @func_metadata
     def manager_ranking(self):
         """
         """
@@ -118,7 +119,8 @@ class PageLayout(DataPrepper):
                 
                 ## using st.table() honors intracellular formatting...  I actually like this more, but it's hard to center (yes..) and isn't sortable AND can't get rid of the damned index yet
                 st.table(sty.style_frame(frame, bg_clr_dct, frmt_dct=self.frmt_cols(), bold_cols=[bold]))
-                
+
+    @func_metadata                
     def manager_by_round(self):
         """Use st.dataframe() here to allow for the colored column 'headers' (really row 1, not column header row, but it's the workaround for now...)
         """

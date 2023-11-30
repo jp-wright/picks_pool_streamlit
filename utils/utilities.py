@@ -6,6 +6,8 @@ import datetime
 # import utils.image_refs as images
 from typing import Optional
 import requests
+import functools
+import logging
 
 def local_css(file_name):
     """
@@ -71,10 +73,29 @@ def func_metadata(func: object) -> object:
         kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]
         signature = ", ".join(args_repr + kwargs_repr)
         # print(f"Calling {func.__name__}({signature})\n\n\n")
-        logging.warning(f"Running {func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
+        logging.warning(f"Running: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
+        print(f"Running: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
         res = func(*args, **kwargs)
         # print(f"{func.__name__!r} returned {res!r}")
-        logging.warning(f"Completed {func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
+        logging.warning(f"Completed: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
+        print(f"Completed: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
         return res
     return wrapper_func_metadata
+
+
+def output_logger(process, printout: bool=False, raise_err: bool=False):
+    """process is subprocess.Popen(... , stdout=subprocess.PIPE, stderr=subprocess.PIPE)"""
+    stdoutput, stderroutput = process.communicate()
+
+    if len(stdoutput) > 0:
+        logging.info(stdoutput)
+        if printout: 
+            print(str(stdoutput))
+            
+    if len(stderroutput) > 0:
+        logging.error(stderroutput)
+        if printout: 
+            print(str(stderroutput))
+        if raise_err:
+            raise Exception(str(stderroutput))
 
