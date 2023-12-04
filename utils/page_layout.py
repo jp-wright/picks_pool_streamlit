@@ -2,7 +2,7 @@ from typing import Optional
 import datetime as dte
 import streamlit as st
 import altair as alt
-import math
+from math import ceil
 # import pandas as pd
 from pandas import DataFrame
 import functools
@@ -26,7 +26,7 @@ class PageLayout(DataPrepper):
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
         local_css("style/style.css")
         self.year = year
-        self.week = math.ceil((dte.date.today() - SEASON_START).days/7)
+        self.week = ceil((dte.date.today() - SEASON_START).days/7)
         
         # st.sidebar.markdown(info['Photo'], unsafe_allow_html=True)
         if page == 'season':
@@ -69,7 +69,7 @@ class PageLayout(DataPrepper):
         st.markdown(f"""<h6 align=center>We've gone global: Colorado, Texas, California, England, Japan, and Sweden</h6><BR>""", unsafe_allow_html=True)
 
         # hdr = 'Weekly Update!' if self.year == get_curr_year() else 'in Review!'
-        hdr = f'- Week {self.week}' if self.year == get_curr_year() else 'in Review!'
+        hdr = f'- Week {self.week}' if self.week < 21 else 'in Review!'
         st.markdown(f"<h2 align=center>{self.year} {hdr}</h2>", unsafe_allow_html=True)
 
     @func_metadata
