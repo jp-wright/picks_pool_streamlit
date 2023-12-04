@@ -69,7 +69,7 @@ class PageLayout(DataPrepper):
         st.markdown(f"""<h6 align=center>We've gone global: Colorado, Texas, California, England, Japan, and Sweden</h6><BR>""", unsafe_allow_html=True)
 
         # hdr = 'Weekly Update!' if self.year == get_curr_year() else 'in Review!'
-        hdr = f'- Week {self.week}' if self.week < 21 else 'in Review!'
+        hdr = f'- Week {self.week}' if all([self.year == get_curr_year(), self.week < 21]) else 'in Review!'
         st.markdown(f"<h2 align=center>{self.year} {hdr}</h2>", unsafe_allow_html=True)
 
     @func_metadata
