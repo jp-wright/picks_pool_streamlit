@@ -197,7 +197,7 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2023,NFL,Reg_Ssn,San Francisco 49ers,49ers,9,3,0,12,0.75,3..0,352,189,W4,NFC_West,NFC,,7..1
 2023,NFL,Reg_Ssn,Detroit Lions,Lions,9,3,0,12,0.75,2..1,327,286,W1,NFC_North,NFC,,6..2
 2023,NFL,Reg_Ssn,Baltimore Ravens,Ravens,9,3,0,12,0.75,3..2,324,187,W2,AFC_North,AFC,,6..3
-2023,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,8,3,0,11,0.727,4..1,254,225,W2,AFC_South,AFC,,6..2
+2023,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,8,4,0,12,0.667,4..1,285,259,L1,AFC_South,AFC,,6..3
 2023,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,8,4,0,12,0.667,3..1,275,208,L1,AFC_West,AFC,,6..1
 2023,NFL,Reg_Ssn,Indianapolis Colts,Colts,7,5,0,12,0.583,3..2,300,296,W4,AFC_South,AFC,,5..3
 2023,NFL,Reg_Ssn,Houston Texans,Texans,7,5,0,12,0.583,1..2,281,249,W1,AFC_South,AFC,,4..3
@@ -209,8 +209,8 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2023,NFL,Reg_Ssn,Denver Broncos,Broncos,6,6,0,12,0.5,1..2,263,302,L1,AFC_West,AFC,,3..5
 2023,NFL,Reg_Ssn,Minnesota Vikings,Vikings,6,6,0,12,0.5,2..1,263,242,L2,NFC_North,NFC,,6..3
 2023,NFL,Reg_Ssn,Green Bay Packers,Packers,6,6,0,12,0.5,2..2,258,243,W3,NFC_North,NFC,,4..3
+2023,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,6,6,0,12,0.5,0..4,246,273,W1,AFC_North,AFC,,2..6
 2023,NFL,Reg_Ssn,Atlanta Falcons,Falcons,6,6,0,12,0.5,3..0,226,240,W2,NFC_South,NFC,,4..4
-2023,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,5,6,0,11,0.455,0..4,212,242,L3,AFC_North,AFC,,1..6
 2023,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,5,7,0,12,0.417,1..1,275,258,W1,AFC_West,AFC,,3..4
 2023,NFL,Reg_Ssn,New Orleans Saints,Saints,5,7,0,12,0.417,1..2,257,255,L3,NFC_South,NFC,,2..5
 2023,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,5,7,0,12,0.417,2..1,233,245,W1,NFC_South,NFC,,4..4
