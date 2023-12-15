@@ -1,11 +1,14 @@
+""" .
+"""
+
 from typing import Optional
+from math import ceil
 import datetime as dte
 import streamlit as st
 import altair as alt
-from math import ceil
 # import pandas as pd
 from pandas import DataFrame
-import functools
+# import functools
 import logging
 logging.basicConfig(level=logging.INFO, filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 from utils.utilities import gradient, local_css, get_curr_year, func_metadata
@@ -26,7 +29,9 @@ class PageLayout(DataPrepper):
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
         local_css("style/style.css")
         self.year = year
-        self.week = ceil((dte.date.today() - SEASON_START).days/7)
+        self.week = int((dte.date.today() - SEASON_START).days/7)   ## floor
+        # self.week = ceil((dte.date.today() - SEASON_START).days/7)
+        
         
         # st.sidebar.markdown(info['Photo'], unsafe_allow_html=True)
         if page == 'season':
