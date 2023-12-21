@@ -11,7 +11,7 @@ from pandas import DataFrame
 # import functools
 import logging
 logging.basicConfig(level=logging.INFO, filename='logs/page_layout.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-from utils.utilities import gradient, local_css, get_curr_year, func_metadata
+from utils.utilities import gradient, local_css, get_curr_year, get_curr_week, func_metadata
 from utils.palettes import *
 from utils.data_prepper import DataPrepper
 import utils.styler as sty
@@ -29,7 +29,8 @@ class PageLayout(DataPrepper):
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
         local_css("style/style.css")
         self.year = year
-        self.week = int((dte.date.today() - SEASON_START).days/7)   ## floor
+        self.week = get_curr_week()   
+        # self.week = int((dte.date.today() - SEASON_START).days/7)   ## floor
         # self.week = ceil((dte.date.today() - SEASON_START).days/7)
         
         

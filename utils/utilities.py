@@ -8,6 +8,7 @@ from typing import Optional
 import requests
 import functools
 import logging
+from utils.constants import SEASON_START
 
 def local_css(file_name):
     """
@@ -64,6 +65,20 @@ def get_curr_year() -> int:
     today = datetime.date.today()
     return today.year if today.month >= 9 else today.year - 1
 
+
+def get_curr_week() -> int:
+    """
+    isoweekday(): 1 = Monday ... 7 = Sunday
+    Generally, the active portion of the NFL week is end of Thursday (4) through Monday (1).
+    Season always begins on a Thursday (4).
+    """
+    week = int((datetime.date.today() - SEASON_START).days/7)   ## floor
+
+    ## active portion = +1 to week b/c week's games have begun
+    if datetime.date.today().isoweekday() in [5,6,7,1]: 
+        week += 1 
+    
+    return int(week)
 
 def func_metadata(func: object) -> object:
     """Print the function signature and return value.  The 'signature' line needs to be updated to work in a class."""

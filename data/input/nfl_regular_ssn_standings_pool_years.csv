@@ -193,10 +193,10 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2022,NFL,Reg_Ssn,Chicago Bears,Bears,3,14,0,17,0.17600000000000002,0..6,326,463,L10,NFC North,NFC,,1..11
 2023,NFL,Reg_Ssn,San Francisco 49ers,49ers,11,3,0,14,0.7859999999999999,5..0,425,234,W6,,,,9..1
 2023,NFL,Reg_Ssn,Baltimore Ravens,Ravens,11,3,0,14,0.7859999999999999,3..2,384,225,W4,,,,7..3
-2023,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,10,3,0,13,0.769,3..1,342,321,L2,,,,6..2
 2023,NFL,Reg_Ssn,Miami Dolphins,Dolphins,10,4,0,14,0.7140000000000001,4..1,441,294,W1,AFC_East,AFC,,7..3
 2023,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,10,4,0,14,0.7140000000000001,4..1,431,264,L1,,,,7..3
 2023,NFL,Reg_Ssn,Detroit Lions,Lions,10,4,0,14,0.7140000000000001,2..2,382,331,W1,NFC_North,NFC,,6..3
+2023,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,10,4,0,14,0.7140000000000001,3..1,359,341,L3,,,,6..3
 2023,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,9,5,0,14,0.643,3..1,319,245,W1,AFC_West,AFC,,7..2
 2023,NFL,Reg_Ssn,Cleveland Browns,Browns,9,5,0,14,0.643,3..2,309,289,W2,AFC_North,AFC,,6..3
 2023,NFL,Reg_Ssn,Buffalo Bills,Bills,8,6,0,14,0.5710000000000001,2..2,379,254,W2,AFC_East,AFC,,4..5
@@ -207,10 +207,10 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2023,NFL,Reg_Ssn,Los Angeles Rams,Rams,7,7,0,14,0.5,4..1,327,310,W1,NFC_West,NFC,,5..4
 2023,NFL,Reg_Ssn,New Orleans Saints,Saints,7,7,0,14,0.5,2..2,309,267,W2,NFC_South,NFC,,4..5
 2023,NFL,Reg_Ssn,Denver Broncos,Broncos,7,7,0,14,0.5,2..2,304,351,L1,AFC_West,AFC,,4..5
+2023,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,7,7,0,14,0.5,1..4,300,335,W1,NFC_West,NFC,,6..5
 2023,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,7,7,0,14,0.5,3..1,296,290,W3,NFC_South,NFC,,6..4
 2023,NFL,Reg_Ssn,Minnesota Vikings,Vikings,7,7,0,14,0.5,2..1,290,269,L1,NFC_North,NFC,,6..3
 2023,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,7,7,0,14,0.5,3..1,223,280,L3,AFC_North,AFC,,5..5
-2023,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,6,7,0,13,0.462,1..4,280,318,L4,NFC_West,NFC,,5..5
 2023,NFL,Reg_Ssn,Green Bay Packers,Packers,6,8,0,14,0.429,2..2,300,301,L2,NFC_North,NFC,,4..5
 2023,NFL,Reg_Ssn,Las Vegas Raiders,Raiders,6,8,0,14,0.429,2..2,265,280,W1,AFC_West,AFC,,4..5
 2023,NFL,Reg_Ssn,Atlanta Falcons,Falcons,6,8,0,14,0.429,3..2,258,278,L2,NFC_South,NFC,,4..6
