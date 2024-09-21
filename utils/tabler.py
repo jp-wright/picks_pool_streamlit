@@ -2,14 +2,13 @@
 Format Frames/Tables to display on streamlit
 """
 import streamlit as st
-from utils.palettes import *
+from utils.palettes import bg_clr_dct
 from utils.styler import style_frame
-# from typing import List, Tuple, Dict, Sequence, Optional
 
 
 
 def show_player_hist_table(player_hist, name, year):
-    st.dataframe(style_frame(player_hist[player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=year, bold_cols=['Total_Win']), width=700)
+    st.dataframe(style_frame(player_hist[player_hist['Player'] == name].drop(['Reg_Win', 'Playoff_Win'], axis=1), cell_clr_dct=bg_clr_dct, frmt_dct={'Total_Win%': '{:.1f}'}, clr_yr=year, bold_cols=['Total_Win']), width=700)
 
 
 
@@ -22,4 +21,4 @@ def show_picks_by_round_table(frame, best_worst):
         # components.html(f'<div style="text-align: center"> Round {rd} </div>')
         st.write(f""" Round {rd}""")
         idx = idx_max if res == 'Best' else idx_min
-        st.dataframe(style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
+        st.dataframe(style_frame(frame[idx].query("""Round==@rd"""), cell_clr_dct=bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)

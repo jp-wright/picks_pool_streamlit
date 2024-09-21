@@ -5,7 +5,7 @@ from pandas import DataFrame
 from utils.streamlit_utilities import gradient, local_css, frmt_cols
 from utils.palettes import bg_clr_dct, blue_bath1
 from utils.streamlit_data_processing import DataProcessor
-from utils.constants import INT_COLS, FLOAT_COLS
+# from utils.constants import INT_COLS, FLOAT_COLS
 import utils.styler as stylr
 import utils.plotter as pltr
 
@@ -174,7 +174,6 @@ class PageLayoutSeason(DataProcessor):
                     # st.write("""**Worst picks by round:**""")
                     self.picks_by_round_table(self.df_best_worst_rd, 'Worst', rd)
 
-
     def picks_by_round_table(self, frame: DataFrame, best_worst: str, rd: int): 
         """
         """
@@ -200,7 +199,6 @@ class PageLayoutSeason(DataProcessor):
         #     st.write(f""" Round {rd}""")
         #     idx = idx_max if res == 'Best' else idx_min
         #     st.dataframe(stylr.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-
 
     def wins_by_round(self):
         st.write(""" # """)

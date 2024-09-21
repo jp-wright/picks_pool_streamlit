@@ -1,25 +1,10 @@
-# import streamlit as st
-# import streamlit.components.v1 as components
-# import pandas as pd
-# import numpy as np
 from pandas import DataFrame, read_csv
 from numpy import where as np_where
-# import altair as alt
 import os
 import time
 from pathlib import Path
-# import statsmodels.api as sm
 from typing import Optional, List, Tuple, Dict, Sequence
-# from sports_modules.nfl_league_refs import afc, nfc
-# from utils.palettes import *
-# from utils.palettes import bg_clr_dct, plot_bg_clr_dct, conf_clr_dct
-# from utils.reference import champ_hist
-# from utils.utilities import export_to_csv
 from utils.constants import CURR_SEASON, INT_COLS, FLOAT_COLS
-
-# import logging
-# logging.basicConfig(filename='logs/dplog.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
-# logging.info(print(frame.columns))
 
 
 class DataProcessor():
@@ -66,28 +51,7 @@ class DataProcessor():
         return frame.drop('Playoff_Seed', axis=1)
 
 
-    # def prep_WoW_metrics_table(self, year: int):
-    #     """
-    #     """
-    #     # wow = read_csv(self.ST_ROOT.joinpath('data', 'output', f'{year}', f'{year}_WoW_wins.csv'))
-    #     # wow = self.wow.merge(self.df_years[['Year', 'Player', 'Total_Win', 'Total_Win%']], on=['Year', 'Player'], how='left')
-    #     wow = read_csv(os.path.join(self.ST_ROOT, 'data/output/history/WoW_wins_history.csv'))\
-    #             .query(f"Year=={year} and Week_Int=={self.curr_week}")\
-    #             .assign(Total_Wins=lambda f: f['Total_Wins'].astype(int),
-    #                     WoW_Wins=lambda f: f['WoW_Wins'].astype(int))\
-    #             .sort_values(['Total_Wins', 'WoW_Wins'], ascending=False)
-    #     return wow
-        
-    #     # wow = self.wow[(self.wow['Year'] == self.year) & (self.wow['Week_Int']==self.curr_week)]\
-    #     #         .sort_values(['Total_Wins', 'WoW_Wins'], ascending=False)
-
-    #     # wow[['WoW_Wins', 'Total_Wins']] = wow[['WoW_Wins', 'Total_Wins']].astype(int)
-    #     # return wow[(wow['Week_Int']==wow['Week_Int'].max())].sort_values(['Total_Wins', 'WoW_Wins'], ascending=False)
-    #     # return wow[(wow['Week_Int']==wow['Week_Int'].max())].sort_values(['Total_Wins', 'Total_Win%', 'WoW_Wins'], ascending=False)
-
-        
-     
-
+    
 # if __name__ == '__main__':
     # pass
     # import sys

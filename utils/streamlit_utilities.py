@@ -4,11 +4,8 @@ streamlit page utilities
 import streamlit as st
 from typing import Optional
 from utils.palettes import blue_bath1
-import re
-# import utils.image_refs as images
-# import requests
-# import logging
-# logging.basicConfig(level=logging.INFO, filename='logs/pipeline.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
+
+
 
 
 def local_css(file_name):

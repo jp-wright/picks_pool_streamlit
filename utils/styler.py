@@ -5,8 +5,6 @@ from utils.palettes import bg_clr_dct, conf_clr_dct
 from pandas import DataFrame
 from typing import Union, Literal, List, Dict, Mapping
 import re
-# import logging
-# logging.basicConfig(level=logging.INFO, filename='logs/s03_log.log', filemode='w', format='%(name)s - %(levelname)s - %(message)s')
 
 ## I need to create dedicated functions for Streamlit and Email styling, as the process is different for each.
 

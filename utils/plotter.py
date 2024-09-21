@@ -6,7 +6,7 @@ import streamlit as st
 import altair as alt
 from pandas import DataFrame, read_csv
 from utils.palettes import plot_bg_clr_dct
-from typing import List, Tuple, Dict, Sequence, Optional, Union
+from typing import Sequence, Union, List, Tuple, Dict, Optional
 from utils.constants import CURR_SEASON
 
 games = read_csv('data/output/history/nfl_picks_pool_player_standings_history.csv', dtype={'Year': int})

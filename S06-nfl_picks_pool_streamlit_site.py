@@ -1,24 +1,11 @@
 ## Run in terminal with "streamlit run <this file>.py"
 
-# import streamlit as st
-# import streamlit.components.v1 as components
-# import altair as alt
-# from utils.data_prepper import DataPrepper
-# from utils.palettes import bg_clr_dct, conf_clr_dct, plot_bg_clr_dct
-# from utils.styler import style_frame
-# import utils.plotter as pltr
-# import utils.tabler as tblr
-# from utils.page_layout import PageLayout
 from utils.constants import get_curr_season
 
 # import subprocess
 # def install(package):
 #     subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 # install('openpyxl')
-
-# st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈')
-
-
 
 
 def main(page: str, year: int):
