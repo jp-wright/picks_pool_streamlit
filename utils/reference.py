@@ -44,4 +44,6 @@ champ_hist = {
     2019: 'Jordan',
     2020: 'Alex',
     2021: 'Dan',
+    2022: 'NoPool',
+    2023: 'Victoria',
     }

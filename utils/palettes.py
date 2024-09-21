@@ -1,28 +1,29 @@
 bg_clr_dct = {
     'Alex': '#fff2cc',
-    'Mike': '#cfe2f3',
-    'JP': '#d9ead3',
-    'Jordan': '#f4cccc',
     'Brandon': '#e6b8af',
-    'Jackson': '#d9d2e9',
+    'Cameron': '#d9d2e9',  # Dupe of Jackson for now
     'Dan': '#fce5cd',
-    'Victoria': '#FFDAEC',
-    # 'Victoria': '#FFB2E4',
+    'Jackson': '#d9d2e9',
+    'Jordan': '#f4cccc',
+    'JP': '#d9ead3',
     'LEFTOVER': '#d9d9d9',
     'Leftover': '#d9d9d9',
+    'Mike': '#cfe2f3',
+    'Victoria': '#FFDAEC',
     }
 
 plot_bg_clr_dct = {
     'Alex': '#ffd966',
     'Brandon': '#da988b',
+    'Cameron': '#a898cd',  # Dupe of Jackson for now
     'Dan': '#f7b56e',
-    'JP': '#a6cd98',
     'Jackson': '#a898cd',
     'Jordan': '#e48181',
+    'JP': '#a6cd98',
     'Leftover': '#b3b3b3',
+    'LEFTOVER': '#b3b3b3',
     'Mike': '#85b6e0',
     'Victoria': '#FFB2E4',
-    # 'LEFTOVER': '#b3b3b3',
     }
 
 conf_clr_dct = {
@@ -102,4 +103,3 @@ fft_finath =            ['#d5d7c1', '#85abad', '#0a65a9', '#6b7c6d', '#565d24', 
 
 streamlit_blue = '#64B6FC'
 subheading_blue = '#9dd4fb'
-year_highlight = '#939294'

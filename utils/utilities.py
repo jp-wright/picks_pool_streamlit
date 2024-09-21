@@ -1,86 +1,18 @@
 """ 
 utilities
 """
-import streamlit as st
-import datetime
-# import utils.image_refs as images
-from typing import Optional
-import requests
+import datetime as dte
 import functools
 import logging
-from utils.constants import SEASON_START
-
-def local_css(file_name):
-    """
-    """
-    with open(file_name) as f:
-        st.markdown('<style>{}</style>'.format(f.read()), unsafe_allow_html=True)
-
-
-def load_lottieurl(url: str):
-    """
-    """
-    r = requests.get(url)
-    if r.status_code != 200:
-        return None
-    return r.json()
+from pandas import DataFrame
+from numpy import array as np_array, isin as np_isin
+import subprocess
+import os
+from typing import Callable, Optional, List
+from utils.constants import INT_COLS, FLOAT_COLS
 
 
-def gradient(grad_clr1, grad_clr2, title_clr, subtitle_clr, title, subtitle, subtitle_size: int=17):
-    """
-    """
-    st.markdown(f'<h1 style="text-align:center;background-image: linear-gradient(to right,{grad_clr1}, {grad_clr2});font-size:60px;border-radius:2%;">'
-                f'<span style="color:{title_clr};">{title}</span><br>'
-                f'<span style="color:{subtitle_clr};font-size:{subtitle_size}px;">{subtitle}</span></h1>', 
-                unsafe_allow_html=True)
-
-
-def show_img(url: str, width: int=100, height: int=100, hover: Optional[str]=None, caption: Optional[str]=None, link: bool=False, spacer: Optional[int]=1):
-    """
-    """    
-    img = f'''<img src="{url}" width={width} height={height}>'''
-    if caption:
-        img = img.replace('>', '') + f' alt={hover} title={hover}>'
-    if link:
-        img = f'<a href="{url}">' + img + '</a>'
-
-    st.markdown(img, unsafe_allow_html=True)
-
-    if caption:
-        st.markdown(f"<font size=2>{caption}</font>", unsafe_allow_html=True)
-    if spacer:
-        st.markdown("<BR>" * spacer, unsafe_allow_html=True)
-
-
-# def show_logo(name: str, width: int=100, height: int=100, spacer: Optional[int]=1):
-#     """
-#     """
-#     st.markdown(f'''<img src="{images.logos[name]}" width={width} height={height}>''', unsafe_allow_html=True)
-#     if spacer:
-#         st.markdown("<BR>" * spacer, unsafe_allow_html=True)
-
-def get_curr_year() -> int:
-    """
-    """
-    today = datetime.date.today()
-    return today.year if today.month >= 9 else today.year - 1
-
-
-def get_curr_week() -> int:
-    """
-    isoweekday(): 1 = Monday ... 7 = Sunday
-    Generally, the active portion of the NFL week is end of Thursday (4) through Monday (1).
-    Season always begins on a Thursday (4).
-    """
-    week = int((datetime.date.today() - SEASON_START).days/7)   ## floor
-
-    ## active portion = +1 to week b/c week's games have begun
-    if datetime.date.today().isoweekday() in [5,6,7,1]: 
-        week += 1 
-    
-    return int(week)
-
-def func_metadata(func: object) -> object:
+def func_metadata(func: Callable) -> Callable:
     """Print the function signature and return value.  The 'signature' line needs to be updated to work in a class."""
     @functools.wraps(func)
     def wrapper_func_metadata(*args, **kwargs):
@@ -88,29 +20,83 @@ def func_metadata(func: object) -> object:
         kwargs_repr = [f"{k}={v!r}" for k, v in kwargs.items()]
         signature = ", ".join(args_repr + kwargs_repr)
         # print(f"Calling {func.__name__}({signature})\n\n\n")
-        logging.warning(f"Running: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
-        print(f"Running: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
+        logging.warning(f"Running: \t{func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
+        print(f"Running: {func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}")
         res = func(*args, **kwargs)
         # print(f"{func.__name__!r} returned {res!r}")
-        logging.warning(f"Completed: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
-        print(f"Completed: {func.__name__} - {datetime.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
+        logging.warning(f"Completed: \t{func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
+        print(f"Completed: {func.__name__} - {dte.datetime.now().strftime('%Y-%m-%d %H:%m:%S')}\n")
         return res
     return wrapper_func_metadata
 
 
-def output_logger(process, printout: bool=False, raise_err: bool=False):
+def output_logger(process: subprocess.Popen, printout: bool=False, raise_err: bool=False):
     """process is subprocess.Popen(... , stdout=subprocess.PIPE, stderr=subprocess.PIPE)"""
     stdoutput, stderroutput = process.communicate()
 
     if len(stdoutput) > 0:
         logging.info(stdoutput)
         if printout: 
-            print(str(stdoutput))
-            
+            s = str(stdoutput.decode('utf-8')).split('\\n')
+            for itm in s:
+                print(itm)
+        
     if len(stderroutput) > 0:
         logging.error(stderroutput)
         if printout: 
-            print(str(stderroutput))
+            s = str(stderroutput.decode('utf-8')).split('\\n')
+            for itm in s:
+                print(itm)
         if raise_err:
             raise Exception(str(stderroutput))
+        
 
+def export_to_csv(frame: DataFrame, fname: str, ovrwrt: bool=False, index: bool=False, subdir: Optional[str]=None, path: Optional[str]=None, **kwargs):
+    """
+    """
+        
+    if subdir: path = os.path.join(path, subdir)
+    save_path = os.path.join(path, fname)
+    
+    if ovrwrt or not os.path.exists(save_path):
+        if not os.path.exists(path): 
+            os.makedirs(path)
+        frame.to_csv(save_path, index=index, **kwargs)
+        print(f"Saved: {save_path.split('/')[-1]}")
+    else:
+        print(f"{save_path.split('/')[-1]} exists and ovrwrt=False. Skipping.")
+
+
+def enforce_int_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=False):
+    """
+    asd
+    """
+    int_cols = np_array(INT_COLS + extra_cols)
+    int_cols = int_cols[np_isin(int_cols, frame.columns)]
+    
+    for col in int_cols:
+        try:
+            frame[int_cols] = frame[int_cols].fillna(0).astype(int)
+        except ValueError as e:
+            print(e) ## I think this is captured by Streamlit's stdout
+            if log:
+                logging.error(col)
+                logging.error(frame[col])
+            
+
+def enforce_float_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=False):
+    """
+    asd
+    """
+    float_cols = np_array(FLOAT_COLS + extra_cols)
+    float_cols = float_cols[np_isin(float_cols, frame.columns)]
+    
+    for col in float_cols:
+        try:
+            frame[float_cols] = frame[float_cols].fillna(0).astype(float).round(1)
+        except ValueError as e:
+            print(e) ## I think this is captured by Streamlit's stdout
+            if log:
+                logging.error(col)
+                logging.error(frame[col])
+            
