@@ -1,11 +1,11 @@
 import streamlit as st
-import altair as alt
-import re
+# import altair as alt
+# import re
 from pandas import DataFrame
 from utils.streamlit_utilities import gradient, local_css, frmt_cols
 from utils.palettes import bg_clr_dct, blue_bath1
 from utils.streamlit_data_processing import DataProcessor
-# from utils.constants import INT_COLS, FLOAT_COLS
+from utils.constants import CURR_SEASON, CURR_WEEK
 import utils.styler as stylr
 import utils.plotter as pltr
 
@@ -15,7 +15,7 @@ class PageLayoutSeason(DataProcessor):
     """Layout class 
     """
     def __init__(self, year: int):
-        super().__init__()
+        super().__init__(year)
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
         # st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈')
         # local_css("style/style.css")
@@ -45,63 +45,90 @@ class PageLayoutSeason(DataProcessor):
     def WoW_metrics(self):
         """
         """
-        st.write("""<BR><h4 align=center>Week over Week Changes 📈</h4>""", unsafe_allow_html=True)
+        ## Limited to current week of current season.
+        if self.year == CURR_SEASON:  
+            st.write("""<BR><h4 align=center>Week over Week Changes 📈</h4>""", unsafe_allow_html=True)
 
-        def show_metric(frame, idx):
-            if frame.iloc[idx]['WoW_Wins'] <= 1:
-                clr = 'inverse'
-            elif frame.iloc[idx]['WoW_Wins'] < 3:
-                clr = 'off'
-            else:
-                clr = 'normal'
+            def show_metric(frame, idx):
+                if frame.iloc[idx]['WoW_Wins'] <= 1:
+                    clr = 'inverse'
+                elif frame.iloc[idx]['WoW_Wins'] < 3:
+                    clr = 'off'
+                else:
+                    clr = 'normal'
 
-            st.metric(f":blue[{idx+1}. {frame.iloc[idx]['Player']}]", f"{int(frame.iloc[idx]['Total_Wins'])} wins", f"{int(frame.iloc[idx]['WoW_Wins'])} last week", delta_color=clr)
-            
+                st.metric(f":blue[{idx+1}. {frame.iloc[idx]['Player']}]", f"{int(frame.iloc[idx]['Total_Wins'])} wins", f"{int(frame.iloc[idx]['WoW_Wins'])} this week", delta_color=clr)
+                
 
-        with st.container():
-            col1, col2, col3, col4 = st.columns(4)
-            with col1:
-                show_metric(self.wow_curr, 0)
-            with col2:
-                show_metric(self.wow_curr, 1)
-            with col3:
-                show_metric(self.wow_curr, 2)
-            with col4:
-                show_metric(self.wow_curr, 3)
-            with col1:
-                show_metric(self.wow_curr, 4)
-            with col2:
-                show_metric(self.wow_curr, 5)
-            with col3:
-                show_metric(self.wow_curr, 6)
-            with col4:
-                show_metric(self.wow_curr, 7)
+            with st.container():
+                col1, col2, col3, col4 = st.columns(4)
+                with col1:
+                    show_metric(self.wow_curr, 0)
+                with col2:
+                    show_metric(self.wow_curr, 1)
+                with col3:
+                    show_metric(self.wow_curr, 2)
+                with col4:
+                    show_metric(self.wow_curr, 3)
+                with col1:
+                    show_metric(self.wow_curr, 4)
+                with col2:
+                    show_metric(self.wow_curr, 5)
+                with col3:
+                    show_metric(self.wow_curr, 6)
+                with col4:
+                    show_metric(self.wow_curr, 7)
 
     def manager_ranking(self):
         """
         """
         st.write("""<BR><h4 align=center>Manager Ranking #️⃣1️⃣</h4>""", unsafe_allow_html=True)
 
-        renames = {'Total_Win': 'Wins', 
-                    'Win': 'Wins',
-                    'Loss': 'Losses',
-                    'Reg_Games_Left': 'Games Left',
-                    'Full_Ssn_Pace': 'Updated Proj. Wins'
-                    }
         
-        frmts = {'Wins': '{:.0f}', 
-                    'Updated Proj. Wins': '{:.0f}',
-                    'Win%': '{:.1f}',
-                    'Games': '{:.0f}',
-                    'Games Left': '{:.0f}',
-                    'Losses': '{:.0f}',
+
+        renames = {'Total_Win': 'Wins', 
+                    'Total_Loss': 'Losses',
+                    'Total_Games': 'Games',
+                    'Total_Win%': 'Win%',
+                    'Reg_Games_Left': 'Games Left',
+                    'Total_Tie': 'Ties',
+                    'Current_Proj_Wins': f'Proj. Wins by Wk{CURR_WEEK}',
+                    'Wins_Over_Current_Pace': f'Wins vs Wk{CURR_WEEK} Proj.',
+                    'Full_Ssn_Proj_Wins': 'Ssn Proj. Wins',
+                    'Wins_Over_Full_Pace': 'Wins vs Ssn Proj.',
                     }
 
+        frmts = {'Wins': '{:.0f}', 
+                    'Losses': '{:.0f}',
+                    'Ties': '{:.0f}',
+                    'Games': '{:.0f}',
+                    'Win%': '{:.1f}',
+                    'Games Left': '{:.0f}',
+                    f'Proj. Wins by Wk{CURR_WEEK}': '{:.1f}',
+                    'Ssn Proj. Wins': '{:.1f}',
+                    f'Wins vs Wk{CURR_WEEK} Proj.': '{:.1f}',
+                    'Wins vs Ssn Proj.': '{:.1f}',
+                    }
+
+        cols = ['Rank', 'Year', 'Player'] + list(renames.values())
+        if self.year == CURR_SEASON:
+            if CURR_WEEK > 18:
+                cols += ['Playoff Teams', 'Playoff Wins', 'Playoff Losses']
+        else:
+            cols.remove(f'Wins vs Wk{CURR_WEEK} Proj.')
+            cols.remove(f'Proj. Wins by Wk{CURR_WEEK}')
+
+        frame = self.df_years_site.rename(columns=renames)[cols]
+        if frame['Ties'].sum() == 0:
+            frame = frame.drop('Ties', axis=1)
+
+        # st.write(self.df_years_site)
+        # st.write(frame)
+
         with st.container():
-            _, col2, _ = st.columns([.2, .75, .05])
+            _, col2, _ = st.columns([.05, .9, .05])
             with col2:
-                st.dataframe(stylr.style_frame(self.df_years_site\
-                                            .rename(columns=renames), 
+                st.dataframe(stylr.style_frame(frame, 
                                                 cell_clr_dct=bg_clr_dct, 
                                                 frmt_dct=frmts, 
                                                 kind='streamlit'),
@@ -144,10 +171,10 @@ class PageLayoutSeason(DataProcessor):
     def draft_overview_chart(self):
         """
         """
-        st.write(f"""<BR><h4 align=center>The {self.curr_year} Draft</h4>""", unsafe_allow_html=True)
+        st.write(f"""<BR><h4 align=center>The {self.year} Draft</h4>""", unsafe_allow_html=True)
         st.write("""<p align=center>Click any player's dot to see only their picks.  &nbsp &nbsp Shift-Click dots to add more players. &nbsp &nbsp Click blank space to reset.</p>""", unsafe_allow_html=True)
         # self.df['Total_Win'] = np.random.randint(1,18, size=self.df.shape[0])  ## testing for chart
-        pltr.plot_draft_overview_altair(self.df, year_range=[self.curr_year])
+        pltr.plot_draft_overview_altair(self.df, year_range=[self.year])
 
     def best_worst_picks(self):
         """
@@ -186,9 +213,10 @@ class PageLayoutSeason(DataProcessor):
         
         st.dataframe(stylr.style_frame(frame[(idx) & (frame['Round']==rd)]\
                                        .rename(columns={'Total_Win': 'Wins', 
-                                                        'Full_Ssn_Pace': 'Updated Proj. Wins'}), 
+                                                        'Full_Ssn_Proj_Wins': 'Ssn Proj. Wins'}), 
                                        cell_clr_dct=bg_clr_dct, 
-                                       frmt_dct={'Wins': '{:.0f}', 'Updated Proj. Wins': '{:.0f}'}, kind='streamlit'),
+                                       frmt_dct={'Wins': '{:.0f}', 'Ssn Proj. Wins': '{:.0f}'}, 
+                                       kind='streamlit'),
                         width=495, 
                         hide_index=True)
         # st.dataframe(stylr.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)

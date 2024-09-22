@@ -164,24 +164,25 @@ def create_styled_frame(frame, names_regex, bg_clr_dct, use_row1_as_cols: bool=T
     def selector_style(frame, col):
         return {
             'selector': f'th.col_heading.level0.col{frame.columns.get_loc(col)}',
-            'props': [
-                ('background-color', bg_clr_dct.get(get_name(col), 'white')),
-                ('color', 'black'),
-                # ('font-family', 'Arial, sans-serif'),
-                ('font-size', '16px')
+                'props': [
+                    ('background-color', bg_clr_dct.get(get_name(col), 'white')),
+                    ('color', 'black'),
+                    # ('font-family', 'Arial, sans-serif'),
+                    ('font-size', '15px')
                 ]
-            # },
-            # {
-            #     'selector': 'td, th',
-            #     'props': [
-            #         ('border', '2px solid #4CAF50')
-            #     ]
-            # }
-        }
+            }
     
+    cell_style = {
+            'selector': 'td, th',
+                'props': [
+                    ('font-size', '14px')
+                    # ('border', '2px solid #4CAF50')
+                ]
+            }
+        
     def style_headers(frame): 
         res = frame.style.set_table_styles(
-                    [selector_style(frame, col) for col in frame.columns]
+                    [selector_style(frame, col) for col in frame.columns] + [cell_style]
                     )
         return res
     

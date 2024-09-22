@@ -1,6 +1,10 @@
 """ 
 refs
 """
+from utils.constants import CURR_SEASON
+POOL_YEARS = list(range(2017, CURR_SEASON + 1))
+POOL_YEARS.remove(2022)  ## no pool in 2022
+
 conf_dct = {
     'Chiefs': 'AFC',
     'Bills': 'AFC',
@@ -47,3 +51,17 @@ champ_hist = {
     2022: 'NoPool',
     2023: 'Victoria',
     }
+
+
+GAMES_PER_SEASON = {
+    2017: 16,
+    2018: 16,
+    2019: 16,
+    2020: 16,
+    2021: 17,
+    2022: 17,
+    2023: 17,
+    2024: 17,
+    2025: 17,
+    2026: 17,
+}

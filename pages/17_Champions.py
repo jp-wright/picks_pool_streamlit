@@ -1,8 +1,10 @@
 """
-2017 Layout
+
 """
-from utils.page_layout import PageLayout
+import streamlit as st
+# from utils.page_layout_champs import PageLayoutChamps
 
 
 if __name__ == '__main__':
-    PageLayout('champs', None)
+    # PageLayoutChamps(2023)
+    st.write("Champions page is not ready yet.")

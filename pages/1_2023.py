@@ -1,8 +1,8 @@
 """
-2021 Layout
+
 """
-from utils.page_layout import PageLayout
+from utils.page_layout_season import PageLayoutSeason
 
 
 if __name__ == '__main__':
-    PageLayout('season', 2023)
+    PageLayoutSeason(2023)

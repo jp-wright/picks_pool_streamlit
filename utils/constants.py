@@ -11,8 +11,9 @@ REPO_LOCAL = os.environ['NFLPICKS_LOCAL_REPO']
 LOCAL_PATH = os.environ['NFLPICKS_LOCAL_PROJ']
 
 
-INT_COLS = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Full_Ssn_Pace', 'Reg Games Left', 'Full Ssn Pace', 'Playoff_Teams', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']
-FLOAT_COLS = ['Win%', 'Total_Win%', 'Playoff_Win%', 'Total Win%']
+INT_COLS = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Reg Games Left', 'Playoff_Teams', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']
+
+FLOAT_COLS = ['Win%', 'Total_Win%', 'Playoff_Win%', 'Total Win%', 'Current_Proj_Wins', 'Wins_Over_Current_Pace', 'Full_Ssn_Proj_Wins', 'Wins_Over_Full_Pace']
 
 
 def get_curr_season() -> int:
