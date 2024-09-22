@@ -93,7 +93,8 @@ def colorize_player_names_email(table: str, mgr_cols: int=1) -> str:
     rows = []
     mgrs = "|".join(bg_clr_dct.keys())
     for row in table.split("<tr>"):
-        names = re.findall(f"(?:<td>)\[|{mgrs}|\]\w+", row)
+        names = re.findall(f"(?:<td>)[|{mgrs}|]\w+", row)
+        # names = re.findall(f"(?:<td>)\[|{mgrs}|\]\w+", row)
         if names:
             for name in names[:mgr_cols]:
                 row = re.sub(f'<td>{name}', f'<td style="background-color:{bg_clr_dct[name]}">{name}', row)
