@@ -16,11 +16,19 @@ def style_frame(frame: DataFrame, kind: Literal['streamlit', 'email'], cell_clr_
     # logging.info(f"styler.py - style_frame - frame: \n{frame}")
 
     return frame.reset_index(drop=True).style\
-            .applymap(lambda cell: colorize_frame(cell, clr_yr, cell_clr_dct, kind))\
+            .map(lambda cell: colorize_frame(cell, clr_yr, cell_clr_dct, kind))\
             .format(frmt_dct)\
             .set_properties(**{'font-weight': 'bold'}, subset=bold_cols)
             # .applymap(lambda cell: colorize_curr_year(cell, clr_yr))\
             # .applymap(lambda cell: colorize_player_names(cell, cell_clr_dct))\
+
+    ## using Styler.applymap which is deprecated but works
+    # return frame.reset_index(drop=True).style\
+    #         .applymap(lambda cell: colorize_frame(cell, clr_yr, cell_clr_dct, kind))\
+    #         .format(frmt_dct)\
+    #         .set_properties(**{'font-weight': 'bold'}, subset=bold_cols)
+    #         # .applymap(lambda cell: colorize_curr_year(cell, clr_yr))\
+    #         # .applymap(lambda cell: colorize_player_names(cell, cell_clr_dct))\
 
 
 def colorize_frame(cell: Union[float, int, str], year: int, bg_clr_dct: Dict[str, str], kind: Literal['streamlit', 'email']):
