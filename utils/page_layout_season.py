@@ -5,7 +5,8 @@ from pandas import DataFrame
 from utils.streamlit_utilities import gradient, local_css, frmt_cols
 from utils.palettes import bg_clr_dct, blue_bath1
 from utils.streamlit_data_processing import DataProcessor
-from utils.constants import CURR_SEASON, CURR_WEEK
+from utils.constants import CURR_SEASON, CURR_WEEK, INT_COLS, FLOAT_COLS
+from utils.utilities import enforce_int_cols, enforce_float_cols
 import utils.styler as stylr
 import utils.plotter as pltr
 
@@ -19,11 +20,27 @@ class PageLayoutSeason(DataProcessor):
         st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈', initial_sidebar_state="expanded")
         # st.set_page_config(page_title="NFL Picks Pool", layout="wide", page_icon='🏈')
         # local_css("style/style.css")
+        # st.sidebar.markdown(info['Photo'], unsafe_allow_html=True)
         self.year = year
         self.names = bg_clr_dct.keys()
         self.names_regex = "|".join(self.names)
         
-        # st.sidebar.markdown(info['Photo'], unsafe_allow_html=True)
+        self.frmts = {'Wins': '{:.0f}', 
+                        'Win': '{:.0f}',
+                        'Losses': '{:.0f}',
+                        'Loss': '{:.0f}',
+                        'Ties': '{:.0f}',
+                        'Games': '{:.0f}',
+                        'Win%': '{:.1f}',
+                        'Games Left': '{:.0f}',
+                        'Playoff Win': '{:.0f}',
+                        'Playoff Loss': '{:.0f}',
+                        f'Proj. Wins by Wk{CURR_WEEK}': '{:.1f}',
+                        'Ssn Proj. Wins': '{:.1f}',
+                        f'Wins over Wk{CURR_WEEK} Proj.': '{:.1f}',
+                        'Wins over Ssn Proj.': '{:.1f}',
+                        'Rank': '{:.0f}',
+                        }
         
         self.intro()
         self.WoW_metrics()
@@ -32,8 +49,8 @@ class PageLayoutSeason(DataProcessor):
         self.manager_projwins_by_round()
         st.markdown("***")
         self.draft_overview_chart()
-        self.best_worst_picks()
-        self.wins_by_round()
+        self.best_worst_picks_tables()
+        self.pool_wins_by_round()
 
 
     def intro(self):
@@ -85,52 +102,42 @@ class PageLayoutSeason(DataProcessor):
         st.write("""<BR><h4 align=center>Manager Ranking #️⃣1️⃣</h4>""", unsafe_allow_html=True)
 
         
+        def format_frame(frame):
+            renames = {'Total_Win': 'Wins', 
+                        'Total_Loss': 'Losses',
+                        'Total_Games': 'Games',
+                        'Total_Win%': 'Win%',
+                        'Reg_Games_Left': 'Games Left',
+                        'Total_Tie': 'Ties',
+                        'Current_Proj_Wins': f'Proj. Wins by Wk{CURR_WEEK}',
+                        'Wins_Over_Current_Proj': f'Wins over Wk{CURR_WEEK} Proj.',
+                        'Full_Ssn_Proj_Wins': 'Ssn Proj. Wins',
+                        'Wins_Over_Ssn_Proj': 'Wins over Ssn Proj.',
+                        }
 
-        renames = {'Total_Win': 'Wins', 
-                    'Total_Loss': 'Losses',
-                    'Total_Games': 'Games',
-                    'Total_Win%': 'Win%',
-                    'Reg_Games_Left': 'Games Left',
-                    'Total_Tie': 'Ties',
-                    'Current_Proj_Wins': f'Proj. Wins by Wk{CURR_WEEK}',
-                    'Wins_Over_Current_Pace': f'Wins vs Wk{CURR_WEEK} Proj.',
-                    'Full_Ssn_Proj_Wins': 'Ssn Proj. Wins',
-                    'Wins_Over_Full_Pace': 'Wins vs Ssn Proj.',
-                    }
+            cols = ['Rank', 'Year', 'Player'] + list(renames.values())
+            if self.year == CURR_SEASON:
+                if CURR_WEEK > 18:
+                    cols += ['Playoff Teams', 'Playoff Wins', 'Playoff Losses']
+                else:
+                    cols.remove('Wins over Ssn Proj.')
+            else:
+                cols.remove(f'Wins over Wk{CURR_WEEK} Proj.')
+                cols.remove(f'Proj. Wins by Wk{CURR_WEEK}')
 
-        frmts = {'Wins': '{:.0f}', 
-                    'Losses': '{:.0f}',
-                    'Ties': '{:.0f}',
-                    'Games': '{:.0f}',
-                    'Win%': '{:.1f}',
-                    'Games Left': '{:.0f}',
-                    f'Proj. Wins by Wk{CURR_WEEK}': '{:.1f}',
-                    'Ssn Proj. Wins': '{:.1f}',
-                    f'Wins vs Wk{CURR_WEEK} Proj.': '{:.1f}',
-                    'Wins vs Ssn Proj.': '{:.1f}',
-                    }
+            frame = frame.rename(columns=renames)[cols]
+            if frame['Ties'].sum() == 0:
+                frame = frame.drop('Ties', axis=1)
+            return frame
 
-        cols = ['Rank', 'Year', 'Player'] + list(renames.values())
-        if self.year == CURR_SEASON:
-            if CURR_WEEK > 18:
-                cols += ['Playoff Teams', 'Playoff Wins', 'Playoff Losses']
-        else:
-            cols.remove(f'Wins vs Wk{CURR_WEEK} Proj.')
-            cols.remove(f'Proj. Wins by Wk{CURR_WEEK}')
-
-        frame = self.df_years_site.rename(columns=renames)[cols]
-        if frame['Ties'].sum() == 0:
-            frame = frame.drop('Ties', axis=1)
-
-        # st.write(self.df_years_site)
-        # st.write(frame)
+        frame = format_frame(self.df_years_site)
 
         with st.container():
             _, col2, _ = st.columns([.05, .9, .05])
             with col2:
                 st.dataframe(stylr.style_frame(frame, 
                                                 cell_clr_dct=bg_clr_dct, 
-                                                frmt_dct=frmts, 
+                                                frmt_dct=self.frmts, 
                                                 kind='streamlit'),
                             hide_index=True)
 
@@ -145,10 +152,6 @@ class PageLayoutSeason(DataProcessor):
             with col2:
                 st.write(styled_df.to_html(), unsafe_allow_html=True, hide_index=True)
                 
-                ## Old Hacky way with st.dataframe(). Saving in case...
-                # st.dataframe(stylr.style_frame(frame, cell_clr_dct=bg_clr_dct, kind='streamlit'), hide_index=True, use_container_width=True)
-                # st.table(stylr.style_frame(frame, cell_clr_dct=bg_clr_dct, kind='streamlit'))
-                
     def manager_projwins_by_round(self):
         """
         """
@@ -159,7 +162,6 @@ class PageLayoutSeason(DataProcessor):
             _, col2, _ = st.columns([.05, .9, .05])
             with col2:
                 st.write(styled_df.to_html(), unsafe_allow_html=True, hide_index=True)
-                # st.dataframe(stylr.style_frame(self.dfproj, cell_clr_dct=bg_clr_dct, kind='streamlit'), hide_index=True, use_container_width=True)
 
     def playoff_teams(self):
         """
@@ -176,9 +178,28 @@ class PageLayoutSeason(DataProcessor):
         # self.df['Total_Win'] = np.random.randint(1,18, size=self.df.shape[0])  ## testing for chart
         pltr.plot_draft_overview_altair(self.df, year_range=[self.year])
 
-    def best_worst_picks(self):
+    def best_worst_picks_tables(self):
         """
         """
+
+        def picks_by_round_table(frame: DataFrame, best_worst: str, rd: int): 
+            # idx_max = frame.groupby('Round')['Total_Win'].transform('max') == frame['Total_Win']
+            # idx_min = frame.groupby('Round')['Total_Win'].transform('min') == frame['Total_Win']
+            
+            st.write(f""" <div align=center>Round {rd}</div>""", unsafe_allow_html=True)
+            max_min = 'max' if best_worst.lower() == 'best' else 'min'
+            idx = frame.groupby('Round')['Total_Win'].transform(max_min) == frame['Total_Win']
+            
+            st.dataframe(stylr.style_frame(frame[(idx) & (frame['Round']==rd)]\
+                                        .rename(columns={'Total_Win': 'Wins', 
+                                                            'Full_Ssn_Proj_Wins': 'Ssn Proj. Wins'}), 
+                                        cell_clr_dct=bg_clr_dct, 
+                                        frmt_dct={'Wins': '{:.0f}', 'Ssn Proj. Wins': '{:.0f}'}, 
+                                        kind='streamlit'),
+                            width=495, 
+                            hide_index=True)
+            
+
         st.write('  #')
         with st.container():
             left_col, right_col = st.columns([1, 1])
@@ -195,50 +216,48 @@ class PageLayoutSeason(DataProcessor):
                 left_col, right_col = st.columns([1, 1])
                 with left_col:
                     # st.write("""**Best picks by round:**""")
-                    self.picks_by_round_table(self.df_best_worst_rd, 'Best', rd)
+                    picks_by_round_table(self.df_best_worst_rd, 'Best', rd)
                 
                 with right_col:
                     # st.write("""**Worst picks by round:**""")
-                    self.picks_by_round_table(self.df_best_worst_rd, 'Worst', rd)
+                    picks_by_round_table(self.df_best_worst_rd, 'Worst', rd)
 
-    def picks_by_round_table(self, frame: DataFrame, best_worst: str, rd: int): 
-        """
-        """
-        # idx_max = frame.groupby('Round')['Total_Win'].transform('max') == frame['Total_Win']
-        # idx_min = frame.groupby('Round')['Total_Win'].transform('min') == frame['Total_Win']
-        
-        st.write(f""" <div align=center>Round {rd}</div>""", unsafe_allow_html=True)
-        max_min = 'max' if best_worst.lower() == 'best' else 'min'
-        idx = frame.groupby('Round')['Total_Win'].transform(max_min) == frame['Total_Win']
-        
-        st.dataframe(stylr.style_frame(frame[(idx) & (frame['Round']==rd)]\
-                                       .rename(columns={'Total_Win': 'Wins', 
-                                                        'Full_Ssn_Proj_Wins': 'Ssn Proj. Wins'}), 
-                                       cell_clr_dct=bg_clr_dct, 
-                                       frmt_dct={'Wins': '{:.0f}', 'Ssn Proj. Wins': '{:.0f}'}, 
-                                       kind='streamlit'),
-                        width=495, 
-                        hide_index=True)
-        # st.dataframe(stylr.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-    
-        # for rd_res in [(rd, best_worst) for rd in range(1,5)]:
-        #     rd, res = rd_res[0], rd_res[1]
-        #     # components.html(f'<div style="text-align: center"> Round {rd} </div>')
-        #     st.write(f""" Round {rd}""")
-        #     idx = idx_max if res == 'Best' else idx_min
-        #     st.dataframe(stylr.style_frame(frame[idx].query("""Round==@rd"""), bg_clr_dct, frmt_dct={'Total_Win': '{:.0f}'}), width=495)
-
-    def wins_by_round(self):
+    def pool_wins_by_round(self):
         st.write(""" # """)
         st.write(f"""<BR><h5 align=center>Best Draft Rounds</h5>""", unsafe_allow_html=True)
         st.write("""<div align=center>Did we use our early draft picks wisely (does Round 1 have a higher win% than Round 2, etc.)?</div>""", unsafe_allow_html=True)
+        # st.write("""<div align=center>Click on the legend to hide/show rounds.</div>""", unsafe_allow_html=True)
+        if self.year <= 2021:
+            st.write("""<div align=center>Round 99 = the four "Leftover" teams we didn't draft.</div>""", unsafe_allow_html=True)
         
-        drop_cols = ['Rank', 'Year'] if self.df_rounds_site['Playoff Teams'].sum() > 0 else ['Rank', 'Year', 'Playoff Teams']
-        frame = self.df_rounds_site.drop(drop_cols, axis=1)[['Round', 'Win%', 'Win', 'Loss', 'Tie', 'Games']]
+
+        ## Unsure why but the formatting output on this table is just very stubborn. Taken a lot more nudging to get it to look right.
+        frame = self.df_pool_rounds_site
+        cols = ['Round', 'Total_Win%', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games']
+
+        if frame['Playoff_Teams'].sum() > 0:
+            cols += ['Playoff_Teams', 'Playoff_Win', 'Playoff_Loss']
+        
+        if frame['Total_Tie'].sum() == 0:
+            cols.remove('Total_Tie')
+        
+        frame = enforce_int_cols(frame)
+        frame = enforce_float_cols(frame)
+        frame = frame[cols]\
+                .assign(Rank=lambda f: f['Total_Win%'].astype(float).rank(method='dense', ascending=False))\
+                .sort_values('Rank')\
+                .set_index('Rank')\
+                .reset_index()
+        frame.columns = frame.columns\
+                        .str.replace('Total', '', regex=True)\
+                        .str.replace('_', ' ', regex=True)\
+                        .str.strip()
+    
         with st.container():
-            col1, col2 = st.columns([.45, 1])
+            _, col2 = st.columns([.15, 1])
             with col2:
-                st.dataframe(stylr.style_frame(frame, cell_clr_dct=bg_clr_dct, frmt_dct={'Win%': '{:.1f}'}, bold_cols=['Win%'], kind='streamlit'))
+                st.dataframe(stylr.style_frame(frame, cell_clr_dct=bg_clr_dct, frmt_dct=self.frmts, kind='streamlit'), hide_index=True)
+             
             
     def top_10_reg_ssn(self):
         st.write(f"""

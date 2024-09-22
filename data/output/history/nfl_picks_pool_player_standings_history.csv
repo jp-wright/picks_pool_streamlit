@@ -1,4 +1,4 @@
-Year,Round,Pick,Player,Team,Reg_Win,Reg_Loss,Reg_Tie,Reg_Games,Playoff_Seed,Playoff_Win,Playoff_Loss,Playoff_Games,Total_Win,Total_Loss,Total_Tie,Total_Games,Full_Ssn_Proj_Wins,Wins_Over_Full_Pace,Current_Proj_Wins,Wins_Over_Current_Pace,Reg_Win%,Playoff_Win%,Total_Win%,Tm_Yr,Tm_Yr_Win,Tm_Win
+Year,Round,Pick,Player,Team,Reg_Win,Reg_Loss,Reg_Tie,Reg_Games,Playoff_Seed,Playoff_Win,Playoff_Loss,Playoff_Games,Total_Win,Total_Loss,Total_Tie,Total_Games,Full_Ssn_Proj_Wins,Wins_Over_Ssn_Proj,Current_Proj_Wins,Wins_Over_Current_Proj,Reg_Win%,Playoff_Win%,Total_Win%,Tm_Yr,Tm_Yr_Win,Tm_Win
 2024,1,1,Dan,Chiefs,2.0,0.0,0.0,2.0,,,,,2.0,0.0,0.0,2.0,10.3,-8.3,1.211764705882353,0.7882352941176469,1.0,,1.0,Chiefs 2024,Chiefs 2024 (2),Chiefs (2)
 2024,1,2,Mike,Ravens,0.0,2.0,0.0,2.0,,,,,0.0,2.0,0.0,2.0,6.1,-6.1,0.7176470588235294,-0.7176470588235294,0.0,,0.0,Ravens 2024,Ravens 2024 (0),Ravens (0)
 2024,1,3,Cameron,Eagles,1.0,1.0,0.0,2.0,,,,,1.0,1.0,0.0,2.0,9.4,-8.4,1.1058823529411765,-0.10588235294117654,0.5,,0.5,Eagles 2024,Eagles 2024 (1),Eagles (1)

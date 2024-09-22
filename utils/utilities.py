@@ -82,6 +82,7 @@ def enforce_int_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=False
             if log:
                 logging.error(col)
                 logging.error(frame[col])
+    return frame
             
 
 def enforce_float_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=False):
@@ -99,4 +100,5 @@ def enforce_float_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=Fal
             if log:
                 logging.error(col)
                 logging.error(frame[col])
+    return frame
             

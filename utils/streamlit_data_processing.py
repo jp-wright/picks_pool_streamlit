@@ -11,7 +11,7 @@ class DataProcessor():
     def __init__(self, year: Optional[int]=None):
         self.ST_ROOT = Path.cwd()
         self.set_year(year)
-        self.assign_class_frames(year)
+        self.assign_class_frames(self.year)
         
         self.curr_week = self.wow[self.wow['Year'] == self.year]['Week_Int'].max()
     
@@ -36,36 +36,37 @@ class DataProcessor():
         self.df_years = read_csv(os.path.join(OUTPUT, 'history/picks_pool_stats_by_year.csv'))
         self.df_rounds = read_csv(os.path.join(OUTPUT, 'history/picks_pool_stats_by_round.csv'))
         self.df_careers = read_csv(os.path.join(OUTPUT, 'history/picks_pool_stats_by_career.csv'))
-        self.df_years_site = read_csv(os.path.join(OUTPUT, 'streamlit_tables/year_data_history_site.csv'))
-        self.df_rounds_site = read_csv(os.path.join(OUTPUT, 'streamlit_tables/draft_rounds_site.csv'))
-        self.df_careers_hist = read_csv(os.path.join(OUTPUT, 'streamlit_tables/career_history.csv'))
-        self.df_mgr_tms = read_csv(os.path.join(OUTPUT, 'streamlit_tables/manager_teams_data.csv'))
-        self.df_mgr_tms_proj = read_csv(os.path.join(OUTPUT, 'streamlit_tables/manager_teams_projwins_data.csv'))
+        self.df_years_site = read_csv(os.path.join(OUTPUT, 'history/year_data_history_site.csv'))
+        self.df_rounds_hist= read_csv(os.path.join(OUTPUT, 'history/picks_pool_stats_by_round.csv'))
+        # self.df_rounds_site = read_csv(os.path.join(OUTPUT, 'streamlit_tables/draft_rounds_site.csv'))
+        self.df_careers_hist = read_csv(os.path.join(OUTPUT, 'history/career_history.csv'))
+        self.df_mgr_tms = read_csv(os.path.join(OUTPUT, f'seasons/{self.year}/{self.year}_manager_teams_by_round.csv'))
+        self.df_mgr_tms_proj = read_csv(os.path.join(OUTPUT, f'seasons/{self.year}/{self.year}_manager_teams_projwins_by_round.csv'))
         self.df_playoffs = read_csv(os.path.join(OUTPUT, 'streamlit_tables/playoff_teams_data.csv'))
         self.df_top10 = read_csv(os.path.join(OUTPUT, 'streamlit_tables/reg_po_tot_top10.csv')) 
-        self.player_hist = read_csv(os.path.join(OUTPUT, 'streamlit_tables/year_data_history.csv'))
-        self.champs = read_csv(os.path.join(OUTPUT, 'streamlit_tables/champ_history.csv'))
+        self.player_hist = read_csv(os.path.join(OUTPUT, 'history/year_data_history.csv'))
+        self.champs = read_csv(os.path.join(OUTPUT, 'history/champ_history.csv'))
         self.wow = read_csv(os.path.join(OUTPUT, 'history/WoW_wins_history.csv'))
         self.wow_curr = read_csv(os.path.join(OUTPUT, 'streamlit_tables/wow_metrics_curr_week_site.csv'))
         self.df_best_worst_rd = self.prep_best_worst_picks_by_rd_table(self.df, self.year)
 
     def filter_frames_by_year(self, year):
-        self.df = self.df[self.df['Year'] == year]
-        self.df_years = self.df_years[self.df_years['Year'] == year]
-        self.df_rounds = self.df_rounds[self.df_rounds['Year'] == year]
-        self.df_careers = self.df_careers[self.df_careers['Year'] == year]
-        self.df_years_site = self.df_years_site[self.df_years_site['Year'] == year]
-        self.df_rounds_site = self.df_rounds_site[self.df_rounds_site['Year'] == year]
-        # self.df_careers_hist = self.df_careers_hist[self.df_careers_hist['Year'] == year]
-        # self.df_mgr_tms = self.df_mgr_tms[self.df_mgr_tms['Year'] == year]
-        # self.df_mgr_tms_proj = self.df_mgr_tms_proj[self.df_mgr_tms_proj['Year'] == year]
-        # self.df_playoffs = self.df_playoffs[self.df_playoffs['Year'] == year]
-        # self.df_best_worst_rd = self.df_best_worst_rd[self.df_best_worst_rd['Year'] == year]
-        self.df_top10 = self.df_top10[self.df_top10['Year'] == year]
-        self.player_hist = self.player_hist[self.player_hist['Year'] == year]
-        self.champs = self.champs[self.champs['Year'] == year]
-        self.wow = self.wow[self.wow['Year'] == year]
-        self.wow_curr = self.wow_curr[self.wow_curr['Year'] == year]
+        self.df = self.df[self.df['Year'].astype(int) == year]
+        self.df_years = self.df_years[self.df_years['Year'].astype(int) == year]
+        self.df_rounds = self.df_rounds[self.df_rounds['Year'].astype(int) == year]
+        self.df_careers = self.df_careers[self.df_careers['Year'].astype(int) == year]
+        self.df_years_site = self.df_years_site[self.df_years_site['Year'].astype(int) == year]
+        self.df_pool_rounds_site = self.df_rounds_hist[self.df_rounds_hist['Year'].astype(int) == year]
+        # self.df_careers_hist = self.df_careers_hist[self.df_careers_hist['Year'].astype(int) == year]
+        # self.df_mgr_tms = self.df_mgr_tms[self.df_mgr_tms['Year'].astype(int) == year]
+        # self.df_mgr_tms_proj = self.df_mgr_tms_proj[self.df_mgr_tms_proj['Year'].astype(int) == year]
+        # self.df_playoffs = self.df_playoffs[self.df_playoffs['Year'].astype(int) == year]
+        # self.df_best_worst_rd = self.df_best_worst_rd[self.df_best_worst_rd['Year'].astype(int) == year]
+        self.df_top10 = self.df_top10[self.df_top10['Year'].astype(int) == year]
+        self.player_hist = self.player_hist[self.player_hist['Year'].astype(int) == year]
+        self.champs = self.champs[self.champs['Year'].astype(int) == year]
+        self.wow = self.wow[self.wow['Year'].astype(int) == year]
+        self.wow_curr = self.wow_curr[self.wow_curr['Year'].astype(int) == year]
     
     def prep_best_worst_picks_by_rd_table(self, frame: DataFrame, year: int):
         frame = frame[(frame["Year"]==year) & (frame['Player']!='Leftover')][['Round', 'Pick', 'Player', 'Team', 'Total_Win', 'Full_Ssn_Proj_Wins', 'Playoff_Seed']]\
