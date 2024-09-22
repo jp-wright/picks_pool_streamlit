@@ -2,13 +2,6 @@
 constants
 """
 import datetime as dte
-import os
-
-ROOT_PATH = os.environ['DS_PROJ']
-REPO_URL = os.environ['NFLPICKS_GITHUB_REPO']
-LOCAL_PATH = os.path.join(ROOT_PATH, "local_projects")
-REPO_LOCAL = os.environ['NFLPICKS_LOCAL_REPO']
-LOCAL_PATH = os.environ['NFLPICKS_LOCAL_PROJ']
 
 
 INT_COLS = ['Win', 'Loss', 'Tie', 'Games', 'Reg_Games_Left', 'Reg Games Left', 'Playoff_Teams', 'Total_Win', 'Total_Loss', 'Total_Tie', 'Total_Games', 'Playoff_Win', 'Playoff_Loss', 'Reg_Win', 'Reg_Loss', 'Reg_Tie']

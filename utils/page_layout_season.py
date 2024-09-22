@@ -1,11 +1,9 @@
 import streamlit as st
-# import altair as alt
-# import re
 from pandas import DataFrame
 from utils.streamlit_utilities import gradient, local_css, frmt_cols
 from utils.palettes import bg_clr_dct, blue_bath1
 from utils.streamlit_data_processing import DataProcessor
-from utils.constants import CURR_SEASON, CURR_WEEK, INT_COLS, FLOAT_COLS
+from utils.constants import CURR_SEASON, CURR_WEEK
 from utils.utilities import enforce_int_cols, enforce_float_cols
 import utils.styler as stylr
 import utils.plotter as pltr

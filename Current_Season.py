@@ -1,7 +1,6 @@
 ## Run in terminal with "streamlit run <this file>.py"
 
 from utils.page_layout_season import PageLayoutSeason
-        
 from utils.constants import get_curr_season
 
 # import subprocess
