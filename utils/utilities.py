@@ -76,7 +76,7 @@ def enforce_int_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=False
     
     for col in int_cols:
         try:
-            frame[int_cols] = frame[int_cols].fillna(0).astype(int)
+            frame.loc[:, int_cols] = frame.loc[:, int_cols].fillna(0).astype(int)
         except ValueError as e:
             print(e) ## I think this is captured by Streamlit's stdout
             if log:
@@ -94,7 +94,7 @@ def enforce_float_cols(frame: DataFrame, extra_cols: List[str]=[], log: bool=Fal
     
     for col in float_cols:
         try:
-            frame[float_cols] = frame[float_cols].fillna(0).astype(float).round(1)
+            frame.loc[:, float_cols] = frame.loc[:, float_cols].fillna(0).astype(float).round(1)
         except ValueError as e:
             print(e) ## I think this is captured by Streamlit's stdout
             if log:
