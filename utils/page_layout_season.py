@@ -131,7 +131,7 @@ class PageLayoutSeason(DataProcessor):
         frame = format_frame(self.df_years_site)
 
         with st.container():
-            _, col2, _ = st.columns([.05, .9, .05])
+            _, col2 = st.columns([.05, 1])
             with col2:
                 st.dataframe(stylr.style_frame(frame, 
                                                 cell_clr_dct=bg_clr_dct, 
