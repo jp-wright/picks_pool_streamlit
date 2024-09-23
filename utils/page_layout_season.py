@@ -252,11 +252,10 @@ class PageLayoutSeason(DataProcessor):
                         .str.strip()
     
         with st.container():
-            _, col2 = st.columns([.15, 1])
+            _, col2 = st.columns([.25, 1])
             with col2:
                 st.dataframe(stylr.style_frame(frame, cell_clr_dct=bg_clr_dct, frmt_dct=self.frmts, kind='streamlit'), hide_index=True)
-             
-            
+                  
     def top_10_reg_ssn(self):
         st.write(f"""
             Let's take a look at the top 10 Regular Season finishes.
