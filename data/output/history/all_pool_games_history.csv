@@ -2788,8 +2788,20 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,1,Victoria,Chiefs,6,5,6,RegSsn
 2023,1,1,Victoria,Chiefs,7,6,7,RegSsn
 2023,1,1,Victoria,Chiefs,8,6,8,RegSsn
+2023,1,1,Victoria,Chiefs,10,7,9,Bye Week
 2023,1,1,Victoria,Chiefs,9,7,9,RegSsn
 2023,1,1,Victoria,Chiefs,11,7,10,RegSsn
+2023,1,1,Victoria,Chiefs,12,8,11,RegSsn
+2023,1,1,Victoria,Chiefs,13,8,12,RegSsn
+2023,1,1,Victoria,Chiefs,14,8,13,RegSsn
+2023,1,1,Victoria,Chiefs,15,9,14,RegSsn
+2023,1,1,Victoria,Chiefs,16,9,15,RegSsn
+2023,1,1,Victoria,Chiefs,17,10,16,RegSsn
+2023,1,1,Victoria,Chiefs,18,11,17,RegSsn
+2023,1,1,Victoria,Chiefs,Wild Card,12,18,Playoffs
+2023,1,1,Victoria,Chiefs,Division,13,19,Playoffs
+2023,1,1,Victoria,Chiefs,Conf. Champ.,14,20,Playoffs
+2023,1,1,Victoria,Chiefs,SuperBowl,15,21,Playoffs
 2023,1,2,Mike,Patriots,1,0,1,RegSsn
 2023,1,2,Mike,Patriots,2,0,2,RegSsn
 2023,1,2,Mike,Patriots,3,1,3,RegSsn
@@ -2800,6 +2812,14 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,2,Mike,Patriots,8,2,8,RegSsn
 2023,1,2,Mike,Patriots,9,2,9,RegSsn
 2023,1,2,Mike,Patriots,10,2,10,RegSsn
+2023,1,2,Mike,Patriots,11,2,10,Bye Week
+2023,1,2,Mike,Patriots,12,2,11,RegSsn
+2023,1,2,Mike,Patriots,13,2,12,RegSsn
+2023,1,2,Mike,Patriots,14,3,13,RegSsn
+2023,1,2,Mike,Patriots,15,3,14,RegSsn
+2023,1,2,Mike,Patriots,16,4,15,RegSsn
+2023,1,2,Mike,Patriots,17,4,16,RegSsn
+2023,1,2,Mike,Patriots,18,4,17,RegSsn
 2023,1,3,JP,Jaguars,1,1,1,RegSsn
 2023,1,3,JP,Jaguars,2,1,2,RegSsn
 2023,1,3,JP,Jaguars,3,1,3,RegSsn
@@ -2808,18 +2828,34 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,3,JP,Jaguars,6,4,6,RegSsn
 2023,1,3,JP,Jaguars,7,5,7,RegSsn
 2023,1,3,JP,Jaguars,8,6,8,RegSsn
+2023,1,3,JP,Jaguars,9,6,8,Bye Week
 2023,1,3,JP,Jaguars,10,6,9,RegSsn
 2023,1,3,JP,Jaguars,11,7,10,RegSsn
+2023,1,3,JP,Jaguars,12,8,11,RegSsn
+2023,1,3,JP,Jaguars,13,8,12,RegSsn
+2023,1,3,JP,Jaguars,14,8,13,RegSsn
+2023,1,3,JP,Jaguars,15,8,14,RegSsn
+2023,1,3,JP,Jaguars,16,8,15,RegSsn
+2023,1,3,JP,Jaguars,17,9,16,RegSsn
+2023,1,3,JP,Jaguars,18,9,17,RegSsn
 2023,1,4,Jordan,Bengals,1,0,1,RegSsn
 2023,1,4,Jordan,Bengals,2,0,2,RegSsn
 2023,1,4,Jordan,Bengals,3,1,3,RegSsn
 2023,1,4,Jordan,Bengals,4,1,4,RegSsn
 2023,1,4,Jordan,Bengals,5,2,5,RegSsn
 2023,1,4,Jordan,Bengals,6,3,6,RegSsn
+2023,1,4,Jordan,Bengals,7,3,6,Bye Week
 2023,1,4,Jordan,Bengals,8,4,7,RegSsn
 2023,1,4,Jordan,Bengals,9,5,8,RegSsn
 2023,1,4,Jordan,Bengals,10,5,9,RegSsn
 2023,1,4,Jordan,Bengals,11,5,10,RegSsn
+2023,1,4,Jordan,Bengals,12,5,11,RegSsn
+2023,1,4,Jordan,Bengals,13,6,12,RegSsn
+2023,1,4,Jordan,Bengals,14,7,13,RegSsn
+2023,1,4,Jordan,Bengals,15,8,14,RegSsn
+2023,1,4,Jordan,Bengals,16,8,15,RegSsn
+2023,1,4,Jordan,Bengals,17,8,16,RegSsn
+2023,1,4,Jordan,Bengals,18,9,17,RegSsn
 2023,1,5,Alex,Eagles,1,1,1,RegSsn
 2023,1,5,Alex,Eagles,2,2,2,RegSsn
 2023,1,5,Alex,Eagles,3,3,3,RegSsn
@@ -2828,8 +2864,17 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,5,Alex,Eagles,6,5,6,RegSsn
 2023,1,5,Alex,Eagles,7,6,7,RegSsn
 2023,1,5,Alex,Eagles,8,7,8,RegSsn
+2023,1,5,Alex,Eagles,10,8,9,Bye Week
 2023,1,5,Alex,Eagles,9,8,9,RegSsn
 2023,1,5,Alex,Eagles,11,9,10,RegSsn
+2023,1,5,Alex,Eagles,12,10,11,RegSsn
+2023,1,5,Alex,Eagles,13,10,12,RegSsn
+2023,1,5,Alex,Eagles,14,10,13,RegSsn
+2023,1,5,Alex,Eagles,15,10,14,RegSsn
+2023,1,5,Alex,Eagles,16,11,15,RegSsn
+2023,1,5,Alex,Eagles,17,11,16,RegSsn
+2023,1,5,Alex,Eagles,18,11,17,RegSsn
+2023,1,5,Alex,Eagles,Wild Card,11,18,Playoffs
 2023,1,6,Jackson,49ers,1,1,1,RegSsn
 2023,1,6,Jackson,49ers,2,2,2,RegSsn
 2023,1,6,Jackson,49ers,3,3,3,RegSsn
@@ -2838,8 +2883,19 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,6,Jackson,49ers,6,5,6,RegSsn
 2023,1,6,Jackson,49ers,7,5,7,RegSsn
 2023,1,6,Jackson,49ers,8,5,8,RegSsn
+2023,1,6,Jackson,49ers,9,5,8,Bye Week
 2023,1,6,Jackson,49ers,10,6,9,RegSsn
 2023,1,6,Jackson,49ers,11,7,10,RegSsn
+2023,1,6,Jackson,49ers,12,8,11,RegSsn
+2023,1,6,Jackson,49ers,13,9,12,RegSsn
+2023,1,6,Jackson,49ers,14,10,13,RegSsn
+2023,1,6,Jackson,49ers,15,11,14,RegSsn
+2023,1,6,Jackson,49ers,16,11,15,RegSsn
+2023,1,6,Jackson,49ers,17,12,16,RegSsn
+2023,1,6,Jackson,49ers,18,12,17,RegSsn
+2023,1,6,Jackson,49ers,Division,13,18,Playoffs
+2023,1,6,Jackson,49ers,Conf. Champ.,14,19,Playoffs
+2023,1,6,Jackson,49ers,SuperBowl,14,20,Playoffs
 2023,1,7,Brandon,Bills,1,0,1,RegSsn
 2023,1,7,Brandon,Bills,2,1,2,RegSsn
 2023,1,7,Brandon,Bills,3,2,3,RegSsn
@@ -2851,26 +2907,52 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,1,7,Brandon,Bills,9,5,9,RegSsn
 2023,1,7,Brandon,Bills,10,5,10,RegSsn
 2023,1,7,Brandon,Bills,11,6,11,RegSsn
+2023,1,7,Brandon,Bills,12,6,12,RegSsn
+2023,1,7,Brandon,Bills,13,6,12,Bye Week
+2023,1,7,Brandon,Bills,14,7,13,RegSsn
+2023,1,7,Brandon,Bills,15,8,14,RegSsn
+2023,1,7,Brandon,Bills,16,9,15,RegSsn
+2023,1,7,Brandon,Bills,17,10,16,RegSsn
+2023,1,7,Brandon,Bills,18,11,17,RegSsn
+2023,1,7,Brandon,Bills,Wild Card,12,18,Playoffs
+2023,1,7,Brandon,Bills,Division,12,19,Playoffs
 2023,1,8,Dan,Cowboys,1,1,1,RegSsn
 2023,1,8,Dan,Cowboys,2,2,2,RegSsn
 2023,1,8,Dan,Cowboys,3,2,3,RegSsn
 2023,1,8,Dan,Cowboys,4,3,4,RegSsn
 2023,1,8,Dan,Cowboys,5,3,5,RegSsn
 2023,1,8,Dan,Cowboys,6,4,6,RegSsn
+2023,1,8,Dan,Cowboys,7,4,6,Bye Week
 2023,1,8,Dan,Cowboys,8,5,7,RegSsn
 2023,1,8,Dan,Cowboys,9,5,8,RegSsn
 2023,1,8,Dan,Cowboys,10,6,9,RegSsn
 2023,1,8,Dan,Cowboys,11,7,10,RegSsn
+2023,1,8,Dan,Cowboys,12,8,11,RegSsn
+2023,1,8,Dan,Cowboys,13,9,12,RegSsn
+2023,1,8,Dan,Cowboys,14,10,13,RegSsn
+2023,1,8,Dan,Cowboys,15,10,14,RegSsn
+2023,1,8,Dan,Cowboys,16,10,15,RegSsn
+2023,1,8,Dan,Cowboys,17,11,16,RegSsn
+2023,1,8,Dan,Cowboys,18,12,17,RegSsn
+2023,1,8,Dan,Cowboys,Wild Card,12,18,Playoffs
 2023,2,9,Dan,Chargers,1,0,1,RegSsn
 2023,2,9,Dan,Chargers,2,0,2,RegSsn
 2023,2,9,Dan,Chargers,3,1,3,RegSsn
 2023,2,9,Dan,Chargers,4,2,4,RegSsn
+2023,2,9,Dan,Chargers,5,2,4,Bye Week
 2023,2,9,Dan,Chargers,6,2,5,RegSsn
 2023,2,9,Dan,Chargers,7,2,6,RegSsn
 2023,2,9,Dan,Chargers,8,3,7,RegSsn
 2023,2,9,Dan,Chargers,9,4,8,RegSsn
 2023,2,9,Dan,Chargers,10,4,9,RegSsn
 2023,2,9,Dan,Chargers,11,4,10,RegSsn
+2023,2,9,Dan,Chargers,12,4,11,RegSsn
+2023,2,9,Dan,Chargers,13,5,12,RegSsn
+2023,2,9,Dan,Chargers,14,5,13,RegSsn
+2023,2,9,Dan,Chargers,15,5,14,RegSsn
+2023,2,9,Dan,Chargers,16,5,15,RegSsn
+2023,2,9,Dan,Chargers,17,5,16,RegSsn
+2023,2,9,Dan,Chargers,18,5,17,RegSsn
 2023,2,10,Brandon,Ravens,1,1,1,RegSsn
 2023,2,10,Brandon,Ravens,2,2,2,RegSsn
 2023,2,10,Brandon,Ravens,3,2,3,RegSsn
@@ -2882,6 +2964,15 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,2,10,Brandon,Ravens,9,7,9,RegSsn
 2023,2,10,Brandon,Ravens,10,7,10,RegSsn
 2023,2,10,Brandon,Ravens,11,8,11,RegSsn
+2023,2,10,Brandon,Ravens,12,9,12,RegSsn
+2023,2,10,Brandon,Ravens,13,9,12,Bye Week
+2023,2,10,Brandon,Ravens,14,10,13,RegSsn
+2023,2,10,Brandon,Ravens,15,11,14,RegSsn
+2023,2,10,Brandon,Ravens,16,12,15,RegSsn
+2023,2,10,Brandon,Ravens,17,13,16,RegSsn
+2023,2,10,Brandon,Ravens,18,13,17,RegSsn
+2023,2,10,Brandon,Ravens,Division,14,18,Playoffs
+2023,2,10,Brandon,Ravens,Conf. Champ.,14,19,Playoffs
 2023,2,11,Jackson,Dolphins,1,1,1,RegSsn
 2023,2,11,Jackson,Dolphins,2,2,2,RegSsn
 2023,2,11,Jackson,Dolphins,3,3,3,RegSsn
@@ -2890,18 +2981,35 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,2,11,Jackson,Dolphins,6,5,6,RegSsn
 2023,2,11,Jackson,Dolphins,7,5,7,RegSsn
 2023,2,11,Jackson,Dolphins,8,6,8,RegSsn
+2023,2,11,Jackson,Dolphins,10,6,9,Bye Week
 2023,2,11,Jackson,Dolphins,9,6,9,RegSsn
 2023,2,11,Jackson,Dolphins,11,7,10,RegSsn
+2023,2,11,Jackson,Dolphins,12,8,11,RegSsn
+2023,2,11,Jackson,Dolphins,13,9,12,RegSsn
+2023,2,11,Jackson,Dolphins,14,9,13,RegSsn
+2023,2,11,Jackson,Dolphins,15,10,14,RegSsn
+2023,2,11,Jackson,Dolphins,16,11,15,RegSsn
+2023,2,11,Jackson,Dolphins,17,11,16,RegSsn
+2023,2,11,Jackson,Dolphins,18,11,17,RegSsn
+2023,2,11,Jackson,Dolphins,Wild Card,11,18,Playoffs
 2023,2,12,Alex,Jets,1,1,1,RegSsn
 2023,2,12,Alex,Jets,2,1,2,RegSsn
 2023,2,12,Alex,Jets,3,1,3,RegSsn
 2023,2,12,Alex,Jets,4,1,4,RegSsn
 2023,2,12,Alex,Jets,5,2,5,RegSsn
 2023,2,12,Alex,Jets,6,3,6,RegSsn
+2023,2,12,Alex,Jets,7,3,6,Bye Week
 2023,2,12,Alex,Jets,8,4,7,RegSsn
 2023,2,12,Alex,Jets,9,4,8,RegSsn
 2023,2,12,Alex,Jets,10,4,9,RegSsn
 2023,2,12,Alex,Jets,11,4,10,RegSsn
+2023,2,12,Alex,Jets,12,4,11,RegSsn
+2023,2,12,Alex,Jets,13,4,12,RegSsn
+2023,2,12,Alex,Jets,14,5,13,RegSsn
+2023,2,12,Alex,Jets,15,5,14,RegSsn
+2023,2,12,Alex,Jets,16,6,15,RegSsn
+2023,2,12,Alex,Jets,17,6,16,RegSsn
+2023,2,12,Alex,Jets,18,7,17,RegSsn
 2023,2,13,Jordan,Saints,1,1,1,RegSsn
 2023,2,13,Jordan,Saints,2,2,2,RegSsn
 2023,2,13,Jordan,Saints,3,2,3,RegSsn
@@ -2912,6 +3020,14 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,2,13,Jordan,Saints,8,4,8,RegSsn
 2023,2,13,Jordan,Saints,9,5,9,RegSsn
 2023,2,13,Jordan,Saints,10,5,10,RegSsn
+2023,2,13,Jordan,Saints,11,5,10,Bye Week
+2023,2,13,Jordan,Saints,12,5,11,RegSsn
+2023,2,13,Jordan,Saints,13,5,12,RegSsn
+2023,2,13,Jordan,Saints,14,6,13,RegSsn
+2023,2,13,Jordan,Saints,15,7,14,RegSsn
+2023,2,13,Jordan,Saints,16,7,15,RegSsn
+2023,2,13,Jordan,Saints,17,8,16,RegSsn
+2023,2,13,Jordan,Saints,18,9,17,RegSsn
 2023,2,14,JP,Falcons,1,1,1,RegSsn
 2023,2,14,JP,Falcons,2,2,2,RegSsn
 2023,2,14,JP,Falcons,3,2,3,RegSsn
@@ -2922,16 +3038,32 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,2,14,JP,Falcons,8,4,8,RegSsn
 2023,2,14,JP,Falcons,9,4,9,RegSsn
 2023,2,14,JP,Falcons,10,4,10,RegSsn
+2023,2,14,JP,Falcons,11,4,10,Bye Week
+2023,2,14,JP,Falcons,12,5,11,RegSsn
+2023,2,14,JP,Falcons,13,6,12,RegSsn
+2023,2,14,JP,Falcons,14,6,13,RegSsn
+2023,2,14,JP,Falcons,15,6,14,RegSsn
+2023,2,14,JP,Falcons,16,7,15,RegSsn
+2023,2,14,JP,Falcons,17,7,16,RegSsn
+2023,2,14,JP,Falcons,18,7,17,RegSsn
 2023,2,15,Mike,Titans,1,0,1,RegSsn
 2023,2,15,Mike,Titans,2,1,2,RegSsn
 2023,2,15,Mike,Titans,3,1,3,RegSsn
 2023,2,15,Mike,Titans,4,2,4,RegSsn
 2023,2,15,Mike,Titans,5,2,5,RegSsn
 2023,2,15,Mike,Titans,6,2,6,RegSsn
+2023,2,15,Mike,Titans,7,2,6,Bye Week
 2023,2,15,Mike,Titans,8,3,7,RegSsn
 2023,2,15,Mike,Titans,9,3,8,RegSsn
 2023,2,15,Mike,Titans,10,3,9,RegSsn
 2023,2,15,Mike,Titans,11,3,10,RegSsn
+2023,2,15,Mike,Titans,12,4,11,RegSsn
+2023,2,15,Mike,Titans,13,4,12,RegSsn
+2023,2,15,Mike,Titans,14,5,13,RegSsn
+2023,2,15,Mike,Titans,15,5,14,RegSsn
+2023,2,15,Mike,Titans,16,5,15,RegSsn
+2023,2,15,Mike,Titans,17,5,16,RegSsn
+2023,2,15,Mike,Titans,18,6,17,RegSsn
 2023,2,16,Victoria,Lions,1,1,1,RegSsn
 2023,2,16,Victoria,Lions,2,1,2,RegSsn
 2023,2,16,Victoria,Lions,3,2,3,RegSsn
@@ -2940,38 +3072,77 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,2,16,Victoria,Lions,6,5,6,RegSsn
 2023,2,16,Victoria,Lions,7,5,7,RegSsn
 2023,2,16,Victoria,Lions,8,6,8,RegSsn
+2023,2,16,Victoria,Lions,9,6,8,Bye Week
 2023,2,16,Victoria,Lions,10,7,9,RegSsn
 2023,2,16,Victoria,Lions,11,8,10,RegSsn
+2023,2,16,Victoria,Lions,12,8,11,RegSsn
+2023,2,16,Victoria,Lions,13,9,12,RegSsn
+2023,2,16,Victoria,Lions,14,9,13,RegSsn
+2023,2,16,Victoria,Lions,15,10,14,RegSsn
+2023,2,16,Victoria,Lions,16,11,15,RegSsn
+2023,2,16,Victoria,Lions,17,11,16,RegSsn
+2023,2,16,Victoria,Lions,18,12,17,RegSsn
+2023,2,16,Victoria,Lions,Wild Card,13,18,Playoffs
+2023,2,16,Victoria,Lions,Division,14,19,Playoffs
+2023,2,16,Victoria,Lions,Conf. Champ.,14,20,Playoffs
 2023,3,17,Victoria,Browns,1,1,1,RegSsn
 2023,3,17,Victoria,Browns,2,1,2,RegSsn
 2023,3,17,Victoria,Browns,3,2,3,RegSsn
 2023,3,17,Victoria,Browns,4,2,4,RegSsn
+2023,3,17,Victoria,Browns,5,2,4,Bye Week
 2023,3,17,Victoria,Browns,6,3,5,RegSsn
 2023,3,17,Victoria,Browns,7,4,6,RegSsn
 2023,3,17,Victoria,Browns,8,4,7,RegSsn
 2023,3,17,Victoria,Browns,9,5,8,RegSsn
 2023,3,17,Victoria,Browns,10,6,9,RegSsn
 2023,3,17,Victoria,Browns,11,7,10,RegSsn
+2023,3,17,Victoria,Browns,12,7,11,RegSsn
+2023,3,17,Victoria,Browns,13,7,12,RegSsn
+2023,3,17,Victoria,Browns,14,8,13,RegSsn
+2023,3,17,Victoria,Browns,15,9,14,RegSsn
+2023,3,17,Victoria,Browns,16,10,15,RegSsn
+2023,3,17,Victoria,Browns,17,11,16,RegSsn
+2023,3,17,Victoria,Browns,18,11,17,RegSsn
+2023,3,17,Victoria,Browns,Wild Card,11,18,Playoffs
 2023,3,18,Mike,Steelers,1,0,1,RegSsn
 2023,3,18,Mike,Steelers,2,1,2,RegSsn
 2023,3,18,Mike,Steelers,3,2,3,RegSsn
 2023,3,18,Mike,Steelers,4,2,4,RegSsn
 2023,3,18,Mike,Steelers,5,3,5,RegSsn
+2023,3,18,Mike,Steelers,6,3,5,Bye Week
 2023,3,18,Mike,Steelers,7,4,6,RegSsn
 2023,3,18,Mike,Steelers,8,4,7,RegSsn
 2023,3,18,Mike,Steelers,9,5,8,RegSsn
 2023,3,18,Mike,Steelers,10,6,9,RegSsn
 2023,3,18,Mike,Steelers,11,6,10,RegSsn
+2023,3,18,Mike,Steelers,12,7,11,RegSsn
+2023,3,18,Mike,Steelers,13,7,12,RegSsn
+2023,3,18,Mike,Steelers,14,7,13,RegSsn
+2023,3,18,Mike,Steelers,15,7,14,RegSsn
+2023,3,18,Mike,Steelers,16,8,15,RegSsn
+2023,3,18,Mike,Steelers,17,9,16,RegSsn
+2023,3,18,Mike,Steelers,18,10,17,RegSsn
+2023,3,18,Mike,Steelers,Wild Card,10,18,Playoffs
 2023,3,19,JP,Packers,1,1,1,RegSsn
 2023,3,19,JP,Packers,2,1,2,RegSsn
 2023,3,19,JP,Packers,3,2,3,RegSsn
 2023,3,19,JP,Packers,4,2,4,RegSsn
 2023,3,19,JP,Packers,5,2,5,RegSsn
+2023,3,19,JP,Packers,6,2,5,Bye Week
 2023,3,19,JP,Packers,7,2,6,RegSsn
 2023,3,19,JP,Packers,8,2,7,RegSsn
 2023,3,19,JP,Packers,9,3,8,RegSsn
 2023,3,19,JP,Packers,10,3,9,RegSsn
 2023,3,19,JP,Packers,11,4,10,RegSsn
+2023,3,19,JP,Packers,12,5,11,RegSsn
+2023,3,19,JP,Packers,13,6,12,RegSsn
+2023,3,19,JP,Packers,14,6,13,RegSsn
+2023,3,19,JP,Packers,15,6,14,RegSsn
+2023,3,19,JP,Packers,16,7,15,RegSsn
+2023,3,19,JP,Packers,17,8,16,RegSsn
+2023,3,19,JP,Packers,18,9,17,RegSsn
+2023,3,19,JP,Packers,Wild Card,10,18,Playoffs
+2023,3,19,JP,Packers,Division,10,19,Playoffs
 2023,3,20,Jordan,Broncos,1,0,1,RegSsn
 2023,3,20,Jordan,Broncos,2,0,2,RegSsn
 2023,3,20,Jordan,Broncos,3,0,3,RegSsn
@@ -2980,18 +3151,34 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,3,20,Jordan,Broncos,6,1,6,RegSsn
 2023,3,20,Jordan,Broncos,7,2,7,RegSsn
 2023,3,20,Jordan,Broncos,8,3,8,RegSsn
+2023,3,20,Jordan,Broncos,9,3,8,Bye Week
 2023,3,20,Jordan,Broncos,10,4,9,RegSsn
 2023,3,20,Jordan,Broncos,11,5,10,RegSsn
+2023,3,20,Jordan,Broncos,12,6,11,RegSsn
+2023,3,20,Jordan,Broncos,13,6,12,RegSsn
+2023,3,20,Jordan,Broncos,14,7,13,RegSsn
+2023,3,20,Jordan,Broncos,15,7,14,RegSsn
+2023,3,20,Jordan,Broncos,16,7,15,RegSsn
+2023,3,20,Jordan,Broncos,17,8,16,RegSsn
+2023,3,20,Jordan,Broncos,18,8,17,RegSsn
 2023,3,21,Alex,Seahawks,1,0,1,RegSsn
 2023,3,21,Alex,Seahawks,2,1,2,RegSsn
 2023,3,21,Alex,Seahawks,3,2,3,RegSsn
 2023,3,21,Alex,Seahawks,4,3,4,RegSsn
+2023,3,21,Alex,Seahawks,5,3,4,Bye Week
 2023,3,21,Alex,Seahawks,6,3,5,RegSsn
 2023,3,21,Alex,Seahawks,7,4,6,RegSsn
 2023,3,21,Alex,Seahawks,8,5,7,RegSsn
 2023,3,21,Alex,Seahawks,9,5,8,RegSsn
 2023,3,21,Alex,Seahawks,10,6,9,RegSsn
 2023,3,21,Alex,Seahawks,11,6,10,RegSsn
+2023,3,21,Alex,Seahawks,12,6,11,RegSsn
+2023,3,21,Alex,Seahawks,13,6,12,RegSsn
+2023,3,21,Alex,Seahawks,14,6,13,RegSsn
+2023,3,21,Alex,Seahawks,15,7,14,RegSsn
+2023,3,21,Alex,Seahawks,16,8,15,RegSsn
+2023,3,21,Alex,Seahawks,17,8,16,RegSsn
+2023,3,21,Alex,Seahawks,18,9,17,RegSsn
 2023,3,22,Jackson,Vikings,1,0,1,RegSsn
 2023,3,22,Jackson,Vikings,2,0,2,RegSsn
 2023,3,22,Jackson,Vikings,3,0,3,RegSsn
@@ -3003,6 +3190,13 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,3,22,Jackson,Vikings,9,5,9,RegSsn
 2023,3,22,Jackson,Vikings,10,6,10,RegSsn
 2023,3,22,Jackson,Vikings,11,6,11,RegSsn
+2023,3,22,Jackson,Vikings,12,6,12,RegSsn
+2023,3,22,Jackson,Vikings,13,6,12,Bye Week
+2023,3,22,Jackson,Vikings,14,7,13,RegSsn
+2023,3,22,Jackson,Vikings,15,7,14,RegSsn
+2023,3,22,Jackson,Vikings,16,7,15,RegSsn
+2023,3,22,Jackson,Vikings,17,7,16,RegSsn
+2023,3,22,Jackson,Vikings,18,7,17,RegSsn
 2023,3,23,Brandon,Giants,1,0,1,RegSsn
 2023,3,23,Brandon,Giants,2,1,2,RegSsn
 2023,3,23,Brandon,Giants,3,1,3,RegSsn
@@ -3014,6 +3208,13 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,3,23,Brandon,Giants,9,2,9,RegSsn
 2023,3,23,Brandon,Giants,10,2,10,RegSsn
 2023,3,23,Brandon,Giants,11,3,11,RegSsn
+2023,3,23,Brandon,Giants,12,4,12,RegSsn
+2023,3,23,Brandon,Giants,13,4,12,Bye Week
+2023,3,23,Brandon,Giants,14,5,13,RegSsn
+2023,3,23,Brandon,Giants,15,5,14,RegSsn
+2023,3,23,Brandon,Giants,16,5,15,RegSsn
+2023,3,23,Brandon,Giants,17,5,16,RegSsn
+2023,3,23,Brandon,Giants,18,6,17,RegSsn
 2023,3,24,Dan,Bears,1,0,1,RegSsn
 2023,3,24,Dan,Bears,2,0,2,RegSsn
 2023,3,24,Dan,Bears,3,0,3,RegSsn
@@ -3025,6 +3226,13 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,3,24,Dan,Bears,9,2,9,RegSsn
 2023,3,24,Dan,Bears,10,3,10,RegSsn
 2023,3,24,Dan,Bears,11,3,11,RegSsn
+2023,3,24,Dan,Bears,12,4,12,RegSsn
+2023,3,24,Dan,Bears,13,4,12,Bye Week
+2023,3,24,Dan,Bears,14,5,13,RegSsn
+2023,3,24,Dan,Bears,15,5,14,RegSsn
+2023,3,24,Dan,Bears,16,6,15,RegSsn
+2023,3,24,Dan,Bears,17,7,16,RegSsn
+2023,3,24,Dan,Bears,18,7,17,RegSsn
 2023,4,26,Brandon,Raiders,1,1,1,RegSsn
 2023,4,26,Brandon,Raiders,2,1,2,RegSsn
 2023,4,26,Brandon,Raiders,3,1,3,RegSsn
@@ -3036,16 +3244,31 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,4,26,Brandon,Raiders,9,4,9,RegSsn
 2023,4,26,Brandon,Raiders,10,5,10,RegSsn
 2023,4,26,Brandon,Raiders,11,5,11,RegSsn
+2023,4,26,Brandon,Raiders,12,5,12,RegSsn
+2023,4,26,Brandon,Raiders,13,5,12,Bye Week
+2023,4,26,Brandon,Raiders,14,5,13,RegSsn
+2023,4,26,Brandon,Raiders,15,6,14,RegSsn
+2023,4,26,Brandon,Raiders,16,7,15,RegSsn
+2023,4,26,Brandon,Raiders,17,7,16,RegSsn
+2023,4,26,Brandon,Raiders,18,8,17,RegSsn
 2023,4,27,Jackson,Panthers,1,0,1,RegSsn
 2023,4,27,Jackson,Panthers,2,0,2,RegSsn
 2023,4,27,Jackson,Panthers,3,0,3,RegSsn
 2023,4,27,Jackson,Panthers,4,0,4,RegSsn
 2023,4,27,Jackson,Panthers,5,0,5,RegSsn
 2023,4,27,Jackson,Panthers,6,0,6,RegSsn
+2023,4,27,Jackson,Panthers,7,0,6,Bye Week
 2023,4,27,Jackson,Panthers,8,1,7,RegSsn
 2023,4,27,Jackson,Panthers,9,1,8,RegSsn
 2023,4,27,Jackson,Panthers,10,1,9,RegSsn
 2023,4,27,Jackson,Panthers,11,1,10,RegSsn
+2023,4,27,Jackson,Panthers,12,1,11,RegSsn
+2023,4,27,Jackson,Panthers,13,1,12,RegSsn
+2023,4,27,Jackson,Panthers,14,1,13,RegSsn
+2023,4,27,Jackson,Panthers,15,2,14,RegSsn
+2023,4,27,Jackson,Panthers,16,2,15,RegSsn
+2023,4,27,Jackson,Panthers,17,2,16,RegSsn
+2023,4,27,Jackson,Panthers,18,2,17,RegSsn
 2023,4,28,Alex,Rams,1,1,1,RegSsn
 2023,4,28,Alex,Rams,2,1,2,RegSsn
 2023,4,28,Alex,Rams,3,1,3,RegSsn
@@ -3054,28 +3277,57 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,4,28,Alex,Rams,6,3,6,RegSsn
 2023,4,28,Alex,Rams,7,3,7,RegSsn
 2023,4,28,Alex,Rams,8,3,8,RegSsn
+2023,4,28,Alex,Rams,10,3,9,Bye Week
 2023,4,28,Alex,Rams,9,3,9,RegSsn
 2023,4,28,Alex,Rams,11,4,10,RegSsn
+2023,4,28,Alex,Rams,12,5,11,RegSsn
+2023,4,28,Alex,Rams,13,6,12,RegSsn
+2023,4,28,Alex,Rams,14,6,13,RegSsn
+2023,4,28,Alex,Rams,15,7,14,RegSsn
+2023,4,28,Alex,Rams,16,8,15,RegSsn
+2023,4,28,Alex,Rams,17,9,16,RegSsn
+2023,4,28,Alex,Rams,18,10,17,RegSsn
+2023,4,28,Alex,Rams,Wild Card,10,18,Playoffs
 2023,4,29,Jordan,Texans,1,0,1,RegSsn
 2023,4,29,Jordan,Texans,2,0,2,RegSsn
 2023,4,29,Jordan,Texans,3,1,3,RegSsn
 2023,4,29,Jordan,Texans,4,2,4,RegSsn
 2023,4,29,Jordan,Texans,5,2,5,RegSsn
 2023,4,29,Jordan,Texans,6,3,6,RegSsn
+2023,4,29,Jordan,Texans,7,3,6,Bye Week
 2023,4,29,Jordan,Texans,8,3,7,RegSsn
 2023,4,29,Jordan,Texans,9,4,8,RegSsn
 2023,4,29,Jordan,Texans,10,5,9,RegSsn
 2023,4,29,Jordan,Texans,11,6,10,RegSsn
+2023,4,29,Jordan,Texans,12,6,11,RegSsn
+2023,4,29,Jordan,Texans,13,7,12,RegSsn
+2023,4,29,Jordan,Texans,14,7,13,RegSsn
+2023,4,29,Jordan,Texans,15,8,14,RegSsn
+2023,4,29,Jordan,Texans,16,8,15,RegSsn
+2023,4,29,Jordan,Texans,17,9,16,RegSsn
+2023,4,29,Jordan,Texans,18,10,17,RegSsn
+2023,4,29,Jordan,Texans,Wild Card,11,18,Playoffs
+2023,4,29,Jordan,Texans,Division,11,19,Playoffs
 2023,4,30,JP,Buccaneers,1,1,1,RegSsn
 2023,4,30,JP,Buccaneers,2,2,2,RegSsn
 2023,4,30,JP,Buccaneers,3,2,3,RegSsn
 2023,4,30,JP,Buccaneers,4,3,4,RegSsn
+2023,4,30,JP,Buccaneers,5,3,4,Bye Week
 2023,4,30,JP,Buccaneers,6,3,5,RegSsn
 2023,4,30,JP,Buccaneers,7,3,6,RegSsn
 2023,4,30,JP,Buccaneers,8,3,7,RegSsn
 2023,4,30,JP,Buccaneers,9,3,8,RegSsn
 2023,4,30,JP,Buccaneers,10,4,9,RegSsn
 2023,4,30,JP,Buccaneers,11,4,10,RegSsn
+2023,4,30,JP,Buccaneers,12,4,11,RegSsn
+2023,4,30,JP,Buccaneers,13,5,12,RegSsn
+2023,4,30,JP,Buccaneers,14,6,13,RegSsn
+2023,4,30,JP,Buccaneers,15,7,14,RegSsn
+2023,4,30,JP,Buccaneers,16,8,15,RegSsn
+2023,4,30,JP,Buccaneers,17,8,16,RegSsn
+2023,4,30,JP,Buccaneers,18,9,17,RegSsn
+2023,4,30,JP,Buccaneers,Wild Card,10,18,Playoffs
+2023,4,30,JP,Buccaneers,Division,10,19,Playoffs
 2023,4,31,Mike,Colts,1,0,1,RegSsn
 2023,4,31,Mike,Colts,2,1,2,RegSsn
 2023,4,31,Mike,Colts,3,2,3,RegSsn
@@ -3086,6 +3338,14 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,4,31,Mike,Colts,8,3,8,RegSsn
 2023,4,31,Mike,Colts,9,4,9,RegSsn
 2023,4,31,Mike,Colts,10,5,10,RegSsn
+2023,4,31,Mike,Colts,11,5,10,Bye Week
+2023,4,31,Mike,Colts,12,6,11,RegSsn
+2023,4,31,Mike,Colts,13,7,12,RegSsn
+2023,4,31,Mike,Colts,14,7,13,RegSsn
+2023,4,31,Mike,Colts,15,8,14,RegSsn
+2023,4,31,Mike,Colts,16,8,15,RegSsn
+2023,4,31,Mike,Colts,17,9,16,RegSsn
+2023,4,31,Mike,Colts,18,9,17,RegSsn
 2023,4,32,Victoria,Cardinals,1,0,1,RegSsn
 2023,4,32,Victoria,Cardinals,2,0,2,RegSsn
 2023,4,32,Victoria,Cardinals,3,1,3,RegSsn
@@ -3097,67 +3357,100 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2023,4,32,Victoria,Cardinals,9,1,9,RegSsn
 2023,4,32,Victoria,Cardinals,10,2,10,RegSsn
 2023,4,32,Victoria,Cardinals,11,2,11,RegSsn
+2023,4,32,Victoria,Cardinals,12,2,12,RegSsn
+2023,4,32,Victoria,Cardinals,13,3,13,RegSsn
+2023,4,32,Victoria,Cardinals,14,3,13,Bye Week
+2023,4,32,Victoria,Cardinals,15,3,14,RegSsn
+2023,4,32,Victoria,Cardinals,16,3,15,RegSsn
+2023,4,32,Victoria,Cardinals,17,4,16,RegSsn
+2023,4,32,Victoria,Cardinals,18,4,17,RegSsn
 2024,1,1,Dan,Chiefs,1,1,1,RegSsn
 2024,1,1,Dan,Chiefs,2,2,2,RegSsn
+2024,1,1,Dan,Chiefs,3,3,3,RegSsn
 2024,1,2,Mike,Ravens,1,0,1,RegSsn
 2024,1,2,Mike,Ravens,2,0,2,RegSsn
+2024,1,2,Mike,Ravens,3,1,3,RegSsn
 2024,1,3,Cameron,Eagles,1,1,1,RegSsn
 2024,1,3,Cameron,Eagles,2,1,2,RegSsn
+2024,1,3,Cameron,Eagles,3,2,3,RegSsn
 2024,1,4,JP,Lions,1,1,1,RegSsn
 2024,1,4,JP,Lions,2,1,2,RegSsn
+2024,1,4,JP,Lions,3,2,3,RegSsn
 2024,1,5,Jordan,49ers,1,1,1,RegSsn
 2024,1,5,Jordan,49ers,2,1,2,RegSsn
+2024,1,5,Jordan,49ers,3,1,3,RegSsn
 2024,1,6,Alex,Cowboys,1,1,1,RegSsn
 2024,1,6,Alex,Cowboys,2,1,2,RegSsn
+2024,1,6,Alex,Cowboys,3,1,3,RegSsn
 2024,1,7,Brandon,Bills,1,1,1,RegSsn
 2024,1,7,Brandon,Bills,2,2,2,RegSsn
 2024,1,8,Victoria,Bengals,1,0,1,RegSsn
 2024,1,8,Victoria,Bengals,2,0,2,RegSsn
 2024,2,9,Victoria,Packers,1,0,1,RegSsn
 2024,2,9,Victoria,Packers,2,1,2,RegSsn
+2024,2,9,Victoria,Packers,3,2,3,RegSsn
 2024,2,10,Brandon,Texans,1,1,1,RegSsn
 2024,2,10,Brandon,Texans,2,2,2,RegSsn
+2024,2,10,Brandon,Texans,3,2,3,RegSsn
 2024,2,11,Alex,Jets,1,0,1,RegSsn
 2024,2,11,Alex,Jets,2,1,2,RegSsn
 2024,2,11,Alex,Jets,3,2,3,RegSsn
 2024,2,12,Jordan,Dolphins,1,1,1,RegSsn
 2024,2,12,Jordan,Dolphins,2,1,2,RegSsn
+2024,2,12,Jordan,Dolphins,3,1,3,RegSsn
 2024,2,13,JP,Jaguars,1,0,1,RegSsn
 2024,2,13,JP,Jaguars,2,0,2,RegSsn
 2024,2,14,Cameron,Browns,1,0,1,RegSsn
 2024,2,14,Cameron,Browns,2,1,2,RegSsn
+2024,2,14,Cameron,Browns,3,1,3,RegSsn
 2024,2,15,Mike,Seahawks,1,1,1,RegSsn
 2024,2,15,Mike,Seahawks,2,2,2,RegSsn
+2024,2,15,Mike,Seahawks,3,3,3,RegSsn
 2024,2,16,Dan,Falcons,1,0,1,RegSsn
 2024,2,16,Dan,Falcons,2,1,2,RegSsn
+2024,2,16,Dan,Falcons,3,1,3,RegSsn
 2024,3,17,Dan,Rams,1,0,1,RegSsn
 2024,3,17,Dan,Rams,2,0,2,RegSsn
+2024,3,17,Dan,Rams,3,1,3,RegSsn
 2024,3,18,Mike,Bears,1,1,1,RegSsn
 2024,3,18,Mike,Bears,2,1,2,RegSsn
+2024,3,18,Mike,Bears,3,1,3,RegSsn
 2024,3,19,Cameron,Cardinals,1,0,1,RegSsn
 2024,3,19,Cameron,Cardinals,2,1,2,RegSsn
+2024,3,19,Cameron,Cardinals,3,1,3,RegSsn
 2024,3,20,JP,Chargers,1,1,1,RegSsn
 2024,3,20,JP,Chargers,2,2,2,RegSsn
+2024,3,20,JP,Chargers,3,2,3,RegSsn
 2024,3,21,Jordan,Steelers,1,1,1,RegSsn
 2024,3,21,Jordan,Steelers,2,2,2,RegSsn
+2024,3,21,Jordan,Steelers,3,3,3,RegSsn
 2024,3,22,Alex,Colts,1,0,1,RegSsn
 2024,3,22,Alex,Colts,2,0,2,RegSsn
+2024,3,22,Alex,Colts,3,1,3,RegSsn
 2024,3,23,Brandon,Saints,1,1,1,RegSsn
 2024,3,23,Brandon,Saints,2,2,2,RegSsn
+2024,3,23,Brandon,Saints,3,2,3,RegSsn
 2024,3,24,Victoria,Vikings,1,1,1,RegSsn
 2024,3,24,Victoria,Vikings,2,2,2,RegSsn
+2024,3,24,Victoria,Vikings,3,3,3,RegSsn
 2024,4,25,Victoria,Panthers,1,0,1,RegSsn
 2024,4,25,Victoria,Panthers,2,0,2,RegSsn
+2024,4,25,Victoria,Panthers,3,1,3,RegSsn
 2024,4,26,Brandon,Buccaneers,1,1,1,RegSsn
 2024,4,26,Brandon,Buccaneers,2,2,2,RegSsn
+2024,4,26,Brandon,Buccaneers,3,2,3,RegSsn
 2024,4,28,Jordan,Titans,1,0,1,RegSsn
 2024,4,28,Jordan,Titans,2,0,2,RegSsn
+2024,4,28,Jordan,Titans,3,0,3,RegSsn
 2024,4,29,JP,Broncos,1,0,1,RegSsn
 2024,4,29,JP,Broncos,2,0,2,RegSsn
+2024,4,29,JP,Broncos,3,1,3,RegSsn
 2024,4,30,Cameron,Raiders,1,0,1,RegSsn
 2024,4,30,Cameron,Raiders,2,1,2,RegSsn
+2024,4,30,Cameron,Raiders,3,1,3,RegSsn
 2024,4,31,Mike,Patriots,1,1,1,RegSsn
 2024,4,31,Mike,Patriots,2,1,2,RegSsn
 2024,4,31,Mike,Patriots,3,1,3,RegSsn
 2024,4,32,Dan,Giants,1,0,1,RegSsn
 2024,4,32,Dan,Giants,2,0,2,RegSsn
+2024,4,32,Dan,Giants,3,1,3,RegSsn

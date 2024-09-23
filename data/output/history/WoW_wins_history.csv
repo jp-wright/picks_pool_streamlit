@@ -788,6 +788,14 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Alex,9,9,1,20
 2023,Alex,10,10,1,21
 2023,Alex,11,11,2,23
+2023,Alex,12,12,2,25
+2023,Alex,13,13,1,26
+2023,Alex,14,14,1,27
+2023,Alex,15,15,2,29
+2023,Alex,16,16,4,33
+2023,Alex,17,17,1,34
+2023,Alex,18,18,3,37
+2023,Alex,Wild Card,19,0,37
 2023,Brandon,1,1,2,2
 2023,Brandon,2,2,3,5
 2023,Brandon,3,3,1,6
@@ -799,6 +807,16 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Brandon,9,9,2,18
 2023,Brandon,10,10,1,19
 2023,Brandon,11,11,3,22
+2023,Brandon,12,12,2,24
+2023,Brandon,13,13,0,24
+2023,Brandon,14,14,3,27
+2023,Brandon,15,15,3,30
+2023,Brandon,16,16,3,33
+2023,Brandon,17,17,2,35
+2023,Brandon,18,18,3,38
+2023,Brandon,Wild Card,19,1,39
+2023,Brandon,Division,20,1,40
+2023,Brandon,Conf. Champ.,21,0,40
 2023,Dan,1,1,1,1
 2023,Dan,2,2,1,2
 2023,Dan,3,3,1,3
@@ -810,6 +828,14 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Dan,9,9,1,11
 2023,Dan,10,10,2,13
 2023,Dan,11,11,1,14
+2023,Dan,12,12,2,16
+2023,Dan,13,13,2,18
+2023,Dan,14,14,2,20
+2023,Dan,15,15,0,20
+2023,Dan,16,16,1,21
+2023,Dan,17,17,2,23
+2023,Dan,18,18,1,24
+2023,Dan,Wild Card,19,0,24
 2023,JP,1,1,4,4
 2023,JP,2,2,2,6
 2023,JP,3,3,1,7
@@ -821,6 +847,15 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,JP,9,9,1,16
 2023,JP,10,10,1,17
 2023,JP,11,11,2,19
+2023,JP,12,12,3,22
+2023,JP,13,13,3,25
+2023,JP,14,14,1,26
+2023,JP,15,15,1,27
+2023,JP,16,16,3,30
+2023,JP,17,17,2,32
+2023,JP,18,18,2,34
+2023,JP,Wild Card,19,2,36
+2023,JP,Division,20,0,36
 2023,Jackson,1,1,2,2
 2023,Jackson,2,2,2,4
 2023,Jackson,3,3,2,6
@@ -832,6 +867,17 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Jackson,9,9,1,17
 2023,Jackson,10,10,2,19
 2023,Jackson,11,11,2,21
+2023,Jackson,12,12,2,23
+2023,Jackson,13,13,2,25
+2023,Jackson,14,14,2,27
+2023,Jackson,15,15,3,30
+2023,Jackson,16,16,1,31
+2023,Jackson,17,17,1,32
+2023,Jackson,18,18,0,32
+2023,Jackson,Wild Card,19,0,32
+2023,Jackson,Division,20,1,33
+2023,Jackson,Conf. Champ.,21,1,34
+2023,Jackson,SuperBowl,22,0,34
 2023,Jordan,1,1,1,1
 2023,Jordan,2,2,1,2
 2023,Jordan,3,3,2,4
@@ -843,6 +889,15 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Jordan,9,9,3,17
 2023,Jordan,10,10,2,19
 2023,Jordan,11,11,2,21
+2023,Jordan,12,12,1,22
+2023,Jordan,13,13,2,24
+2023,Jordan,14,14,3,27
+2023,Jordan,15,15,3,30
+2023,Jordan,16,16,0,30
+2023,Jordan,17,17,3,33
+2023,Jordan,18,18,3,36
+2023,Jordan,Wild Card,19,1,37
+2023,Jordan,Division,20,0,37
 2023,Mike,1,1,0,0
 2023,Mike,2,2,3,3
 2023,Mike,3,3,3,6
@@ -854,6 +909,14 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Mike,9,9,2,14
 2023,Mike,10,10,2,16
 2023,Mike,11,11,0,16
+2023,Mike,12,12,3,19
+2023,Mike,13,13,1,20
+2023,Mike,14,14,2,22
+2023,Mike,15,15,1,23
+2023,Mike,16,16,2,25
+2023,Mike,17,17,2,27
+2023,Mike,18,18,2,29
+2023,Mike,Wild Card,19,0,29
 2023,Victoria,1,1,2,2
 2023,Victoria,2,2,1,3
 2023,Victoria,3,3,4,7
@@ -865,21 +928,38 @@ Year,Player,Week,Week_Int,WoW_Wins,Total_Wins
 2023,Victoria,9,9,2,19
 2023,Victoria,10,10,3,22
 2023,Victoria,11,11,2,24
+2023,Victoria,12,12,1,25
+2023,Victoria,13,13,2,27
+2023,Victoria,14,14,1,28
+2023,Victoria,15,15,3,31
+2023,Victoria,16,16,2,33
+2023,Victoria,17,17,3,36
+2023,Victoria,18,18,2,38
+2023,Victoria,Wild Card,19,2,40
+2023,Victoria,Division,20,2,42
+2023,Victoria,Conf. Champ.,21,1,43
+2023,Victoria,SuperBowl,22,1,44
 2024,Alex,1,1,1,1
 2024,Alex,2,2,1,2
-2024,Alex,3,3,1,3
+2024,Alex,3,3,2,4
 2024,Brandon,1,1,4,4
 2024,Brandon,2,2,4,8
+2024,Brandon,3,3,0,8
 2024,Cameron,1,1,1,1
 2024,Cameron,2,2,3,4
+2024,Cameron,3,3,1,5
 2024,Dan,1,1,1,1
 2024,Dan,2,2,2,3
+2024,Dan,3,3,3,6
 2024,JP,1,1,2,2
 2024,JP,2,2,1,3
+2024,JP,3,3,2,5
 2024,Jordan,1,1,3,3
 2024,Jordan,2,2,1,4
+2024,Jordan,3,3,1,5
 2024,Mike,1,1,3,3
 2024,Mike,2,2,1,4
-2024,Mike,3,3,0,4
+2024,Mike,3,3,2,6
 2024,Victoria,1,1,1,1
 2024,Victoria,2,2,2,3
+2024,Victoria,3,3,3,6
