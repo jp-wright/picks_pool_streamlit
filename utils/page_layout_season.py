@@ -252,7 +252,7 @@ class PageLayoutSeason(DataProcessor):
                         .str.strip()
     
         with st.container():
-            _, col2 = st.columns([.25, 1])
+            _, col2 = st.columns([.35, 1])
             with col2:
                 st.dataframe(stylr.style_frame(frame, cell_clr_dct=bg_clr_dct, frmt_dct=self.frmts, kind='streamlit'), hide_index=True)
                   
