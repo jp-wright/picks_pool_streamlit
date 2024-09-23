@@ -3119,6 +3119,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,10,Brandon,Texans,2,2,2,RegSsn
 2024,2,11,Alex,Jets,1,0,1,RegSsn
 2024,2,11,Alex,Jets,2,1,2,RegSsn
+2024,2,11,Alex,Jets,3,2,3,RegSsn
 2024,2,12,Jordan,Dolphins,1,1,1,RegSsn
 2024,2,12,Jordan,Dolphins,2,1,2,RegSsn
 2024,2,13,JP,Jaguars,1,0,1,RegSsn
@@ -3157,5 +3158,6 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,30,Cameron,Raiders,2,1,2,RegSsn
 2024,4,31,Mike,Patriots,1,1,1,RegSsn
 2024,4,31,Mike,Patriots,2,1,2,RegSsn
+2024,4,31,Mike,Patriots,3,1,3,RegSsn
 2024,4,32,Dan,Giants,1,0,1,RegSsn
 2024,4,32,Dan,Giants,2,0,2,RegSsn
