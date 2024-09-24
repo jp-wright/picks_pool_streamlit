@@ -3,10 +3,10 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 2,2018,Alex,55.2,37,29,36,1,False
 3,2023,Alex,52.9,37,33,37,0,False
 4,2021,Alex,51.4,36,33,36,0,False
-5,2019,Alex,48.5,33,34,31,2,False
-6,2017,Alex,47.8,33,36,30,3,False
-7,2024,Alex,45.5,5,6,5,0,False
-1,2024,Brandon,72.7,8,3,8,0,False
+5,2024,Alex,50.0,6,6,6,0,False
+6,2019,Alex,48.5,33,34,31,2,False
+7,2017,Alex,47.8,33,36,30,3,False
+1,2024,Brandon,75.0,9,3,9,0,False
 2,2018,Brandon,61.4,43,27,40,3,True
 3,2023,Brandon,56.3,40,31,38,2,False
 4,2017,Brandon,55.4,36,29,36,0,False
@@ -26,7 +26,7 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 2,2020,JP,52.2,36,33,32,4,False
 3,2023,JP,50.0,36,36,34,2,False
 4,2021,JP,48.6,34,36,33,1,False
-5,2024,JP,45.5,5,6,5,0,False
+5,2024,JP,41.7,5,7,5,0,False
 6,2018,JP,40.6,26,37,26,0,False
 1,2017,Jackson,60.0,42,28,38,4,True
 2,2019,Jackson,58.5,38,27,38,0,False
@@ -54,4 +54,4 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 6,2019,Mike,46.2,30,35,30,0,False
 7,2023,Mike,42.0,29,40,29,0,False
 1,2023,Victoria,57.5,42,31,38,4,True
-2,2024,Victoria,54.5,6,5,6,0,False
+2,2024,Victoria,50.0,6,6,6,0,False

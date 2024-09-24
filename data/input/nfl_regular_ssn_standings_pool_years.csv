@@ -223,12 +223,13 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2023,NFL,Reg_Ssn,Washington Redskins,Redskins,4,13,0,17,0.235,0..6,329,518,L8,NFC_East,NFC,,2..10
 2023,NFL,Reg_Ssn,New England Patriots,Patriots,4,13,0,17,0.235,2..4,236,366,L2,AFC_East,AFC,,4..8
 2023,NFL,Reg_Ssn,Carolina Panthers,Panthers,2,15,0,17,0.118,1..5,236,416,L3,NFC_South,NFC,,1..11
+2024,NFL,Reg_Ssn,Buffalo Bills,Bills,3,0,0,3,1.0,1..0,112,48,W3,AFC_East,AFC,,2..0
 2024,NFL,Reg_Ssn,Minnesota Vikings,Vikings,3,0,0,3,1.0,0..0,85,30,W3,NFC_North,NFC,,2..0
 2024,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,3,0,0,3,1.0,0..0,75,62,W3,AFC_West,AFC,,2..0
 2024,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,3,0,0,3,1.0,0..0,73,43,W3,NFC_West,NFC,,0..0
-2024,NFL,Reg_Ssn,Buffalo Bills,Bills,2,0,0,2,1.0,1..0,65,38,W2,AFC_East,AFC,,1..0
 2024,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,3,0,0,3,1.0,0..0,51,26,W3,AFC_North,AFC,,2..0
 2024,NFL,Reg_Ssn,New Orleans Saints,Saints,2,1,0,3,0.667,1..0,103,44,L1,NFC_South,NFC,,2..1
+2024,NFL,Reg_Ssn,Washington Redskins,Redskins,2,1,0,3,0.667,1..0,79,88,W2,NFC_East,NFC,,1..1
 2024,NFL,Reg_Ssn,Green Bay Packers,Packers,2,1,0,3,0.667,0..0,75,58,W2,NFC_North,NFC,,0..1
 2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,2,1,0,3,0.667,0..0,70,62,W1,NFC_East,NFC,,2..1
 2024,NFL,Reg_Ssn,New York Jets,Jets,2,1,0,3,0.667,1..0,67,52,W2,AFC_East,AFC,,2..0
@@ -236,7 +237,6 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,Detroit Lions,Lions,2,1,0,3,0.667,0..0,62,53,W1,NFC_North,NFC,,2..1
 2024,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,2,1,0,3,0.667,1..0,58,33,L1,AFC_West,AFC,,1..1
 2024,NFL,Reg_Ssn,Houston Texans,Texans,2,1,0,3,0.667,1..0,55,74,L1,AFC_South,AFC,,1..0
-2024,NFL,Reg_Ssn,Washington Redskins,Redskins,1,1,0,2,0.5,1..0,41,55,W1,NFC_East,NFC,,1..1
 2024,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,1,2,0,3,0.333,1..0,82,64,L1,NFC_West,NFC,,1..1
 2024,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,1,2,0,3,0.333,0..0,77,89,L2,NFC_East,NFC,,0..1
 2024,NFL,Reg_Ssn,San Francisco 49ers,49ers,1,2,0,3,0.333,0..1,73,69,L2,NFC_West,NFC,,0..2
@@ -252,6 +252,6 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,New York Giants,Giants,1,2,0,3,0.333,0..1,45,64,W1,NFC_East,NFC,,0..2
 2024,NFL,Reg_Ssn,New England Patriots,Patriots,1,2,0,3,0.333,0..1,39,57,L2,AFC_East,AFC,,1..1
 2024,NFL,Reg_Ssn,Miami Dolphins,Dolphins,1,2,0,3,0.333,0..1,33,72,L2,AFC_East,AFC,,1..1
+2024,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,0,3,0,3,0.0,0..0,68,80,L3,AFC_North,AFC,,0..2
 2024,NFL,Reg_Ssn,Tennessee Titans,Titans,0,3,0,3,0.0,0..0,48,78,L3,AFC_South,AFC,,0..1
-2024,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,0,2,0,2,0.0,0..0,35,42,L2,AFC_North,AFC,,0..2
-2024,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,0,2,0,2,0.0,0..0,30,38,L2,AFC_South,AFC,,0..2
+2024,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,0,3,0,3,0.0,0..0,40,85,L3,AFC_South,AFC,,0..3
