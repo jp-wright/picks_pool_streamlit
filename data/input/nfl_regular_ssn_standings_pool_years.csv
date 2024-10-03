@@ -254,4 +254,4 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,New York Giants,Giants,1,3,0,4,0.25,0..2,60,84,L1,NFC_East,NFC,,0..3
 2024,NFL,Reg_Ssn,New England Patriots,Patriots,1,3,0,4,0.25,0..1,52,87,L3,AFC_East,AFC,,1..1
 2024,NFL,Reg_Ssn,Miami Dolphins,Dolphins,1,3,0,4,0.25,0..1,45,103,L3,AFC_East,AFC,,1..2
-2024,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,0,4,0,4,0.0,0..1,60,99,L4,AFC_South,AFC,,0..4
+2024,NFL,Reg_Ssn,Jacksonville Jaguars,Jaguars,0,4,0,4,0.0,0..1,60,109,L4,AFC_South,AFC,,0..4
