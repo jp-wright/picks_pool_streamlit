@@ -238,7 +238,7 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,Atlanta Falcons,Falcons,3,2,0,5,0.6,2..0,111,115,W2,NFC_South,NFC,,3..0
 2024,NFL,Reg_Ssn,Denver Broncos,Broncos,3,2,0,5,0.6,1..0,96,73,W3,AFC_West,AFC,,2..1
 2024,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,3,2,0,5,0.6,0..0,92,73,L2,AFC_North,AFC,,2..1
-2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,2,2,0,4,0.5,0..0,86,95,L1,NFC_East,NFC,,2..2
+2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,2,2,0,4,0.5,0..0,86,96,L1,NFC_East,NFC,,2..2
 2024,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,2,2,0,4,0.5,1..1,68,50,L2,AFC_West,AFC,,1..2
 2024,NFL,Reg_Ssn,New Orleans Saints,Saints,2,3,0,5,0.4,1..1,140,96,L3,NFC_South,NFC,,2..2
 2024,NFL,Reg_Ssn,San Francisco 49ers,49ers,2,3,0,5,0.4,0..2,126,106,L1,NFC_West,NFC,,0..3
