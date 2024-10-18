@@ -228,7 +228,7 @@ Year,Team_Name,Win,Loss,Scope,Tie,Points_For,Points_Against,League,Games_Played,
 2024,Bears,4.0,2.0,Reg+Post,0.0,148.0,101.0,NFL,6.0,0.667,24.67,16.83
 2024,Bengals,2.0,4.0,Reg+Post,0.0,157.0,152.0,NFL,6.0,0.333,26.17,25.33
 2024,Bills,4.0,2.0,Reg+Post,0.0,165.0,126.0,NFL,6.0,0.667,27.5,21.0
-2024,Broncos,3.0,3.0,Reg+Post,0.0,112.0,96.0,NFL,6.0,0.5,18.67,16.0
+2024,Broncos,4.0,3.0,Reg+Post,0.0,145.0,106.0,NFL,7.0,0.571,20.71,15.14
 2024,Browns,1.0,5.0,Reg+Post,0.0,95.0,141.0,NFL,6.0,0.167,15.83,23.5
 2024,Buccaneers,4.0,2.0,Reg+Post,0.0,178.0,141.0,NFL,6.0,0.667,29.67,23.5
 2024,Cardinals,2.0,4.0,Reg+Post,0.0,133.0,163.0,NFL,6.0,0.333,22.17,27.17
@@ -250,7 +250,7 @@ Year,Team_Name,Win,Loss,Scope,Tie,Points_For,Points_Against,League,Games_Played,
 2024,Rams,1.0,4.0,Reg+Post,0.0,94.0,139.0,NFL,5.0,0.2,18.8,27.8
 2024,Ravens,4.0,2.0,Reg+Post,0.0,177.0,149.0,NFL,6.0,0.667,29.5,24.83
 2024,Redskins,4.0,2.0,Reg+Post,0.0,178.0,145.0,NFL,6.0,0.667,29.67,24.17
-2024,Saints,2.0,4.0,Reg+Post,0.0,167.0,147.0,NFL,6.0,0.333,27.83,24.5
+2024,Saints,2.0,5.0,Reg+Post,0.0,177.0,180.0,NFL,7.0,0.286,25.29,25.71
 2024,Seahawks,3.0,3.0,Reg+Post,0.0,146.0,150.0,NFL,6.0,0.5,24.33,25.0
 2024,Steelers,4.0,2.0,Reg+Post,0.0,124.0,86.0,NFL,6.0,0.667,20.67,14.33
 2024,Texans,5.0,1.0,Reg+Post,0.0,143.0,135.0,NFL,6.0,0.833,23.83,22.5
