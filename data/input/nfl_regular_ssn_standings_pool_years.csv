@@ -226,24 +226,24 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,6,0,0,6,1.0,1..0,146,103,W6,AFC_West,AFC,,3..0
 2024,NFL,Reg_Ssn,Detroit Lions,Lions,5,1,0,6,0.833,1..0,182,120,W4,NFC_North,NFC,,5..1
 2024,NFL,Reg_Ssn,Minnesota Vikings,Vikings,5,1,0,6,0.833,1..1,168,107,L1,NFC_North,NFC,,3..1
+2024,NFL,Reg_Ssn,Baltimore Ravens,Ravens,5,2,0,7,0.7140000000000001,1..0,218,180,W5,AFC_North,AFC,,2..2
 2024,NFL,Reg_Ssn,Washington Redskins,Redskins,5,2,0,7,0.7140000000000001,1..0,218,152,W1,NFC_East,NFC,,3..1
 2024,NFL,Reg_Ssn,Buffalo Bills,Bills,5,2,0,7,0.7140000000000001,2..0,199,136,W2,AFC_East,AFC,,4..2
 2024,NFL,Reg_Ssn,Green Bay Packers,Packers,5,2,0,7,0.7140000000000001,0..1,186,143,W3,NFC_North,NFC,,2..2
 2024,NFL,Reg_Ssn,Houston Texans,Texans,5,2,0,7,0.7140000000000001,2..0,165,159,L1,AFC_South,AFC,,4..0
 2024,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,5,2,0,7,0.7140000000000001,0..0,161,101,W2,AFC_North,AFC,,4..1
-2024,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,4,2,0,6,0.667,1..1,178,141,W1,NFC_South,NFC,,4..1
-2024,NFL,Reg_Ssn,Baltimore Ravens,Ravens,4,2,0,6,0.667,1..0,177,149,W4,AFC_North,AFC,,2..2
 2024,NFL,Reg_Ssn,Chicago Bears,Bears,4,2,0,6,0.667,0..0,148,101,W3,NFC_North,NFC,,2..0
 2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,4,2,0,6,0.667,1..0,144,115,W2,NFC_East,NFC,,3..2
-2024,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,3,2,0,5,0.6,2..1,91,66,W1,AFC_West,AFC,,2..2
+2024,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,4,3,0,7,0.5710000000000001,1..1,209,182,L1,NFC_South,NFC,,4..1
 2024,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,4,3,0,7,0.5710000000000001,0..1,180,164,W1,NFC_West,NFC,,1..3
 2024,NFL,Reg_Ssn,Atlanta Falcons,Falcons,4,3,0,7,0.5710000000000001,3..0,163,169,L1,NFC_South,NFC,,4..1
 2024,NFL,Reg_Ssn,Indianapolis Colts,Colts,4,3,0,7,0.5710000000000001,1..2,155,149,W2,AFC_South,AFC,,3..2
 2024,NFL,Reg_Ssn,Denver Broncos,Broncos,4,3,0,7,0.5710000000000001,1..1,145,106,W1,AFC_West,AFC,,2..2
 2024,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,3,3,0,6,0.5,1..0,126,168,L1,NFC_East,NFC,,1..2
+2024,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,3,3,0,6,0.5,2..1,106,83,L1,AFC_West,AFC,,2..2
 2024,NFL,Reg_Ssn,San Francisco 49ers,49ers,3,4,0,7,0.429,1..2,180,158,L1,NFC_West,NFC,,1..3
 2024,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,3,4,0,7,0.429,1..1,178,166,W2,AFC_North,AFC,,1..3
-2024,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,2,4,0,6,0.333,2..0,133,163,L1,NFC_West,NFC,,2..3
+2024,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,3,4,0,7,0.429,2..0,150,178,W1,NFC_West,NFC,,2..3
 2024,NFL,Reg_Ssn,Los Angeles Rams,Rams,2,4,0,6,0.333,1..1,114,154,W1,NFC_West,NFC,,1..4
 2024,NFL,Reg_Ssn,Miami Dolphins,Dolphins,2,4,0,6,0.333,1..1,70,129,L1,AFC_East,AFC,,2..3
 2024,NFL,Reg_Ssn,New Orleans Saints,Saints,2,5,0,7,0.28600000000000003,1..2,177,180,L5,NFC_South,NFC,,2..3
