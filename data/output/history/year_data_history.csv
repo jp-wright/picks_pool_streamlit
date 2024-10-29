@@ -3,8 +3,8 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 2,2018,Alex,55.2,37,29,36,1,False
 3,2023,Alex,52.9,37,33,37,0,False
 4,2021,Alex,51.4,36,33,36,0,False
-5,2024,Alex,50.0,15,15,15,0,False
-6,2019,Alex,48.5,33,34,31,2,False
+5,2019,Alex,48.5,33,34,31,2,False
+6,2024,Alex,48.4,15,16,15,0,False
 7,2017,Alex,47.8,33,36,30,3,False
 1,2018,Brandon,61.4,43,27,40,3,True
 2,2023,Brandon,56.3,40,31,38,2,False
@@ -15,7 +15,7 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 6,2020,Brandon,48.5,32,34,31,1,False
 1,2024,Cameron,41.9,13,18,13,0,False
 1,2021,Dan,62.5,45,27,44,1,True
-2,2024,Dan,58.6,17,12,17,0,False
+2,2024,Dan,56.7,17,13,17,0,False
 3,2017,Dan,55.2,37,30,36,1,False
 4,2019,Dan,50.7,34,33,33,1,False
 5,2018,Dan,47.8,32,35,31,1,False
@@ -39,8 +39,8 @@ Rank,Year,Player,Total_Win%,Total_Win,Total_Loss,Reg_Win,Playoff_Win,Champ
 3,2023,Jordan,52.9,37,33,36,1,False
 4,2018,Jordan,50.7,34,32,33,1,False
 5,2021,Jordan,50.0,36,36,32,4,False
-6,2017,Jordan,40.6,26,38,26,0,False
-7,2024,Jordan,39.3,11,17,11,0,False
+6,2024,Jordan,43.3,13,17,13,0,False
+7,2017,Jordan,40.6,26,38,26,0,False
 1,2017,Leftover,38.2,26,42,24,2,False
 2,2018,Leftover,34.4,22,41,22,0,False
 3,2021,Leftover,31.9,23,48,20,3,False
