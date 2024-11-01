@@ -241,7 +241,7 @@ Year,Team_Name,Win,Loss,Scope,Tie,Points_For,Points_Against,League,Games_Played,
 2024,Falcons,5.0,3.0,Reg+Post,0.0,194.0,195.0,NFL,8.0,0.625,24.25,24.38
 2024,Giants,2.0,6.0,Reg+Post,0.0,117.0,175.0,NFL,8.0,0.25,14.62,21.88
 2024,Jaguars,2.0,6.0,Reg+Post,0.0,172.0,224.0,NFL,8.0,0.25,21.5,28.0
-2024,Jets,2.0,6.0,Reg+Post,0.0,150.0,170.0,NFL,8.0,0.25,18.75,21.25
+2024,Jets,3.0,6.0,Reg+Post,0.0,171.0,183.0,NFL,9.0,0.333,19.0,20.33
 2024,Lions,6.0,1.0,Reg+Post,0.0,234.0,134.0,NFL,7.0,0.857,33.43,19.14
 2024,Packers,6.0,2.0,Reg+Post,0.0,216.0,170.0,NFL,8.0,0.75,27.0,21.25
 2024,Panthers,1.0,7.0,Reg+Post,0.0,124.0,271.0,NFL,8.0,0.125,15.5,33.88
@@ -253,6 +253,6 @@ Year,Team_Name,Win,Loss,Scope,Tie,Points_For,Points_Against,League,Games_Played,
 2024,Saints,2.0,6.0,Reg+Post,0.0,185.0,206.0,NFL,8.0,0.25,23.12,25.75
 2024,Seahawks,4.0,4.0,Reg+Post,0.0,190.0,195.0,NFL,8.0,0.5,23.75,24.38
 2024,Steelers,6.0,2.0,Reg+Post,0.0,187.0,119.0,NFL,8.0,0.75,23.38,14.88
-2024,Texans,6.0,2.0,Reg+Post,0.0,188.0,179.0,NFL,8.0,0.75,23.5,22.38
+2024,Texans,6.0,3.0,Reg+Post,0.0,201.0,200.0,NFL,9.0,0.667,22.33,22.22
 2024,Titans,1.0,6.0,Reg+Post,0.0,120.0,196.0,NFL,7.0,0.143,17.14,28.0
 2024,Vikings,5.0,2.0,Reg+Post,0.0,188.0,137.0,NFL,7.0,0.714,26.86,19.57
