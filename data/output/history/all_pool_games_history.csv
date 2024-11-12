@@ -3372,6 +3372,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,1,Dan,Chiefs,7,6,6,RegSsn
 2024,1,1,Dan,Chiefs,8,7,7,RegSsn
 2024,1,1,Dan,Chiefs,9,8,8,RegSsn
+2024,1,1,Dan,Chiefs,10,9,9,RegSsn
 2024,1,2,Mike,Ravens,1,0,1,RegSsn
 2024,1,2,Mike,Ravens,2,0,2,RegSsn
 2024,1,2,Mike,Ravens,3,1,3,RegSsn
@@ -3381,6 +3382,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,2,Mike,Ravens,7,5,7,RegSsn
 2024,1,2,Mike,Ravens,8,5,8,RegSsn
 2024,1,2,Mike,Ravens,9,6,9,RegSsn
+2024,1,2,Mike,Ravens,10,7,10,RegSsn
 2024,1,3,Cameron,Eagles,1,1,1,RegSsn
 2024,1,3,Cameron,Eagles,2,1,2,RegSsn
 2024,1,3,Cameron,Eagles,3,2,3,RegSsn
@@ -3389,6 +3391,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,3,Cameron,Eagles,7,4,6,RegSsn
 2024,1,3,Cameron,Eagles,8,5,7,RegSsn
 2024,1,3,Cameron,Eagles,9,6,8,RegSsn
+2024,1,3,Cameron,Eagles,10,7,9,RegSsn
 2024,1,4,JP,Lions,1,1,1,RegSsn
 2024,1,4,JP,Lions,2,1,2,RegSsn
 2024,1,4,JP,Lions,3,2,3,RegSsn
@@ -3397,6 +3400,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,4,JP,Lions,7,5,6,RegSsn
 2024,1,4,JP,Lions,8,6,7,RegSsn
 2024,1,4,JP,Lions,9,7,8,RegSsn
+2024,1,4,JP,Lions,10,8,9,RegSsn
 2024,1,5,Jordan,49ers,1,1,1,RegSsn
 2024,1,5,Jordan,49ers,2,1,2,RegSsn
 2024,1,5,Jordan,49ers,3,1,3,RegSsn
@@ -3405,6 +3409,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,5,Jordan,49ers,6,3,6,RegSsn
 2024,1,5,Jordan,49ers,7,3,7,RegSsn
 2024,1,5,Jordan,49ers,8,4,8,RegSsn
+2024,1,5,Jordan,49ers,10,5,9,RegSsn
 2024,1,6,Alex,Cowboys,1,1,1,RegSsn
 2024,1,6,Alex,Cowboys,2,1,2,RegSsn
 2024,1,6,Alex,Cowboys,3,1,3,RegSsn
@@ -3413,6 +3418,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,6,Alex,Cowboys,6,3,6,RegSsn
 2024,1,6,Alex,Cowboys,8,3,7,RegSsn
 2024,1,6,Alex,Cowboys,9,3,8,RegSsn
+2024,1,6,Alex,Cowboys,10,3,9,RegSsn
 2024,1,7,Brandon,Bills,1,1,1,RegSsn
 2024,1,7,Brandon,Bills,2,2,2,RegSsn
 2024,1,7,Brandon,Bills,3,3,3,RegSsn
@@ -3422,6 +3428,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,7,Brandon,Bills,7,5,7,RegSsn
 2024,1,7,Brandon,Bills,8,6,8,RegSsn
 2024,1,7,Brandon,Bills,9,7,9,RegSsn
+2024,1,7,Brandon,Bills,10,8,10,RegSsn
 2024,1,8,Victoria,Bengals,1,0,1,RegSsn
 2024,1,8,Victoria,Bengals,2,0,2,RegSsn
 2024,1,8,Victoria,Bengals,3,0,3,RegSsn
@@ -3431,6 +3438,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,8,Victoria,Bengals,7,3,7,RegSsn
 2024,1,8,Victoria,Bengals,8,3,8,RegSsn
 2024,1,8,Victoria,Bengals,9,4,9,RegSsn
+2024,1,8,Victoria,Bengals,10,4,10,RegSsn
 2024,2,9,Victoria,Packers,1,0,1,RegSsn
 2024,2,9,Victoria,Packers,2,1,2,RegSsn
 2024,2,9,Victoria,Packers,3,2,3,RegSsn
@@ -3449,6 +3457,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,10,Brandon,Texans,7,5,7,RegSsn
 2024,2,10,Brandon,Texans,8,6,8,RegSsn
 2024,2,10,Brandon,Texans,9,6,9,RegSsn
+2024,2,10,Brandon,Texans,10,6,10,RegSsn
 2024,2,11,Alex,Jets,1,0,1,RegSsn
 2024,2,11,Alex,Jets,2,1,2,RegSsn
 2024,2,11,Alex,Jets,3,2,3,RegSsn
@@ -3458,6 +3467,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,11,Alex,Jets,7,2,7,RegSsn
 2024,2,11,Alex,Jets,8,2,8,RegSsn
 2024,2,11,Alex,Jets,9,3,9,RegSsn
+2024,2,11,Alex,Jets,10,3,10,RegSsn
 2024,2,12,Jordan,Dolphins,1,1,1,RegSsn
 2024,2,12,Jordan,Dolphins,2,1,2,RegSsn
 2024,2,12,Jordan,Dolphins,3,1,3,RegSsn
@@ -3475,6 +3485,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,13,JP,Jaguars,7,2,7,RegSsn
 2024,2,13,JP,Jaguars,8,2,8,RegSsn
 2024,2,13,JP,Jaguars,9,2,9,RegSsn
+2024,2,13,JP,Jaguars,10,2,10,RegSsn
 2024,2,14,Cameron,Browns,1,0,1,RegSsn
 2024,2,14,Cameron,Browns,2,1,2,RegSsn
 2024,2,14,Cameron,Browns,3,1,3,RegSsn
@@ -3502,6 +3513,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,16,Dan,Falcons,7,4,7,RegSsn
 2024,2,16,Dan,Falcons,8,5,8,RegSsn
 2024,2,16,Dan,Falcons,9,6,9,RegSsn
+2024,2,16,Dan,Falcons,10,6,10,RegSsn
 2024,3,17,Dan,Rams,1,0,1,RegSsn
 2024,3,17,Dan,Rams,2,0,2,RegSsn
 2024,3,17,Dan,Rams,3,1,3,RegSsn
@@ -3518,6 +3530,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,18,Mike,Bears,6,4,6,RegSsn
 2024,3,18,Mike,Bears,8,4,7,RegSsn
 2024,3,18,Mike,Bears,9,4,8,RegSsn
+2024,3,18,Mike,Bears,10,4,9,RegSsn
 2024,3,19,Cameron,Cardinals,1,0,1,RegSsn
 2024,3,19,Cameron,Cardinals,2,1,2,RegSsn
 2024,3,19,Cameron,Cardinals,3,1,3,RegSsn
@@ -3527,6 +3540,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,19,Cameron,Cardinals,7,3,7,RegSsn
 2024,3,19,Cameron,Cardinals,8,4,8,RegSsn
 2024,3,19,Cameron,Cardinals,9,5,9,RegSsn
+2024,3,19,Cameron,Cardinals,10,6,10,RegSsn
 2024,3,20,JP,Chargers,1,1,1,RegSsn
 2024,3,20,JP,Chargers,2,2,2,RegSsn
 2024,3,20,JP,Chargers,3,2,3,RegSsn
@@ -3535,6 +3549,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,20,JP,Chargers,7,3,6,RegSsn
 2024,3,20,JP,Chargers,8,4,7,RegSsn
 2024,3,20,JP,Chargers,9,5,8,RegSsn
+2024,3,20,JP,Chargers,10,6,9,RegSsn
 2024,3,21,Jordan,Steelers,1,1,1,RegSsn
 2024,3,21,Jordan,Steelers,2,2,2,RegSsn
 2024,3,21,Jordan,Steelers,3,3,3,RegSsn
@@ -3543,6 +3558,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,21,Jordan,Steelers,6,4,6,RegSsn
 2024,3,21,Jordan,Steelers,7,5,7,RegSsn
 2024,3,21,Jordan,Steelers,8,6,8,RegSsn
+2024,3,21,Jordan,Steelers,10,7,9,RegSsn
 2024,3,22,Alex,Colts,1,0,1,RegSsn
 2024,3,22,Alex,Colts,2,0,2,RegSsn
 2024,3,22,Alex,Colts,3,1,3,RegSsn
@@ -3552,6 +3568,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,22,Alex,Colts,7,4,7,RegSsn
 2024,3,22,Alex,Colts,8,4,8,RegSsn
 2024,3,22,Alex,Colts,9,4,9,RegSsn
+2024,3,22,Alex,Colts,10,4,10,RegSsn
 2024,3,23,Brandon,Saints,1,1,1,RegSsn
 2024,3,23,Brandon,Saints,2,2,2,RegSsn
 2024,3,23,Brandon,Saints,3,2,3,RegSsn
@@ -3561,6 +3578,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,23,Brandon,Saints,7,2,7,RegSsn
 2024,3,23,Brandon,Saints,8,2,8,RegSsn
 2024,3,23,Brandon,Saints,9,2,9,RegSsn
+2024,3,23,Brandon,Saints,10,3,10,RegSsn
 2024,3,24,Victoria,Vikings,1,1,1,RegSsn
 2024,3,24,Victoria,Vikings,2,2,2,RegSsn
 2024,3,24,Victoria,Vikings,3,3,3,RegSsn
@@ -3569,6 +3587,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,24,Victoria,Vikings,7,5,6,RegSsn
 2024,3,24,Victoria,Vikings,8,5,7,RegSsn
 2024,3,24,Victoria,Vikings,9,6,8,RegSsn
+2024,3,24,Victoria,Vikings,10,7,9,RegSsn
 2024,4,25,Victoria,Panthers,1,0,1,RegSsn
 2024,4,25,Victoria,Panthers,2,0,2,RegSsn
 2024,4,25,Victoria,Panthers,3,1,3,RegSsn
@@ -3578,6 +3597,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,25,Victoria,Panthers,7,1,7,RegSsn
 2024,4,25,Victoria,Panthers,8,1,8,RegSsn
 2024,4,25,Victoria,Panthers,9,2,9,RegSsn
+2024,4,25,Victoria,Panthers,10,3,10,RegSsn
 2024,4,26,Brandon,Buccaneers,1,1,1,RegSsn
 2024,4,26,Brandon,Buccaneers,2,2,2,RegSsn
 2024,4,26,Brandon,Buccaneers,3,2,3,RegSsn
@@ -3587,6 +3607,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,26,Brandon,Buccaneers,7,4,7,RegSsn
 2024,4,26,Brandon,Buccaneers,8,4,8,RegSsn
 2024,4,26,Brandon,Buccaneers,9,4,9,RegSsn
+2024,4,26,Brandon,Buccaneers,10,4,10,RegSsn
 2024,4,28,Jordan,Titans,1,0,1,RegSsn
 2024,4,28,Jordan,Titans,2,0,2,RegSsn
 2024,4,28,Jordan,Titans,3,0,3,RegSsn
@@ -3595,6 +3616,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,28,Jordan,Titans,7,1,6,RegSsn
 2024,4,28,Jordan,Titans,8,1,7,RegSsn
 2024,4,28,Jordan,Titans,9,2,8,RegSsn
+2024,4,28,Jordan,Titans,10,2,9,RegSsn
 2024,4,29,JP,Broncos,1,0,1,RegSsn
 2024,4,29,JP,Broncos,2,0,2,RegSsn
 2024,4,29,JP,Broncos,3,1,3,RegSsn
@@ -3604,6 +3626,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,29,JP,Broncos,7,4,7,RegSsn
 2024,4,29,JP,Broncos,8,5,8,RegSsn
 2024,4,29,JP,Broncos,9,5,9,RegSsn
+2024,4,29,JP,Broncos,10,5,10,RegSsn
 2024,4,30,Cameron,Raiders,1,0,1,RegSsn
 2024,4,30,Cameron,Raiders,2,1,2,RegSsn
 2024,4,30,Cameron,Raiders,3,1,3,RegSsn
@@ -3622,6 +3645,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,31,Mike,Patriots,7,1,7,RegSsn
 2024,4,31,Mike,Patriots,8,2,8,RegSsn
 2024,4,31,Mike,Patriots,9,2,9,RegSsn
+2024,4,31,Mike,Patriots,10,3,10,RegSsn
 2024,4,32,Dan,Giants,1,0,1,RegSsn
 2024,4,32,Dan,Giants,2,0,2,RegSsn
 2024,4,32,Dan,Giants,3,1,3,RegSsn
@@ -3631,3 +3655,4 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,32,Dan,Giants,7,2,7,RegSsn
 2024,4,32,Dan,Giants,8,2,8,RegSsn
 2024,4,32,Dan,Giants,9,2,9,RegSsn
+2024,4,32,Dan,Giants,10,2,10,RegSsn
