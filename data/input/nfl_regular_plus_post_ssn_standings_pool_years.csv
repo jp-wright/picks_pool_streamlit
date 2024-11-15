@@ -237,7 +237,7 @@ Year,Team_Name,Win,Loss,Scope,Tie,Points_For,Points_Against,League,Games_Played,
 2024,Colts,4.0,6.0,Reg+Post,0.0,208.0,223.0,NFL,10.0,0.4,20.8,22.3
 2024,Cowboys,3.0,6.0,Reg+Post,0.0,177.0,259.0,NFL,9.0,0.333,19.67,28.78
 2024,Dolphins,3.0,6.0,Reg+Post,0.0,147.0,202.0,NFL,9.0,0.333,16.33,22.44
-2024,Eagles,7.0,2.0,Reg+Post,0.0,233.0,161.0,NFL,9.0,0.778,25.89,17.89
+2024,Eagles,8.0,2.0,Reg+Post,0.0,259.0,179.0,NFL,10.0,0.8,25.9,17.9
 2024,Falcons,6.0,4.0,Reg+Post,0.0,238.0,236.0,NFL,10.0,0.6,23.8,23.6
 2024,Giants,2.0,8.0,Reg+Post,0.0,156.0,222.0,NFL,10.0,0.2,15.6,22.2
 2024,Jaguars,2.0,8.0,Reg+Post,0.0,202.0,264.0,NFL,10.0,0.2,20.2,26.4
@@ -249,7 +249,7 @@ Year,Team_Name,Win,Loss,Scope,Tie,Points_For,Points_Against,League,Games_Played,
 2024,Raiders,2.0,7.0,Reg+Post,0.0,168.0,251.0,NFL,9.0,0.222,18.67,27.89
 2024,Rams,4.0,5.0,Reg+Post,0.0,185.0,217.0,NFL,9.0,0.444,20.56,24.11
 2024,Ravens,7.0,3.0,Reg+Post,0.0,318.0,253.0,NFL,10.0,0.7,31.8,25.3
-2024,Redskins,7.0,3.0,Reg+Post,0.0,290.0,217.0,NFL,10.0,0.7,29.0,21.7
+2024,Redskins,7.0,4.0,Reg+Post,0.0,308.0,243.0,NFL,11.0,0.636,28.0,22.09
 2024,Saints,3.0,7.0,Reg+Post,0.0,227.0,246.0,NFL,10.0,0.3,22.7,24.6
 2024,Seahawks,4.0,5.0,Reg+Post,0.0,210.0,221.0,NFL,9.0,0.444,23.33,24.56
 2024,Steelers,7.0,2.0,Reg+Post,0.0,215.0,146.0,NFL,9.0,0.778,23.89,16.22

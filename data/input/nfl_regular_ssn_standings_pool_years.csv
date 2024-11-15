@@ -226,13 +226,13 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,Kansas City Chiefs,Chiefs,9,0,0,9,1.0,3..0,219,161,W9,AFC_West,AFC,,5..0
 2024,NFL,Reg_Ssn,Detroit Lions,Lions,8,1,0,9,0.889,2..0,284,171,W7,NFC_North,NFC,,6..1
 2024,NFL,Reg_Ssn,Buffalo Bills,Bills,8,2,0,10,0.8,3..0,290,193,W5,AFC_East,AFC,,6..2
-2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,7,2,0,9,0.778,2..0,233,161,W5,NFC_East,NFC,,4..2
+2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,8,2,0,10,0.8,3..0,259,179,W6,NFC_East,NFC,,5..2
 2024,NFL,Reg_Ssn,Minnesota Vikings,Vikings,7,2,0,9,0.778,1..1,221,157,W2,NFC_North,NFC,,3..2
 2024,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,7,2,0,9,0.778,0..0,215,146,W4,AFC_North,AFC,,4..1
 2024,NFL,Reg_Ssn,Baltimore Ravens,Ravens,7,3,0,10,0.7,2..1,318,253,W2,AFC_North,AFC,,4..3
-2024,NFL,Reg_Ssn,Washington Redskins,Redskins,7,3,0,10,0.7,2..0,290,217,L1,NFC_East,NFC,,5..1
 2024,NFL,Reg_Ssn,Green Bay Packers,Packers,6,3,0,9,0.667,0..2,230,194,L1,NFC_North,NFC,,2..3
 2024,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,6,3,0,9,0.667,2..1,186,118,W3,AFC_West,AFC,,4..2
+2024,NFL,Reg_Ssn,Washington Redskins,Redskins,7,4,0,11,0.636,2..1,308,243,L2,NFC_East,NFC,,5..2
 2024,NFL,Reg_Ssn,Atlanta Falcons,Falcons,6,4,0,10,0.6,4..1,238,236,L1,NFC_South,NFC,,6..2
 2024,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,6,4,0,10,0.6,2..0,238,220,W4,NFC_West,NFC,,3..3
 2024,NFL,Reg_Ssn,Houston Texans,Texans,6,4,0,10,0.6,3..0,224,226,L2,AFC_South,AFC,,5..1
