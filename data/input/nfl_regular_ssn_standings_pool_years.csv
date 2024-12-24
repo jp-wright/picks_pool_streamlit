@@ -228,7 +228,7 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,Minnesota Vikings,Vikings,13,2,0,15,0.867,3..1,396,276,W8,,,,8..2
 2024,NFL,Reg_Ssn,Buffalo Bills,Bills,12,3,0,15,0.8,4..0,469,331,W2,,,,8..2
 2024,NFL,Reg_Ssn,Philadelphia Eagles,Eagles,12,3,0,15,0.8,3..1,402,283,L1,,,,7..3
-2024,NFL,Reg_Ssn,Green Bay Packers,Packers,10,4,0,14,0.7140000000000001,1..3,379,287,W1,NFC_North,NFC,,5..4
+2024,NFL,Reg_Ssn,Green Bay Packers,Packers,11,4,0,15,0.733,1..3,413,287,W2,,,,6..4
 2024,NFL,Reg_Ssn,Baltimore Ravens,Ravens,10,5,0,15,0.667,3..2,452,349,W2,,,,6..4
 2024,NFL,Reg_Ssn,Washington Redskins,Redskins,10,5,0,15,0.667,3..2,432,348,W3,NFC_East,NFC,,7..3
 2024,NFL,Reg_Ssn,Pittsburgh Steelers,Steelers,10,5,0,15,0.667,3..2,353,299,L2,,,,7..3
@@ -236,16 +236,16 @@ Year,League,Scope,Team,Team_Name,Win,Loss,Tie,Games_Played,Win%,Division_Record,
 2024,NFL,Reg_Ssn,Houston Texans,Texans,9,6,0,15,0.6,4..1,347,327,L1,,,,7..3
 2024,NFL,Reg_Ssn,Los Angeles Rams,Rams,9,6,0,15,0.6,3..1,329,347,W4,NFC_West,NFC,,5..5
 2024,NFL,Reg_Ssn,Los Angeles Chargers,Chargers,9,6,0,15,0.6,3..2,328,274,W1,AFC_West,AFC,,6..4
-2024,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,8,6,0,14,0.5710000000000001,2..2,403,326,W4,NFC_South,NFC,,6..3
+2024,NFL,Reg_Ssn,Tampa Bay Buccaneers,Buccaneers,8,7,0,15,0.5329999999999999,2..2,427,352,L1,NFC_South,NFC,,6..4
 2024,NFL,Reg_Ssn,Seattle Seahawks,Seahawks,8,7,0,15,0.5329999999999999,3..2,339,340,L2,NFC_West,NFC,,4..6
 2024,NFL,Reg_Ssn,Atlanta Falcons,Falcons,8,7,0,15,0.5329999999999999,4..1,327,349,W2,NFC_South,NFC,,7..3
 2024,NFL,Reg_Ssn,Cincinnati Bengals,Bengals,7,8,0,15,0.467,2..3,423,393,W3,AFC_North,AFC,,4..6
 2024,NFL,Reg_Ssn,Arizona Cardinals,Cardinals,7,8,0,15,0.467,2..2,344,342,L1,,,,3..7
+2024,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,7,8,0,15,0.467,3..1,324,404,W2,,,,5..5
 2024,NFL,Reg_Ssn,Indianapolis Colts,Colts,7,8,0,15,0.467,2..3,318,359,W1,AFC_South,AFC,,6..5
 2024,NFL,Reg_Ssn,Miami Dolphins,Dolphins,7,8,0,15,0.467,3..2,305,329,W1,AFC_East,AFC,,5..5
-2024,NFL,Reg_Ssn,Dallas Cowboys,Cowboys,6,8,0,14,0.429,3..1,298,380,W1,,,,4..5
 2024,NFL,Reg_Ssn,San Francisco 49ers,49ers,6,9,0,15,0.4,1..4,331,349,L2,,,,4..6
-2024,NFL,Reg_Ssn,New Orleans Saints,Saints,5,9,0,14,0.35700000000000004,2..3,309,312,L1,,,,4..6
+2024,NFL,Reg_Ssn,New Orleans Saints,Saints,5,10,0,15,0.333,2..3,309,346,L2,,,,4..7
 2024,NFL,Reg_Ssn,New York Jets,Jets,4,11,0,15,0.267,1..3,292,344,L1,,,,4..6
 2024,NFL,Reg_Ssn,Chicago Bears,Bears,4,11,0,15,0.267,0..5,283,342,L9,,,,2..8
 2024,NFL,Reg_Ssn,Carolina Panthers,Panthers,4,11,0,15,0.267,1..3,283,448,W1,,,,3..7
