@@ -3379,6 +3379,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,1,Dan,Chiefs,14,12,13,RegSsn
 2024,1,1,Dan,Chiefs,15,13,14,RegSsn
 2024,1,1,Dan,Chiefs,16,14,15,RegSsn
+2024,1,1,Dan,Chiefs,17,15,16,RegSsn
 2024,1,2,Mike,Ravens,1,0,1,RegSsn
 2024,1,2,Mike,Ravens,2,0,2,RegSsn
 2024,1,2,Mike,Ravens,3,1,3,RegSsn
@@ -3394,6 +3395,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,2,Mike,Ravens,13,8,13,RegSsn
 2024,1,2,Mike,Ravens,15,9,14,RegSsn
 2024,1,2,Mike,Ravens,16,10,15,RegSsn
+2024,1,2,Mike,Ravens,17,11,16,RegSsn
 2024,1,3,Cameron,Eagles,1,1,1,RegSsn
 2024,1,3,Cameron,Eagles,2,1,2,RegSsn
 2024,1,3,Cameron,Eagles,3,2,3,RegSsn
@@ -3498,6 +3500,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,9,Victoria,Packers,13,9,12,RegSsn
 2024,2,9,Victoria,Packers,14,9,13,RegSsn
 2024,2,9,Victoria,Packers,15,10,14,RegSsn
+2024,2,9,Victoria,Packers,16,11,15,RegSsn
 2024,2,10,Brandon,Texans,1,1,1,RegSsn
 2024,2,10,Brandon,Texans,2,2,2,RegSsn
 2024,2,10,Brandon,Texans,3,2,3,RegSsn
@@ -3513,6 +3516,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,10,Brandon,Texans,13,8,13,RegSsn
 2024,2,10,Brandon,Texans,15,9,14,RegSsn
 2024,2,10,Brandon,Texans,16,9,15,RegSsn
+2024,2,10,Brandon,Texans,17,9,16,RegSsn
 2024,2,11,Alex,Jets,1,0,1,RegSsn
 2024,2,11,Alex,Jets,2,1,2,RegSsn
 2024,2,11,Alex,Jets,3,2,3,RegSsn
@@ -3678,6 +3682,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,21,Jordan,Steelers,14,10,13,RegSsn
 2024,3,21,Jordan,Steelers,15,10,14,RegSsn
 2024,3,21,Jordan,Steelers,16,10,15,RegSsn
+2024,3,21,Jordan,Steelers,17,10,16,RegSsn
 2024,3,22,Alex,Colts,1,0,1,RegSsn
 2024,3,22,Alex,Colts,2,0,2,RegSsn
 2024,3,22,Alex,Colts,3,1,3,RegSsn
@@ -3707,6 +3712,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,23,Brandon,Saints,13,4,12,RegSsn
 2024,3,23,Brandon,Saints,14,5,13,RegSsn
 2024,3,23,Brandon,Saints,15,5,14,RegSsn
+2024,3,23,Brandon,Saints,16,5,15,RegSsn
 2024,3,24,Victoria,Vikings,1,1,1,RegSsn
 2024,3,24,Victoria,Vikings,2,2,2,RegSsn
 2024,3,24,Victoria,Vikings,3,3,3,RegSsn
