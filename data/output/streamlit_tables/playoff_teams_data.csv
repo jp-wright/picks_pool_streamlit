@@ -1,3 +1,5 @@
 Round,Player,Team,Playoff_Win,Eliminated,Playoff_Seed,Conference
+1,Brandon,Bills,0.0,False,2,AFC
 2,Brandon,Texans,0.0,False,4,AFC
+1,Cameron,Eagles,0.0,False,2,NFC
 1,Dan,Chiefs,0.0,False,1,AFC
