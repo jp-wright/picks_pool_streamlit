@@ -1,5 +1,15 @@
 Round,Player,Team,Playoff_Win,Eliminated,Playoff_Seed,Conference
+4,Alex,Commanders,0.0,False,6,NFC
 1,Brandon,Bills,0.0,False,2,AFC
+4,Brandon,Buccaneers,0.0,False,3,NFC
 2,Brandon,Texans,0.0,False,4,AFC
 1,Cameron,Eagles,0.0,False,2,NFC
 1,Dan,Chiefs,0.0,False,1,AFC
+3,Dan,Rams,0.0,False,4,NFC
+1,JP,Lions,0.0,False,1,NFC
+3,JP,Chargers,0.0,False,5,AFC
+4,JP,Broncos,0.0,False,7,AFC
+3,Jordan,Steelers,0.0,False,6,AFC
+1,Mike,Ravens,0.0,False,3,AFC
+3,Victoria,Vikings,0.0,False,5,NFC
+2,Victoria,Packers,0.0,False,7,NFC
