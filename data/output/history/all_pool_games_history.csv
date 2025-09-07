@@ -2341,6 +2341,9 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,1,Dan,Chiefs,16,14,15,RegSsn
 2024,1,1,Dan,Chiefs,17,15,16,RegSsn
 2024,1,1,Dan,Chiefs,18,15,17,RegSsn
+2024,1,1,Dan,Chiefs,Division,16,18,Playoffs
+2024,1,1,Dan,Chiefs,Conf. Champ.,17,19,Playoffs
+2024,1,1,Dan,Chiefs,SuperBowl,17,20,Playoffs
 2024,1,2,Mike,Ravens,1,0,1,RegSsn
 2024,1,2,Mike,Ravens,2,0,2,RegSsn
 2024,1,2,Mike,Ravens,3,1,3,RegSsn
@@ -2359,6 +2362,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,2,Mike,Ravens,17,11,16,RegSsn
 2024,1,2,Mike,Ravens,18,12,17,RegSsn
 2024,1,2,Mike,Ravens,Wild Card,13,18,Playoffs
+2024,1,2,Mike,Ravens,Division,13,19,Playoffs
 2024,1,3,Cameron,Eagles,1,1,1,RegSsn
 2024,1,3,Cameron,Eagles,2,1,2,RegSsn
 2024,1,3,Cameron,Eagles,3,2,3,RegSsn
@@ -2377,6 +2381,9 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,3,Cameron,Eagles,17,13,16,RegSsn
 2024,1,3,Cameron,Eagles,18,14,17,RegSsn
 2024,1,3,Cameron,Eagles,Wild Card,15,18,Playoffs
+2024,1,3,Cameron,Eagles,Division,16,19,Playoffs
+2024,1,3,Cameron,Eagles,Conf. Champ.,17,20,Playoffs
+2024,1,3,Cameron,Eagles,SuperBowl,18,21,Playoffs
 2024,1,4,JP,Lions,1,1,1,RegSsn
 2024,1,4,JP,Lions,2,1,2,RegSsn
 2024,1,4,JP,Lions,3,2,3,RegSsn
@@ -2394,6 +2401,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,4,JP,Lions,16,13,15,RegSsn
 2024,1,4,JP,Lions,17,14,16,RegSsn
 2024,1,4,JP,Lions,18,15,17,RegSsn
+2024,1,4,JP,Lions,Division,15,18,Playoffs
 2024,1,5,Jordan,49ers,1,1,1,RegSsn
 2024,1,5,Jordan,49ers,2,1,2,RegSsn
 2024,1,5,Jordan,49ers,3,1,3,RegSsn
@@ -2446,6 +2454,8 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,1,7,Brandon,Bills,17,13,16,RegSsn
 2024,1,7,Brandon,Bills,18,13,17,RegSsn
 2024,1,7,Brandon,Bills,Wild Card,14,18,Playoffs
+2024,1,7,Brandon,Bills,Division,15,19,Playoffs
+2024,1,7,Brandon,Bills,Conf. Champ.,15,20,Playoffs
 2024,1,8,Victoria,Bengals,1,0,1,RegSsn
 2024,1,8,Victoria,Bengals,2,0,2,RegSsn
 2024,1,8,Victoria,Bengals,3,0,3,RegSsn
@@ -2499,6 +2509,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,2,10,Brandon,Texans,17,9,16,RegSsn
 2024,2,10,Brandon,Texans,18,10,17,RegSsn
 2024,2,10,Brandon,Texans,Wild Card,11,18,Playoffs
+2024,2,10,Brandon,Texans,Division,11,19,Playoffs
 2024,2,11,Alex,Jets,1,0,1,RegSsn
 2024,2,11,Alex,Jets,2,1,2,RegSsn
 2024,2,11,Alex,Jets,3,2,3,RegSsn
@@ -2619,6 +2630,7 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,3,17,Dan,Rams,17,10,16,RegSsn
 2024,3,17,Dan,Rams,18,10,17,RegSsn
 2024,3,17,Dan,Rams,Wild Card,11,18,Playoffs
+2024,3,17,Dan,Rams,Division,11,19,Playoffs
 2024,3,18,Mike,Bears,1,1,1,RegSsn
 2024,3,18,Mike,Bears,2,1,2,RegSsn
 2024,3,18,Mike,Bears,3,1,3,RegSsn
@@ -2794,6 +2806,8 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,27,Alex,Commanders,17,11,16,RegSsn
 2024,4,27,Alex,Commanders,18,12,17,RegSsn
 2024,4,27,Alex,Commanders,Wild Card,13,18,Playoffs
+2024,4,27,Alex,Commanders,Division,14,19,Playoffs
+2024,4,27,Alex,Commanders,Conf. Champ.,14,20,Playoffs
 2024,4,28,Jordan,Titans,1,0,1,RegSsn
 2024,4,28,Jordan,Titans,2,0,2,RegSsn
 2024,4,28,Jordan,Titans,3,0,3,RegSsn
@@ -2880,3 +2894,5 @@ Year,Round,Pick,Player,Team,Week,Wins,Games_Played,Week_Type
 2024,4,32,Dan,Giants,16,2,15,RegSsn
 2024,4,32,Dan,Giants,17,3,16,RegSsn
 2024,4,32,Dan,Giants,18,3,17,RegSsn
+2025,1,2,Bill,Eagles,1,1,1,RegSsn
+2025,4,22,Dan,Cowboys,1,0,1,RegSsn
